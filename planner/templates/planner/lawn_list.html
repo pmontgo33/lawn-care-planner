@@ -1,0 +1,9 @@
+{% extends "planner/base.html" %}
+
+{% block content %}
+
+    {% for lawn in object_list %}
+		<h5><a href="/planner/{{ lawn.id }}">{{ lawn.name }}</a> - {{ lawn.user }}</h5>
+	{% endfor %}
+
+{% endblock %}

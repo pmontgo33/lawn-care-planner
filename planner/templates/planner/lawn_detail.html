@@ -1,0 +1,55 @@
+{% extends "planner/base.html" %}
+
+{% block content %}
+<div>
+  
+    <div class="lawn-info">
+      <p><strong>Lawn Name: </strong>{{ lawn.name }}</p>
+      <p><strong>ZIP Code: </strong>{{ lawn.zip_code }}</p>
+      <p><strong>Closest Weather Station: </strong>{{ closest_station }}</p>
+      <p><strong>Grass Type: </strong>{{ lawn.grass_type }}</p>
+    </div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#seeding" aria-controls="seeding" role="tab" data-toggle="tab">Seeding</a></li>
+    <li role="presentation"><a href="#mowing" aria-controls="mowing" role="tab" data-toggle="tab">Mowing</a></li>
+    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+  </ul>
+  <br>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="seeding">
+        <div class="seeding">
+            <p><strong>Germination Time (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ germination_time }} days</p>
+            <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
+            <ul>
+                {% for range in seeding_ranges %}
+                    <li>{{ range }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div role="tabpanel" class="tab-pane" id="mowing">
+      <div class="mowing">
+        {% for key,value in mowing_heights.items %}
+          <h4>{{ value.title }}:</h4>
+            <ul>
+              <li><strong>Height: </strong>{{ value.height }}"</li>
+              <li>{{ value.description }}</li>
+            </ul>
+        {% endfor %}
+        <br>
+        <p>(<a href="https://youtu.be/6ISw5ODvKNo">source</a>)</p>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="messages">messages</div>
+    <div role="tabpanel" class="tab-pane" id="settings">settings</div>
+  </div>
+
+</div>
+
+{% endblock %}
