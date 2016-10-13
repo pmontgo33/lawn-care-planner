@@ -1,18 +1,30 @@
 {% extends "planner/base.html" %}
+{% load humanize %}
 
 {% block content %}
+
+<h3>Your Personal Lawn Care Plan</h3>
+<br>
 <div>
   
     <div class="lawn-info">
-      <p><strong>Lawn Name: </strong>{{ lawn.name }}</p>
-      <p><strong>ZIP Code: </strong>{{ lawn.zip_code }}</p>
-      <p><strong>Closest Weather Station: </strong>{{ closest_station }}</p>
-      <p><strong>Grass Type: </strong>{{ lawn.grass_type }}</p>
+      <div class="row">
+        <p class="col-lg-2"><strong>Lawn Name: </strong>{{ lawn.name }}</p>
+        <p class="col-lg-2"><strong>ZIP Code: </strong>{{ lawn.zip_code }}</p>
+      </div>
+      <div class="row">
+        <p class="col-lg-2"><strong>Grass Type: </strong>{{ lawn.grass_type }}</p>
+        <p class="col-lg-4"><strong>Closest Weather Station: </strong>{{ closest_station }}</p>
+      </div>
+      <div class="row">
+        <p class="col-lg-2"><strong>Lawn Size: </strong>{{ lawn.size|intcomma }} sf</p>
+      </div>
     </div>
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#seeding" aria-controls="seeding" role="tab" data-toggle="tab">Seeding</a></li>
+    <li role="presentation" class="active"><a href="#planner" aria-controls="planner" role="tab" data-toggle="tab">Planner</a></li>
+    <li role="presentation"><a href="#seeding" aria-controls="seeding" role="tab" data-toggle="tab">Seeding</a></li>
     <li role="presentation"><a href="#mowing" aria-controls="mowing" role="tab" data-toggle="tab">Mowing</a></li>
     <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
     <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
@@ -21,20 +33,40 @@
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="seeding">
-        <div class="seeding">
-            <p><strong>Germination Time (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ germination_time }} days</p>
-            <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
-            <ul>
-                {% for range in seeding_ranges %}
-                    <li>{{ range }}</li>
-                {% endfor %}
-            </ul>
+    <div role="tabpanel" class="tab-pane active" id="planner">
+      <div class="planner">
+        <div class="row">
+          <p class="col-lg-6">Description.</p>
         </div>
+        <br>
+        <p>content.</p>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="seeding">
+      <div class="seeding">
+        <div class="row">
+          <p class="col-lg-6">The ideal days for seeding have nighttime temperatures above 40&degF, 
+          and daytime temperatures below 80&degF for the entirty of the germination period. 
+          The dates listed below are days with average historic temperatures in your area within this range. 
+          These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates.</p>
+        </div>
+        <br>
+        <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ germination_time }} days</p>
+        <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
+        <ul>
+            {% for range in seeding_ranges %}
+                <li>{{ range }}</li>
+            {% endfor %}
+        </ul>
+      </div>
     </div>
     
     <div role="tabpanel" class="tab-pane" id="mowing">
       <div class="mowing">
+        <div class="row">
+          <p class="col-lg-6">Based on your grass type, the below schedule of mowing heights is recommended.</p>
+        </div>
+        <br>
         {% for key,value in mowing_heights.items %}
           <h4>{{ value.title }}:</h4>
             <ul>
@@ -46,8 +78,8 @@
         <p>(<a href="https://youtu.be/6ISw5ODvKNo">source</a>)</p>
       </div>
     </div>
-    <div role="tabpanel" class="tab-pane" id="MESSAGES">messages</div>
-    <div role="tabpanel" class="tab-pane" id="SETTINGS">settings</div>
+    <div role="tabpanel" class="tab-pane" id="messages">messages</div>
+    <div role="tabpanel" class="tab-pane" id="settings">settings</div>
   </div>
 
 </div>

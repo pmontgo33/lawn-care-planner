@@ -16,7 +16,9 @@ urlpatterns = [
                         queryset=Lawn.objects.all(),
                         template_name="planner/lawn_list.html")),
     
-    url(r'^(?P<pk>\d+)/$', views.lawn_detail, name="lawn_detail")
+    url(r'^lawn/(?P<pk>\d+)/$', views.lawn_detail, name="lawn_detail"),
+    
+    url(r'lawn/new/$', views.lawn_new, name="lawn_new")
     
     ]
     

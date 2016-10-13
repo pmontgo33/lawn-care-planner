@@ -4,9 +4,11 @@
 
 # import statements
 from datetime import date
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.models import User
 #from django.http import HttpResponse
 from .models import Lawn
+from .forms import LawnForm
 from .code import seeding, mowing
 
 from .code import seeding
@@ -53,3 +55,18 @@ def lawn_detail(request, pk):
     
     return render(request, 'planner/lawn_detail.html', temp_vars)
     
+def lawn_new(request):
+
+    if request.method == "POST":
+        form = LawnForm(request.POST)
+        if form.is_valid():
+            lawn = form.save(commit=False)
+            lawn.user = User.objects.get(username="guest")            #either make this User guest, or look into cookie based sessions.`
+            lawn.save()
+            lawn.name = "Lawn" + str(lawn.pk)
+            lawn.save()
+            
+            return redirect('lawn_detail', pk=lawn.pk)
+    else:
+        form = LawnForm()
+    return render(request, 'planner/lawn_edit.html', {"form":form})

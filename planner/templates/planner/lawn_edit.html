@@ -1,0 +1,14 @@
+{% extends "planner/base.html" %}
+
+{% block content %}
+
+    <h3>New Lawn</h3>
+    <br>
+    
+    <form method="POST" class="lawn-form">{% csrf_token %}
+        {{ form.as_p }}
+        <br>
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+
+{% endblock %}
