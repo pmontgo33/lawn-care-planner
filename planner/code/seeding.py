@@ -334,7 +334,7 @@ def terminal_app():
     print("retrieving data...")
     response = requests.get(url_base, headers=headers, params=payload)
     print("data retrieved!")
-    
+    print(response.status_code)
     station_temps = response.json()['results']
     
     grass_type_abv = get_grass_type()
@@ -449,3 +449,9 @@ def terminal_app():
     view_data.write(json.dumps(response.json(), sort_keys=True, indent=4))
     view_data.close()
     """
+
+"""
+If the file is run directly, run the terminal_app.
+"""
+if __name__ == '__main__':
+    terminal_app()

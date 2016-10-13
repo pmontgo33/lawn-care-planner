@@ -1,9 +1,11 @@
 {% extends "planner/base.html" %}
 
 {% block content %}
+    <br>
+    <a href="{% url 'lawn_new' %}" class="top-menu">Create a Lawn</a>
 
     {% for lawn in object_list %}
-		<h5><a href="/planner/{{ lawn.id }}">{{ lawn.name }}</a> - {{ lawn.user }}</h5>
+		<h5><a href="/planner/lawn/{{ lawn.id }}">{{ lawn.name }}</a> - {{ lawn.user }}</h5>
 	{% endfor %}
 
 {% endblock %}

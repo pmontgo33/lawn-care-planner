@@ -13,6 +13,7 @@ class Lawn(models.Model):
     name = models.CharField(max_length=140)
     zip_code = models.CharField(max_length=5)
     grass_type = models.CharField(max_length=140, choices=seeding.GRASS_TYPES)
+    size = models.IntegerField(default=0)
     
     def __str__(self):
         return self.name
