@@ -26,22 +26,55 @@
     <li role="presentation" class="active"><a href="#planner" aria-controls="planner" role="tab" data-toggle="tab">Planner</a></li>
     <li role="presentation"><a href="#seeding" aria-controls="seeding" role="tab" data-toggle="tab">Seeding</a></li>
     <li role="presentation"><a href="#mowing" aria-controls="mowing" role="tab" data-toggle="tab">Mowing</a></li>
-    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+    <li role="presentation"><a href="#fertilizer" aria-controls="fertilizer" role="tab" data-toggle="tab">Fertilizer</a></li>
     <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
   </ul>
   <br>
 
   <!-- Tab panes -->
   <div class="tab-content">
+    
+    <!-- Planner Tab -->
     <div role="tabpanel" class="tab-pane active" id="planner">
+      
       <div class="planner">
         <div class="row">
-          <p class="col-lg-6">Description.</p>
+          <p class="col-lg-6">This is your personalized Lawn Care Planner for the year. This is based on the specific
+                              attributes of your lawn including the normal weather conditions in your area, the type
+                              of grass that you have, and the size of your lawn. Navigate through the tabs above for
+                              more detail on each lawn care task.</p>
         </div>
         <br>
-        <p>content.</p>
+        <div class="col-lg-6 container-fluid">
+          <h3>Planner</h3>
+          <br>
+          
+          {% for season, months in planner.items %}
+            <div class="panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">{{ season|capfirst }}</h3>
+              </div>
+              <div class="panel-body">
+                {% for month, tasks in months.items %}
+                  <p><strong>{{ month }}</strong></p>
+                  <ul>
+                    {% for task in tasks %}
+                      {% if task.date is None %}
+                        <li>{{ task.name }}</li>
+                      {% else %}
+                        <li>{{ task.date }} - {{ task.name }}</li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
       </div>
     </div>
+    
+    <!-- Seeding Tab -->
     <div role="tabpanel" class="tab-pane" id="seeding">
       <div class="seeding">
         <div class="row">
@@ -51,6 +84,12 @@
           These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates.</p>
         </div>
         <br>
+        <p><strong>Amount of Seed (<a href="http://plantscience.psu.edu/research/centers/turf/extension/factsheets/seed">source</a>):</strong></p>
+          <ul>
+            <li>Establish New Lawn: {{ lawn.seed_new_lb_range.0 }} to {{ lawn.seed_new_lb_range.1 }} lbs</li>
+            <li>Overseed: {{ lawn.seed_over_lb_range.0 }} to {{ lawn.seed_over_lb_range.1 }} lbs</li>
+          </ul>
+          </p>
         <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ germination_time }} days</p>
         <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
         <ul>
@@ -61,6 +100,7 @@
       </div>
     </div>
     
+    <!-- Mowing Tab -->
     <div role="tabpanel" class="tab-pane" id="mowing">
       <div class="mowing">
         <div class="row">
@@ -78,7 +118,9 @@
         <p>(<a href="https://youtu.be/6ISw5ODvKNo">source</a>)</p>
       </div>
     </div>
-    <div role="tabpanel" class="tab-pane" id="messages">messages</div>
+    
+    <!-- Future Tabs -->
+    <div role="tabpanel" class="tab-pane" id="fertilizer">Fertilizer</div>
     <div role="tabpanel" class="tab-pane" id="settings">settings</div>
   </div>
 
