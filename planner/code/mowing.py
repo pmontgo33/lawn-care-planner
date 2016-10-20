@@ -8,7 +8,7 @@ from collections import OrderedDict
 heights = {
     
     "KBG": OrderedDict(
-        [("first",{
+        [("spring-first",{
             "title":"First mow of spring as soon as the grass begins to grow",
             "height":2.5,
             "description":"Clean out dead grass and leaves, and stimulate growth"
@@ -28,7 +28,7 @@ heights = {
             "height":3,
             "description":"This will stimulate more root growth"
         }),
-        ("last",{
+        ("fall-last",{
             "title":"Last mow of fall, just before or just after the first frost",
             "height":2.5,
             "description":"Shorter lawn over winter will cut down on winter kill"

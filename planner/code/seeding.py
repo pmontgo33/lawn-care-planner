@@ -34,10 +34,33 @@ GRASS_TYPES = (
     )
     
 grass_details = {
-                "KBG":{"name":"Kentucky Bluegrass", "seed_min_temp":44.0, "seed_max_temp":76.0, "germination_time":30},
-                "PRG":{"name":"Perennial Ryegrass", "seed_min_temp":44.0, "seed_max_temp":76.0, "germination_time":10},
-                "TTTF":{"name":"Turf Type Tall Fescue", "seed_min_temp":44.0, "seed_max_temp":76.0, "germination_time":12},
-                }
+    
+                "KBG":{
+                    "name":"Kentucky Bluegrass", 
+                    "seed_min_temp":44.0, 
+                    "seed_max_temp":76.0, 
+                    "germination_time":30, 
+                    "seed_new_lb_range":[2.0,3.0],
+                    "seed_over_lb_range":[1.0,1.5],
+                    
+                },
+                "PRG":{
+                    "name":"Perennial Ryegrass", 
+                    "seed_min_temp":44.0, 
+                    "seed_max_temp":76.0, 
+                    "germination_time":10,
+                    "seed_new_lb_range":[4.0,5.0],
+                    "seed_over_lb_range":[2.0,2.5],
+                },
+                "TTTF":{
+                    "name":"Turf Type Tall Fescue", 
+                    "seed_min_temp":44.0, 
+                    "seed_max_temp":76.0, 
+                    "germination_time":12,
+                    "seed_new_lb_range":[6.0,8.0],
+                    "seed_over_lb_range":[3.0,4.0],
+                },
+}
 
 def update_normal_daily_stations():
     """
@@ -52,6 +75,7 @@ def update_normal_daily_stations():
     station_url = "http://www.ncdc.noaa.gov/cdo-web/api/v2/stations"
     payload = {
         "datasetid": "NORMAL_DLY",  #   return list of stations that have Normal Daily data
+        "datatypeid":["DLY-TMIN-NORMAL","DLY-TMAX-NORMAL"],
         "limit": "1000",
         "offset": None,
     }
@@ -134,13 +158,14 @@ def get_seeding_info(zip_code, grass_type):
     Normal Daily temperatures (NOAA dataset) of the closest weather station.
     """
 
-     #   Load the stations from the data file.
+    #   Load the stations from the data file.
     file_dir = os.path.dirname(os.path.realpath(__file__)) + "/NormalDailyStations.dat"
     stations_file = open(file_dir, "r")
     stations_file_title = stations_file.readline()
     stations_file_updated = stations_file.readline()
     
     stations = json.loads(stations_file.read())
+    stations_file.close()
     
     # get the users zip code, and look up the latitude and longitude
     my_lat, my_long = get_lat_long(zip_code)
@@ -192,6 +217,8 @@ def get_seeding_info(zip_code, grass_type):
     seed_min_temp = grass_details[grass_type]["seed_min_temp"]
     seed_max_temp = grass_details[grass_type]["seed_max_temp"]
     germination_time = grass_details[grass_type]["germination_time"]
+    seed_new_lb_range = grass_details[grass_type]["seed_new_lb_range"]
+    seed_over_lb_range = grass_details[grass_type]["seed_over_lb_range"]
     
     """
     Below takes the raw data from the closet station Normals Daily, and organizes
@@ -270,6 +297,8 @@ def get_seeding_info(zip_code, grass_type):
         'closest_station':closest_station,
         'germination_time':germination_time,
         'seed_ranges':seed_ranges,
+        'seed_new_lb_range':seed_new_lb_range,
+        'seed_over_lb_range':seed_over_lb_range,
     }
     
     return seeding_info
@@ -428,27 +457,19 @@ def terminal_app():
     
     message = "The best time to seed your %s is " % (grass_type)
     message += "from %s to %s" % (seed_from, seed_to)
-#    print("The best time to seed your %s is " % (grass_type), end="")
-#    print("from %s to %s" % (seed_from, seed_to), end="")
-    
+
     for seed_range in seed_ranges[1:-2]:
         seed_from = seed_range[0].strftime("%m-%d")
         seed_to = seed_range[1].strftime("%m-%d")
         message += ", from %s to %s" % (seed_from, seed_to)
-#        print(", from %s to %s" % (seed_from, seed_to), end="")
-    
+
     seed_from = seed_ranges[-1][0].strftime("%m-%d")
     seed_to = seed_ranges[-1][1].strftime("%m-%d")
     message += " or from %s to %s" % (seed_from, seed_to)
-#    print(" or from %s to %s" % (seed_from, seed_to))
-    
+
     print(message)
     return message
-    """
-    view_data = open("ViewData.txt", "w")
-    view_data.write(json.dumps(response.json(), sort_keys=True, indent=4))
-    view_data.close()
-    """
+
 
 """
 If the file is run directly, run the terminal_app.
