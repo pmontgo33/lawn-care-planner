@@ -18,14 +18,12 @@ returning the smallest.
 
 
 #   import statements
-import requests
-import re
 import os
-from bs4 import BeautifulSoup
 import json
 import math
+import requests
 from datetime import date, datetime, timedelta
-
+from . import utils
 
 GRASS_TYPES = (
     ("KBG","Kentucky Bluegrass"),
@@ -62,96 +60,83 @@ grass_details = {
                 },
 }
 
-def update_normal_daily_stations():
+def get_seeding_info(closest_station, temp_data, grass_type):
     """
-    This function updates the data file NormalDailyStations.dat (or creates it 
-    if it does not exist) with the latest NOAA stations that support the 
-    Normals Daily dataset.
+    This function was built to take the zip code and grass type as parameters,
+    and return the expecting seeding dates for that grass type based on the
+    Normal Daily temperatures (NOAA dataset) of the closest weather station.
     """
     
-    token = "KCAsygyVaVBxjhTOgyYnMCEOjKVOnCIj"
-    headers = {'token':token, 'User-Agent':"lawn-care-planner"}
+    grass_name = grass_details[grass_type]["name"]
+    seed_min_temp = grass_details[grass_type]["seed_min_temp"]
+    seed_max_temp = grass_details[grass_type]["seed_max_temp"]
+    germination_time = grass_details[grass_type]["germination_time"]
+    seed_new_lb_range = grass_details[grass_type]["seed_new_lb_range"]
+    seed_over_lb_range = grass_details[grass_type]["seed_over_lb_range"]
     
-    station_url = "http://www.ncdc.noaa.gov/cdo-web/api/v2/stations"
-    payload = {
-        "datasetid": "NORMAL_DLY",  #   return list of stations that have Normal Daily data
-        "datatypeid":["DLY-TMIN-NORMAL","DLY-TMAX-NORMAL"],
-        "limit": "1000",
-        "offset": None,
-    }
+    """
+    Below iterates through the temp_data for each date, and looks for windows of
+    germination_time days or longer where the temperature is within the seeding
+    threshold range.
     
-    response = requests.get(station_url, headers=headers, params=payload)
+    !!!!!!!!!!!!!!!!!!!!NEED TO ADD: check the "wrap around" to see if a window exists
+    from December to January.
+    """
     
-    stations = response.json()['results']
+    current_date = datetime.strptime(closest_station['mindate'], "%Y-%m-%d").date()
+    current_year = current_date.year
     
-    count = response.json()['metadata']['resultset']['count']
-    limit = response.json()['metadata']['resultset']['limit']
-    offset = response.json()['metadata']['resultset']['offset']
+    seed_window = 0   #   This is a variable to track the length of the current seeding window
+    seeding_dates = []
     
-    while (limit+offset < count):
-        payload['offset'] = limit+offset
-        response = requests.get(station_url, headers=headers, params=payload)
-        stations.extend(response.json()['results'])
+    while (current_date.year == current_year):
+    #    print(current_date, temp_data[current_date])
         
-        count = response.json()['metadata']['resultset']['count']
-        limit = response.json()['metadata']['resultset']['limit']
-        offset = response.json()['metadata']['resultset']['offset']
+        if (temp_data[current_date]["TMIN"] >= seed_min_temp and
+            temp_data[current_date]["TMAX"] <= seed_max_temp):
+                
+                seed_window += 1
+                
+                if seed_window >= germination_time:
+                    #add germination_time days ago to seeding_dates
+                    good_seeding_date = current_date - timedelta(days=germination_time)
+                    seeding_dates.append(good_seeding_date)
+        else:
+            seed_window = 0
+        
+        current_date += timedelta(days=1)
     
-    file_dir = os.path.dirname(os.path.realpath(__file__)) + "/NormalDailyStations.dat"
-    view_data = open(file_dir, "w")
-    view_data.write("Normal Daily Stations List\nUpdated: %s\n" % date.today())
-    view_data.write(json.dumps(stations, sort_keys=True, indent=4))
-    view_data.close()
+    # check the wrap around here!!
     
-def get_zip_code():
     """
-    This function asks for input from the terminal for the users zip code.
-    Eventually this function will be replaced by a different method of gaining
-    input. ex - a form on a webpage.
+    Below groups seeding date ranges.
+    For example seed between 2010-04-19 and 2010-04-27 (9 days)
     """
-    zip = input("Enter ZIP code: ")
-    return int(zip)
+    seed_ranges = []
     
-def get_lat_long(zip):
-    """
-    This function takes a zip code and looks up the latitude and longitude using
-    this website: https://www.melissadata.com/lookups/GeoCoder.asp?InData=19075&submit=Search
-    """
+    start_date = seeding_dates[0]
+    for i, curr_date in enumerate(seeding_dates):
+        if (curr_date - seeding_dates[i-1]).days > 1:
+            end_date = seeding_dates[i-1]
+            seed_ranges.append([start_date, end_date])
+            start_date = curr_date
     
-    zip_url = "https://www.melissadata.com/lookups/GeoCoder.asp"
-    headers = {'User-Agent':"lawn-care-planner"}
-    payload = {
-        "InData":zip,
-        "submit":"Search",
+    # the last date in the list is the last end date.
+    end_date = seeding_dates[-1]
+    seed_ranges.append([start_date, end_date])
+    
+    seeding_info = {
+        
+        'closest_station':closest_station,
+        'germination_time':germination_time,
+        'seed_ranges':seed_ranges,
+        'seed_new_lb_range':seed_new_lb_range,
+        'seed_over_lb_range':seed_over_lb_range,
     }
     
-    response = requests.get(zip_url, headers=headers, params=payload)
+    return seeding_info
     
-    soup = BeautifulSoup(response.text, "html.parser")
-    
-    # Check to make sure zip code exists. If so return None, None
-    if (len(soup.find_all(text=re.compile("Lat & Long for  was not found."))) > 0
-        or len(soup.find_all(text=re.compile("Invalid address."))) > 0):
-        return None, None
-    
-    results = soup.find_all("td", attrs={"class":"padd"})
-    
-    lat = float(results[0].text)
-    long = float(results[1].text)
-    
-    return lat, long
-
-def get_grass_type():
-    """
-    This function asks for input from the terminal for the users grass type.
-    Eventually this function will be replaced by a different method of gaining
-    input. ex - a form on a webpage.
-    """
-    
-    grass_type = input("Enter your grass type (KBG, PRG, TTTF): ")
-    return grass_type.upper()
-
-def get_seeding_info(zip_code, grass_type):
+def OLD_get_seeding_info(zip_code, grass_type):
     """
     This function was built to take the zip code and grass type as parameters,
     and return the expecting seeding dates for that grass type based on the
@@ -168,7 +153,7 @@ def get_seeding_info(zip_code, grass_type):
     stations_file.close()
     
     # get the users zip code, and look up the latitude and longitude
-    my_lat, my_long = get_lat_long(zip_code)
+    my_lat, my_long = utils.get_lat_long(zip_code)
     
     """
     Below finds the closest station to the zip code by finding the distance
@@ -314,8 +299,8 @@ def terminal_app():
     stations = json.loads(stations_file.read())
     
     # get the users zip code, and look up the latitude and longitude
-    zip = get_zip_code()
-    my_lat, my_long = get_lat_long(zip)
+    zip = utils.get_zip_code()
+    my_lat, my_long = utils.get_lat_long(zip)
     
     
     """
@@ -366,7 +351,7 @@ def terminal_app():
     print(response.status_code)
     station_temps = response.json()['results']
     
-    grass_type_abv = get_grass_type()
+    grass_type_abv = utils.get_grass_type()
     
     grass_type = grass_details[grass_type_abv]["name"]
     seed_min_temp = grass_details[grass_type_abv]["seed_min_temp"]

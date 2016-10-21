@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 #from django.http import HttpResponse
 from .models import Lawn
 from .forms import LawnForm
-from .code import seeding, mowing, planner
+from .code import seeding, mowing, planner, utils
 
 from .code import seeding
 
@@ -23,8 +23,8 @@ def lawn_detail(request, pk):
     """
     This section prepares the Seeding information
     """
-    
-    seeding_info = seeding.get_seeding_info(lawn.zip_code, lawn.grass_type)
+    closest_station, temp_data = utils.get_closest_station_data(lawn.zip_code)
+    seeding_info = seeding.get_seeding_info(closest_station, temp_data, lawn.grass_type)
     
     str_ranges = []
     for range in seeding_info['seed_ranges']:
@@ -59,6 +59,8 @@ def lawn_detail(request, pk):
     """
     This section prepares the Fertilizer information
     """
+    
+    
     
 
     
