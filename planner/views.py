@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 #from django.http import HttpResponse
 from .models import Lawn
 from .forms import LawnForm
-from .code import seeding, mowing, planner, utils
+from .code import seeding, mowing, planner, weedcontrol, utils
 
 from .code import seeding
 
@@ -19,11 +19,14 @@ def index(request):
 def lawn_detail(request, pk):
     lawn = get_object_or_404(Lawn, pk=pk)
     my_planner = planner.planner()
-      
+    
+    # Get the closest station and min/max temperature data for that station based on the ZIP code 
+    closest_station, temp_data = utils.get_closest_station_data(lawn.zip_code)
+
     """
     This section prepares the Seeding information
     """
-    closest_station, temp_data = utils.get_closest_station_data(lawn.zip_code)
+    
     seeding_info = seeding.get_seeding_info(closest_station, temp_data, lawn.grass_type)
     
     str_ranges = []
@@ -54,24 +57,31 @@ def lawn_detail(request, pk):
             my_season = key.split('-')[0]
             my_task_name = 'Mow at height of %s" for %s' % (str(mowing_heights[key]['height']), mowing_heights[key]['title'].lower())
         my_planner.add_task(my_task_name, my_season)
-    print(str(my_planner))
-    
+
     """
     This section prepares the Fertilizer information
     """
     
+    ####################### FERTILIZER INFO ################################3
     
+    """
+    This section prepares the Weed Control information
+    """
     
-
+    weed_info = weedcontrol.get_weed_control_info(closest_station, temp_data)
+    summer_weed_deadline = weed_info['summer_deadline'].strftime("%B %d")
+    my_task_name = "Summer annual weed pre-emergent herbicide application deadline."
+    my_planner.add_task(my_task_name, weed_info['summer_deadline'])
     
     temp_vars = {
         'lawn':lawn,
-        'closest_station':seeding_info['closest_station']['name'],
+        'closest_station':closest_station['name'],
         'germination_time':seeding_info['germination_time'],
         'seed_new_lb_range':seeding_info['seed_new_lb_range'],
         'seed_over_lb_range':seeding_info['seed_over_lb_range'],
         'seeding_ranges':str_ranges,
         'mowing_heights':mowing_heights,
+        'summer_weed_deadline':summer_weed_deadline,
         'planner':my_planner.tasks_by_season,
     }
     

@@ -90,8 +90,7 @@ def get_seeding_info(closest_station, temp_data, grass_type):
     seeding_dates = []
     
     while (current_date.year == current_year):
-    #    print(current_date, temp_data[current_date])
-        
+
         if (temp_data[current_date]["TMIN"] >= seed_min_temp and
             temp_data[current_date]["TMAX"] <= seed_max_temp):
                 
