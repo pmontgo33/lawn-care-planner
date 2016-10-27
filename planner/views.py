@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 #from django.http import HttpResponse
 from .models import Lawn
 from .forms import LawnForm
-from .code import seeding, mowing, planner, weedcontrol, utils
+from .code import utils, seeding, mowing, planner, weedcontrol, insectcontrol, fertilizer
 
 from .code import seeding
 
@@ -62,7 +62,12 @@ def lawn_detail(request, pk):
     This section prepares the Fertilizer information
     """
     
-    ####################### FERTILIZER INFO ################################3
+    fertilizer_info = fertilizer.get_fertilizer_info(closest_station, temp_data)
+    
+    for app in fertilizer_info['applications']:
+        total_lbs = (lawn.size / 1000) * app['rate']
+        task_name = "Fertilize with %s lbs of Nitrogen" % (str(total_lbs))
+        my_planner.add_task(task_name, app['date'])
     
     """
     This section prepares the Weed Control information
@@ -73,7 +78,16 @@ def lawn_detail(request, pk):
     my_task_name = "Summer annual weed pre-emergent herbicide application deadline."
     my_planner.add_task(my_task_name, weed_info['summer_deadline'])
     
-    temp_vars = {
+    """
+    This section prepares the Insect Control information
+    """
+    
+    insect_info = insectcontrol.get_insect_control_info(closest_station, temp_data)
+    grub_deadline = insect_info['grub_deadline'].strftime("%B %d")
+    my_task_name = "Grub worm preventer application deadline."
+    my_planner.add_task(my_task_name, insect_info['grub_deadline'])
+    
+    template_vars = {
         'lawn':lawn,
         'closest_station':closest_station['name'],
         'germination_time':seeding_info['germination_time'],
@@ -82,10 +96,13 @@ def lawn_detail(request, pk):
         'seeding_ranges':str_ranges,
         'mowing_heights':mowing_heights,
         'summer_weed_deadline':summer_weed_deadline,
+        'grub_deadline':grub_deadline,
+        'fertilizer_apps':fertilizer_info['applications'],
+        
         'planner':my_planner.tasks_by_season,
     }
     
-    return render(request, 'planner/lawn_detail.html', temp_vars)
+    return render(request, 'planner/lawn_detail.html', template_vars)
     
 def lawn_new(request):
 
