@@ -138,8 +138,10 @@ def get_closest_station_data(zip_code):
     Below pulls the Normal Daily date from the closest station
     """
     
-    token = "KCAsygyVaVBxjhTOgyYnMCEOjKVOnCIj"
-    headers = {'token':token, 'User-Agent':"noaa api test"}
+    #token = "KCAsygyVaVBxjhTOgyYnMCEOjKVOnCIj" pmontgo33@gmail.com token
+    token = "pRciHRBTwdPoyMKflOPcUdTKYiGEzWbn" # pmontgo.33@gmail.com token
+    
+    headers = {'token':token, 'User-Agent':"lawn care planner"}
     url_base = "http://www.ncdc.noaa.gov/cdo-web/api/v2/data"
     
     payload = {
@@ -182,3 +184,30 @@ def get_closest_station_data(zip_code):
             # this should throw an error.
     
     return closest_station, temp_data
+    
+def get_gdd_date(target_gdd, base_temp, closest_station, temp_data):
+    
+    """
+    This function calculates the date that the target growing degree days
+    are met, based on the provided base and the given temperature data set.
+    """
+    
+    current_date = datetime.strptime(closest_station['mindate'], "%Y-%m-%d").date()
+    current_year = current_date.year
+    current_gdd = 0
+    
+    gdd_date = None
+    while (current_date.year == current_year):
+        average_temp = (temp_data[current_date]['TMIN'] + temp_data[current_date]['TMAX']) / 2
+        
+        if average_temp >= base_temp:
+            daily_gdd = average_temp - base_temp
+            current_gdd += daily_gdd
+            
+            if current_gdd >= target_gdd:
+                gdd_date = current_date
+                break
+
+        current_date += timedelta(days=1)
+    
+    return gdd_date

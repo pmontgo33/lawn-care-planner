@@ -175,8 +175,10 @@ def OLD_get_seeding_info(zip_code, grass_type):
     Below pulls the Normal Daily date from the closest station
     """
     
-    token = "KCAsygyVaVBxjhTOgyYnMCEOjKVOnCIj"
-    headers = {'token':token, 'User-Agent':"noaa api test"}
+    #token = "KCAsygyVaVBxjhTOgyYnMCEOjKVOnCIj" pmontgo33@gmail.com token
+    token = "pRciHRBTwdPoyMKflOPcUdTKYiGEzWbn" # pmontgo.33@gmail.com token
+    
+    headers = {'token':token, 'User-Agent':"lawn care planner"}
     url_base = "http://www.ncdc.noaa.gov/cdo-web/api/v2/data"
     
     payload = {
@@ -325,8 +327,10 @@ def terminal_app():
     Below pulls the Normal Daily date from the closest station
     """
     
-    token = "KCAsygyVaVBxjhTOgyYnMCEOjKVOnCIj"
-    headers = {'token':token, 'User-Agent':"noaa api test"}
+    #token = "KCAsygyVaVBxjhTOgyYnMCEOjKVOnCIj" pmontgo33@gmail.com token
+    token = "pRciHRBTwdPoyMKflOPcUdTKYiGEzWbn" # pmontgo.33@gmail.com token
+    
+    headers = {'token':token, 'User-Agent':"lawn care planner"}
     url_base = "http://www.ncdc.noaa.gov/cdo-web/api/v2/data"
     
     payload = {

@@ -24,10 +24,11 @@
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#planner" aria-controls="planner" role="tab" data-toggle="tab">Planner</a></li>
+    <li role="presentation"><a href="#fertilizer" aria-controls="fertilizer" role="tab" data-toggle="tab">Fertilizer</a></li>
     <li role="presentation"><a href="#seeding" aria-controls="seeding" role="tab" data-toggle="tab">Seeding</a></li>
     <li role="presentation"><a href="#mowing" aria-controls="mowing" role="tab" data-toggle="tab">Mowing</a></li>
-    <li role="presentation"><a href="#fertilizer" aria-controls="fertilizer" role="tab" data-toggle="tab">Fertilizer</a></li>
     <li role="presentation"><a href="#weedcontrol" aria-controls="weedcontrol" role="tab" data-toggle="tab">Weed Control</a></li>
+    <li role="presentation"><a href="#insectcontrol" aria-controls="insectcontrol" role="tab" data-toggle="tab">Insect Control</a></li>
   </ul>
   <br>
 
@@ -35,7 +36,7 @@
   <div class="tab-content">
     
     <!-- Planner Tab -->
-    <div role="tabpanel" class="tab-pane active" id="planner">
+    <div role="tabpanel" class="tab-pane fade in active" id="planner">
       
       <div class="planner">
         <div class="row">
@@ -75,7 +76,7 @@
     </div>
     
     <!-- Seeding Tab -->
-    <div role="tabpanel" class="tab-pane" id="seeding">
+    <div role="tabpanel" class="tab-pane fade" id="seeding">
       <div class="seeding">
         <div class="row">
           <p class="col-lg-6">The ideal days for seeding have nighttime temperatures above 40&degF, 
@@ -101,7 +102,7 @@
     </div>
     
     <!-- Mowing Tab -->
-    <div role="tabpanel" class="tab-pane" id="mowing">
+    <div role="tabpanel" class="tab-pane fade" id="mowing">
       <div class="mowing">
         <div class="row">
           <p class="col-lg-6">Based on your grass type, the below schedule of mowing heights is recommended.</p>
@@ -120,21 +121,34 @@
     </div>
     
     <!-- Weed Control Tab -->
-    <div role="tabpanel" class="tab-pane" id="weedcontrol">
+    <div role="tabpanel" class="tab-pane fade" id="weedcontrol">
       <div class="weedcontrol">
         <div class="row">
           <p class="col-lg-6">The dates listed below are based on average historic temperatures in your area. 
           These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates.</p>
         </div>
         <br>
-          <p><strong>Summer Annual Weed Pre-emergent Application Deadline (BETA): </strong>{{ summer_weed_deadline }}</p>
+          <p><strong>Summer Annual Weed Pre-emergent Deadline (BETA): </strong>{{ summer_weed_deadline }}</p>
+        <br>
+      </div>
+    </div>
+    
+    <!-- Insect Control Tab -->
+    <div role="tabpanel" class="tab-pane fade" id="insectcontrol">
+      <div class="insectcontrol">
+        <div class="row">
+          <p class="col-lg-6">The dates listed below are based on average historic temperatures in your area. 
+          These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates.</p>
+        </div>
+        <br>
+          <p><strong>Grub worm preventer application deadline (BETA): </strong>{{ grub_deadline }}</p>
         <br>
       </div>
     </div>
     
     
     <!-- Future Tabs -->
-    <div role="tabpanel" class="tab-pane" id="fertilizer">Fertilizer</div>
+    <div role="tabpanel" class="tab-pane fade" id="fertilizer">Fertilizer</div>
     
   </div>
 
