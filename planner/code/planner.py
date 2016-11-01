@@ -35,7 +35,7 @@ class planner:
         self.tasks_by_season['spring'] = OrderedDict([("All Season",[]), ("March",[]), ("April",[]), ("May",[])])
         self.tasks_by_season['summer'] = OrderedDict([("All Season",[]), ("June",[]), ("July",[]), ("August",[])])
         self.tasks_by_season['fall'] = OrderedDict([("All Season",[]), ("September",[]), ("October",[]), ("November",[])])
-        self.tasks_by_season['winter'] = OrderedDict([("All Season",[]), ("December",[]), ("January",[]), ("February",[])])
+#        self.tasks_by_season['winter'] = OrderedDict([("All Season",[]), ("December",[]), ("January",[]), ("February",[])])
     
     def add_task(self, task_name, task_date):
         

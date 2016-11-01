@@ -8,6 +8,7 @@ See each seasons apps function for the fertilization plan.
 
 # import statements
 from datetime import datetime, date, timedelta
+from collections import OrderedDict
 from . import planner
 
 def spring_apps(closest_station, temp_data):
@@ -42,40 +43,80 @@ def fall_apps(closest_station, temp_data):
     Fall Application plan is to put down two applications of .75 lb Nitrogen per
     1000 sf
         1. When the average temperatures are between 75 and 65.
-        2. 
+        2. Two weeks before the low temperature reaches 32
     """
     
     APP_RATE = .75 # lb per 1000 sf
     my_apps = []
     
     ### FIRST FALL APPLICATION ###
-    
+    my_apps.append(None)
     APPLY_RANGE = [75, 65] # degrees F
     current_date = planner.seasons_dates['fall'][0]
     current_year = current_date.year
     
-    ########################YOU ARE HERE!!!!!!!!!!!!!!!!!!!!!!!!
-    app_dates = []
-    average_temp = 0
-    while (average_temp ):
+    average_temp = (temp_data[current_date]['TMIN'] + temp_data[current_date]['TMAX']) / 2
+    
+    while (average_temp > APPLY_RANGE[0]):
         """
-        Iterate through the temp_data and find the first and last day that the average temperature
+        Iterate through the temp_data and find the first day that the average temperature
         is within the APP_RANGE values.
         """
-        average_temp = (temp_data[current_date]['TMIN'] + temp_data[current_date]['TMAX']) / 2
-        
-        if average_temp <= APPLY_RANGE[0]:
-            app_dates[0] = {'date':current_date, 'rate':APP_RATE, 'end_date':}
-        elif average_temp <=
-        
         current_date += timedelta(days=1)
+        average_temp = (temp_data[current_date]['TMIN'] + temp_data[current_date]['TMAX']) / 2
+    
+    my_apps[-1] = {'date':current_date, 'rate':APP_RATE, 'end_date':None}
+    
+    while (average_temp > APPLY_RANGE[1]):
+        """
+        Iterate through the temp_data and find the last day that the average temperature
+        is within the APP_RANGE values.
+        """
+        current_date += timedelta(days=1)
+        average_temp = (temp_data[current_date]['TMIN'] + temp_data[current_date]['TMAX']) / 2
+    
+    my_apps[-1]['end_date'] = current_date
+    
+    
+    ### SECOND FALL APPLICATION ###
+    APPLY_ABOVE = 32 # degrees F
+    APPLY_DAYS_BEFORE_TEMP = 14 # days before average temp is 32 degrees F
+    my_apps.append(None)
+    
+    low_temp = APPLY_ABOVE + 1
+    while (low_temp > APPLY_ABOVE):
+        """
+        Iterate through the temp_data and find the first day that the TMIN temperature
+        is above the APP_ABOVE value.
+        """
+        current_date += timedelta(days=1)
+        low_temp = temp_data[current_date]['TMIN']
+    
+    app_date = current_date - timedelta(days=APPLY_DAYS_BEFORE_TEMP)
+    my_apps[-1] = {'date':app_date, 'rate':APP_RATE, 'end_date':None}
+    
+    return my_apps
+
+def summer_apps(closest_station, temp_data, between_dates):
+    """
+    Summer Application plan is to put down one application of .75lb Nitrogen per
+    1000 sf right between the Fall and Spring applications. 
+    """
+    
+    APP_RATE = .75 # lb per 1000 sf
+    
+    my_apps = []
+    
+    days_between_apps = between_dates[1] - between_dates[0]
+    
+    mid_app_date = between_dates[0] + (days_between_apps / 2)
+    start_app_date = mid_app_date - timedelta(days=7)
+    end_app_date = mid_app_date + timedelta(days=7)
+    
+    my_apps.append({'date':start_app_date, 'rate':APP_RATE, 'end_date':end_app_date})
     
     return my_apps
     
-APPLICATIONS = {
-    
-    'spring':spring_apps,
-}
 
 def get_fertilizer_info(closest_station, temp_data):
     
@@ -84,13 +125,24 @@ def get_fertilizer_info(closest_station, temp_data):
     and returns the applicable fertilzier info
     """
     
-    fertilizer_info = {
+    fertilizer_info = OrderedDict([
         
-        'applications':[],
-    }
+        ('spring',[]),
+        ('summer',[]),
+        ('fall',[]),
+    ])
     
-    for season in APPLICATIONS:
-        season_apps = APPLICATIONS[season](closest_station, temp_data)
-        fertilizer_info['applications'].extend(season_apps)
+    # Add spring applications
+    spring_applications = spring_apps(closest_station, temp_data)
+    fertilizer_info['spring'].extend(spring_applications)
+    
+    # Add fall applications
+    fall_applications = fall_apps(closest_station, temp_data)
+    fertilizer_info['fall'].extend(fall_applications)
+    
+    # Add summer applications
+    between_dates = [spring_applications[0]['date'], fall_applications[0]['date']]
+    summer_applications = summer_apps(closest_station, temp_data, between_dates)
+    fertilizer_info['summer'].extend(summer_applications)
     
     return fertilizer_info
