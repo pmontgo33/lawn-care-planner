@@ -64,10 +64,20 @@ def lawn_detail(request, pk):
     
     fertilizer_info = fertilizer.get_fertilizer_info(closest_station, temp_data)
     
-    for app in fertilizer_info['applications']:
-        total_lbs = (lawn.size / 1000) * app['rate']
-        task_name = "Fertilize with %s lbs of Nitrogen" % (str(total_lbs))
-        my_planner.add_task(task_name, app['date'])
+    for season in fertilizer_info:
+        for app in fertilizer_info[season]:
+            app['total_lbs'] = (lawn.size / 1000) * app['rate']
+            
+            if app['end_date'] == None:
+                task_name = "Fertilize with %s lbs of Nitrogen" % (str(app['total_lbs']))
+                app['title'] = task_name
+            else:
+                task_name = "%s - Fertilize with %s lbs of Nitrogen" % (app['end_date'].strftime("%B %-d"), str(app['total_lbs']))
+                app['title'] = task_name
+                app['end_date'] = app['end_date'].strftime("%B %-d")
+            
+            my_planner.add_task(task_name, app['date'])
+            app['date'] = app['date'].strftime("%B %-d")
     
     """
     This section prepares the Weed Control information
@@ -87,6 +97,16 @@ def lawn_detail(request, pk):
     my_task_name = "Grub worm preventer application deadline."
     my_planner.add_task(my_task_name, insect_info['grub_deadline'])
     
+    """
+    Take out any months in the planner that have no tasks
+    """
+    """
+    for season in my_planner.tasks_by_season:
+        for month in my_planner.tasks_by_season[season]:
+            if not my_planner.tasks_by_season[season][month]: # if list is empty
+                del my_planner.tasks_by_season[season][month]
+    """        
+    
     template_vars = {
         'lawn':lawn,
         'closest_station':closest_station['name'],
@@ -97,7 +117,7 @@ def lawn_detail(request, pk):
         'mowing_heights':mowing_heights,
         'summer_weed_deadline':summer_weed_deadline,
         'grub_deadline':grub_deadline,
-        'fertilizer_apps':fertilizer_info['applications'],
+        'fertilizer_apps':fertilizer_info,
         
         'planner':my_planner.tasks_by_season,
     }

@@ -148,7 +148,44 @@
     
     
     <!-- Future Tabs -->
-    <div role="tabpanel" class="tab-pane fade" id="fertilizer">Fertilizer</div>
+    <div role="tabpanel" class="tab-pane fade" id="fertilizer">
+      <div class="fertilizer">
+        <div class="row">
+          <p class="col-lg-6">The dates listed below are based on average historic temperatures in your area.
+          These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates.</p>
+        </div>
+        <br>
+        
+        <div class="row">
+          
+          <div class="col-lg-3">
+            {% for key,list in fertilizer_apps.items %}
+              <h4>{{ key | capfirst }}:</h4>
+              {% for value in list %}
+                  <ul>
+                    {% if value.end_date is None %}
+                      <li>{{ value.date }}</li>
+                    {% else %}
+                      <li>{{ value.date }} - {{ value.end_date }}</li>
+                    {% endif %}
+                    <ul>
+                      <li>Application Total: {{ value.total_lbs }} lbs of Nitrogen</li>
+                      <li>Rate: {{ value.rate }} lbs per 1000 sf</li>
+                    </ul>
+                  </ul>
+                {% endfor %}
+            {% endfor %}
+            </div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-3">
+              <p>N-P-K CALCULATOR</p>
+            </div>
+        </div>
+        
+        <br>
+        <p>(<a href="">source</a>)</p>
+      </div>
+    </div>
     
   </div>
 
