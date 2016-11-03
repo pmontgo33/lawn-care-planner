@@ -11,14 +11,17 @@ from planner.models import Lawn
 
 urlpatterns = [
     
-    # Planner index page - NEED TO ADD FILTER BY USER
-    url(r'^$', ListView.as_view(
+    url(r'^$', views.index, name="index"),
+    
+    url(r'planner/$', views.lawn_new, name="lawn_new"),
+    
+    url(r'^planner/lawn/(?P<pk>\d+)/$', views.lawn_detail, name="lawn_detail"),
+    
+    url(r'^planner/lawn/list/$', ListView.as_view(
                         queryset=Lawn.objects.all(),
                         template_name="planner/lawn_list.html")),
     
-    url(r'^lawn/(?P<pk>\d+)/$', views.lawn_detail, name="lawn_detail"),
-    
-    url(r'lawn/new/$', views.lawn_new, name="lawn_new")
+#    url(r'planner/lawn/new/$', views.lawn_new, name="lawn_new")
     
     ]
     

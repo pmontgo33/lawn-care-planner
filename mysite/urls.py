@@ -26,7 +26,6 @@ from django.views.generic import RedirectView
 urlpatterns = [
     
     url(r'^admin/', admin.site.urls),
-    # currently there is no homepage, so home just redirects to the planner.
-    url(r'^$', RedirectView.as_view(url='planner/')),
-    url(r'^planner/', include("planner.urls")),
+    url(r'^', include("planner.urls")),
+#    url(r'^planner/', include("planner.urls")),
 ]

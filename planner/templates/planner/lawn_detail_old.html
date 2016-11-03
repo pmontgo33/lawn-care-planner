@@ -1,0 +1,194 @@
+{% extends "planner/base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+<h3>Your Personal Lawn Care Plan</h3>
+<br>
+<div>
+  
+    <div class="lawn-info">
+      <div class="row">
+        <p class="col-lg-2"><strong>Lawn Name: </strong>{{ lawn.name }}</p>
+        <p class="col-lg-2"><strong>ZIP Code: </strong>{{ lawn.zip_code }}</p>
+      </div>
+      <div class="row">
+        <p class="col-lg-2"><strong>Grass Type: </strong>{{ lawn.grass_type }}</p>
+        <p class="col-lg-4"><strong>Closest Weather Station: </strong>{{ closest_station }}</p>
+      </div>
+      <div class="row">
+        <p class="col-lg-2"><strong>Lawn Size: </strong>{{ lawn.size|intcomma }} sf</p>
+      </div>
+    </div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#planner" aria-controls="planner" role="tab" data-toggle="tab">Planner</a></li>
+    <li role="presentation"><a href="#fertilizer" aria-controls="fertilizer" role="tab" data-toggle="tab">Fertilizer</a></li>
+    <li role="presentation"><a href="#seeding" aria-controls="seeding" role="tab" data-toggle="tab">Seeding</a></li>
+    <li role="presentation"><a href="#mowing" aria-controls="mowing" role="tab" data-toggle="tab">Mowing</a></li>
+    <li role="presentation"><a href="#weedcontrol" aria-controls="weedcontrol" role="tab" data-toggle="tab">Weed Control</a></li>
+    <li role="presentation"><a href="#insectcontrol" aria-controls="insectcontrol" role="tab" data-toggle="tab">Insect Control</a></li>
+  </ul>
+  <br>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    
+    <!-- Planner Tab -->
+    <div role="tabpanel" class="tab-pane fade in active" id="planner">
+      
+      <div class="planner">
+        <div class="row">
+          <p class="col-lg-6">This is your personalized Lawn Care Planner for the year. This is based on the specific
+                              attributes of your lawn including the normal weather conditions in your area, the type
+                              of grass that you have, and the size of your lawn. Navigate through the tabs above for
+                              more detail on each lawn care task.</p>
+        </div>
+        <br>
+        <div class="col-lg-6 container-fluid">
+          <h3>Planner</h3>
+          <br>
+          
+          {% for season, months in planner.items %}
+            <div class="panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">{{ season|capfirst }}</h3>
+              </div>
+              <div class="panel-body">
+                {% for month, tasks in months.items %}
+                  <p><strong>{{ month }}</strong></p>
+                  <ul>
+                    {% for task in tasks %}
+                      {% if task.date is None %}
+                        <li>{{ task.name }}</li>
+                      {% else %}
+                        <li>{{ task.date }} - {{ task.name }}</li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    
+    <!-- Seeding Tab -->
+    <div role="tabpanel" class="tab-pane fade" id="seeding">
+      <div class="seeding">
+        <div class="row">
+          <p class="col-lg-6">The ideal days for seeding have nighttime temperatures above 40&degF, 
+          and daytime temperatures below 80&degF for the entirty of the germination period. 
+          The dates listed below are days with average historic temperatures in your area within this range. 
+          These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates.</p>
+        </div>
+        <br>
+        <p><strong>Amount of Seed (<a href="http://plantscience.psu.edu/research/centers/turf/extension/factsheets/seed">source</a>):</strong></p>
+          <ul>
+            <li>Establish New Lawn: {{ lawn.seed_new_lb_range.0 }} to {{ lawn.seed_new_lb_range.1 }} lbs</li>
+            <li>Overseed: {{ lawn.seed_over_lb_range.0 }} to {{ lawn.seed_over_lb_range.1 }} lbs</li>
+          </ul>
+          </p>
+        <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ germination_time }} days</p>
+        <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
+        <ul>
+            {% for range in seeding_ranges %}
+                <li>{{ range }}</li>
+            {% endfor %}
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Mowing Tab -->
+    <div role="tabpanel" class="tab-pane fade" id="mowing">
+      <div class="mowing">
+        <div class="row">
+          <p class="col-lg-6">Based on your grass type, the below schedule of mowing heights is recommended.</p>
+        </div>
+        <br>
+        {% for key,value in mowing_heights.items %}
+          <h4>{{ value.title }}:</h4>
+            <ul>
+              <li><strong>Height: </strong>{{ value.height }}"</li>
+              <li>{{ value.description }}</li>
+            </ul>
+        {% endfor %}
+        <br>
+        <p>(<a href="https://youtu.be/6ISw5ODvKNo">source</a>)</p>
+      </div>
+    </div>
+    
+    <!-- Weed Control Tab -->
+    <div role="tabpanel" class="tab-pane fade" id="weedcontrol">
+      <div class="weedcontrol">
+        <div class="row">
+          <p class="col-lg-6">The dates listed below are based on average historic temperatures in your area. 
+          These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates.</p>
+        </div>
+        <br>
+          <p><strong>Summer Annual Weed Pre-emergent Deadline (BETA): </strong>{{ summer_weed_deadline }}</p>
+        <br>
+      </div>
+    </div>
+    
+    <!-- Insect Control Tab -->
+    <div role="tabpanel" class="tab-pane fade" id="insectcontrol">
+      <div class="insectcontrol">
+        <div class="row">
+          <p class="col-lg-6">The dates listed below are based on average historic temperatures in your area. 
+          These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates.</p>
+        </div>
+        <br>
+          <p><strong>Grub worm preventer application deadline (BETA): </strong>{{ grub_deadline }}</p>
+        <br>
+      </div>
+    </div>
+    
+    
+    <!-- Future Tabs -->
+    <div role="tabpanel" class="tab-pane fade" id="fertilizer">
+      <div class="fertilizer">
+        <div class="row">
+          <p class="col-lg-6">The dates listed below are based on average historic temperatures in your area.
+          These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates.</p>
+        </div>
+        <br>
+        
+        <div class="row">
+          
+          <div class="col-lg-3">
+            {% for key,list in fertilizer_apps.items %}
+              <h4>{{ key | capfirst }}:</h4>
+              {% for value in list %}
+                  <ul>
+                    {% if value.end_date is None %}
+                      <li>{{ value.date }}</li>
+                    {% else %}
+                      <li>{{ value.date }} - {{ value.end_date }}</li>
+                    {% endif %}
+                    <ul>
+                      <li>Application Total: {{ value.total_lbs }} lbs of Nitrogen</li>
+                      <li>Rate: {{ value.rate }} lbs per 1000 sf</li>
+                    </ul>
+                  </ul>
+                {% endfor %}
+            {% endfor %}
+            </div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-3">
+              <p>N-P-K CALCULATOR</p>
+            </div>
+        </div>
+        
+        <br>
+        <p>(<a href="">source</a>)</p>
+      </div>
+    </div>
+    
+  </div>
+
+</div>
+
+{% endblock %}
