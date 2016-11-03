@@ -4,12 +4,15 @@
 {% block content %}
 
 
-  <div class="row row-offcanvas row-offcanvas-right">
 
+  <div class="row row-offcanvas row-offcanvas-right">
+    
     <div class="col-xs-12 col-sm-9">
+      <div class="row">
       <p class="pull-right visible-xs">
-        <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+        <button type="button" class="btn btn-success btn-xs" data-toggle="offcanvas">Toggle nav</button>
       </p>
+      </div>
       <div class="lawn-info">
           <div class="row">
             <p class="col-sm-5"><strong>Lawn Name: </strong>{{ lawn.name }}</p>
@@ -186,12 +189,14 @@
 
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" roll="tablist">
       <div class="list-group" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
-        <a class="list-group-item active" href="#planner" data-target="#planner" data-toggle="tab">Planner</a>
-        <a class="list-group-item" href="#fertilizer" data-target="#fertilizer" data-toggle="tab">Fertilizer</a>
-        <a class="list-group-item" href="#" data-target="#seeding" data-toggle="tab">Seeding</a>
-        <a class="list-group-item" href="#" data-target="#mowing" data-toggle="tab">Mowing</a>
-        <a class="list-group-item" href="#" data-target="#weedcontrol" data-toggle="tab">Weed Control</a>
-        <a class="list-group-item" href="#" data-target="#insectcontrol" data-toggle="tab">Insect Control</a>
+        <span data-toggle="offcanvas">
+          <a class="list-group-item active" href="#planner" data-target="#planner" data-toggle="tab">Planner</a>
+          <a class="list-group-item" href="#fertilizer" data-target="#fertilizer" data-toggle="tab">Fertilizer</a>
+          <a class="list-group-item" href="#" data-target="#seeding" data-toggle="tab">Seeding</a>
+          <a class="list-group-item" href="#" data-target="#mowing" data-toggle="tab">Mowing</a>
+          <a class="list-group-item" href="#" data-target="#weedcontrol" data-toggle="tab">Weed Control</a>
+          <a class="list-group-item" href="#" data-target="#insectcontrol" data-toggle="tab">Insect Control</a>
+        </span>
       </div>
     </div><!--/.sidebar-offcanvas-->
   </div><!--/row-->
