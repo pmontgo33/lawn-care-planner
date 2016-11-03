@@ -11,7 +11,7 @@ import json
 import math
 
 from datetime import date, datetime, timedelta
-
+from uszipcode import ZipcodeSearchEngine
 
 def update_normal_daily_stations():
     """
@@ -66,29 +66,14 @@ def get_zip_code():
 def get_lat_long(zip):
     """
     This function takes a zip code and looks up the latitude and longitude using
-    this website: https://www.melissadata.com/lookups/GeoCoder.asp?InData=19075&submit=Search
+    the uszipcode package. Documentation: https://pypi.python.org/pypi/uszipcode
     """
     
-    zip_url = "https://www.melissadata.com/lookups/GeoCoder.asp"
-    headers = {'User-Agent':"lawn-care-planner"}
-    payload = {
-        "InData":zip,
-        "submit":"Search",
-    }
+    search = ZipcodeSearchEngine()
+    zip_data = search.by_zipcode(zip)
     
-    response = requests.get(zip_url, headers=headers, params=payload)
-    
-    soup = BeautifulSoup(response.text, "html.parser")
-    
-    # Check to make sure zip code exists. If so return None, None
-    if (len(soup.find_all(text=re.compile("Lat & Long for  was not found."))) > 0
-        or len(soup.find_all(text=re.compile("Invalid address."))) > 0):
-        return None, None
-    
-    results = soup.find_all("td", attrs={"class":"padd"})
-    
-    lat = float(results[0].text)
-    long = float(results[1].text)
+    lat = zip_data['Latitude']
+    long = zip_data['Longitude']
     
     return lat, long
 
