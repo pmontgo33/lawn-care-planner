@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Lawn Care Planner</title>
+    
+    {% load staticfiles %}
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    
+    <style type="text/css">
+	    html,
+	    body {
+	     height:100%
+	    }
+    </style>
+    
+</head>
+<body class="body" style="background-color:#f6f6f6">
+	<div class="container-fluid" style="min-height:95%; ">
+		<div class="row">
+		    <div class="col-sm-2">
+			    <br>
+		        <center>
+		            <img src="{% static 'planner/img/lawn.jpg' %}" class="responsive-img" style='max-height:100px;' alt="face">
+		        </center>
+		    </div>
+		    <div class="col-md-2">
+		        <br>
+		        <center>
+                    <h2>Lawn Care Planner</h2>
+                </center>
+	        </div>
+		</div><hr>
+        
+        <div class="row">
+		    <div class="col-sm-2">
+    		    <br>
+        		<div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
+        		    <ul class="nav nav-pills nav-stacked">
+        		        <li><a href='/'>Home</a></li>
+        			    <li><a href='/planner/'>Planner</a></li>
+        			    <li><a href='/admin/'>Admin</a></li>
+        	        </ul>
+        	    </div> <!--well bs-sidebar affix-->
+		    </div> <!--col-sm-2-->
+		    
+		    <div class="col-sm-10">
+			    <div class='container-fluid'>
+			    
+			       {% block content %}
+			       {% endblock %}	
+    			
+    			</div>
+    		</div>
+		</div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
+</html>
+

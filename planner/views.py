@@ -132,7 +132,7 @@ def lawn_new(request):
             lawn = form.save(commit=False)
             lawn.user = User.objects.get(username="guest")            #either make this User guest, or look into cookie based sessions.`
             lawn.save()
-            lawn.name = "Lawn" + str(lawn.pk)
+            lawn.name = "Lawn " + str(lawn.zip_code)
             lawn.save() 
             
             return redirect('lawn_detail', pk=lawn.pk)
