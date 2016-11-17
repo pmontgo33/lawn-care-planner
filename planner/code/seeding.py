@@ -23,7 +23,7 @@ import json
 import math
 import requests
 from datetime import date, datetime, timedelta
-from . import utils
+from planner.code import utils
 
 GRASS_TYPES = (
     ("KBG","Kentucky Bluegrass"),

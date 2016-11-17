@@ -3,6 +3,7 @@ dj-database-url==0.4.1
 Django==1.10.2
 gunicorn==19.6.0
 heroku==0.1.4
+jsonfield==1.0.3
 python-dateutil==1.5
 requests==2.11.1
 uszipcode==0.1.3
