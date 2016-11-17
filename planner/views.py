@@ -7,9 +7,9 @@ from datetime import date
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 #from django.http import HttpResponse
-from .models import Lawn
-from .forms import LawnForm
-from .code import utils, seeding, mowing, planner, weedcontrol, insectcontrol, fertilizer
+from planner.models import Lawn
+from planner.forms import LawnForm
+from planner.code import utils, seeding, mowing, planner, weedcontrol, insectcontrol, fertilizer
 
 from .code import seeding
 
