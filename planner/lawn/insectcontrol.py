@@ -4,7 +4,7 @@
 
 # import statements
 from datetime import datetime, date, timedelta
-from . import utils
+from . import lawnutils
 
     
 def get_insect_control_info(closest_station, temp_data):
@@ -28,7 +28,7 @@ def get_insect_control_info(closest_station, temp_data):
         
         'grub_deadline':None,
     }
-    beetle_emergence_date = utils.get_gdd_date(GRUB_GDD_TARGET, GDD_BASE_TEMP, closest_station, temp_data)
+    beetle_emergence_date = lawnutils.get_gdd_date(GRUB_GDD_TARGET, GDD_BASE_TEMP, closest_station, temp_data)
     insect_info['grub_deadline'] = beetle_emergence_date
     
     return insect_info

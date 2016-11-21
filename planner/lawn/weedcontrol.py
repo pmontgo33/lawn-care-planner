@@ -4,7 +4,7 @@
 
 # import statements
 from datetime import datetime, date, timedelta
-from . import utils
+from . import lawnutils
 
     
 def get_weed_control_info(closest_station, temp_data):
@@ -30,7 +30,7 @@ def get_weed_control_info(closest_station, temp_data):
         'summer_deadline':None,
     }
     
-    summer_germination_date = utils.get_gdd_date(SUMMER_GDD_TARGET, GDD_BASE_TEMP, closest_station, temp_data)
+    summer_germination_date = lawnutils.get_gdd_date(SUMMER_GDD_TARGET, GDD_BASE_TEMP, closest_station, temp_data)
     weed_info['summer_deadline'] = summer_germination_date - timedelta(days=APP_PRIOR_TO_GERMINATION)
     
     return weed_info

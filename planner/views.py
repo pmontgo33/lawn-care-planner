@@ -4,24 +4,25 @@
 
 # import statements
 from datetime import date
+import math
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
-#from django.http import HttpResponse
-from planner.models import Lawn
+from planner.models import Lawn, WeatherStation
 from planner.forms import LawnForm
-from planner.code import utils, seeding, mowing, planner, weedcontrol, insectcontrol, fertilizer
+from planner.lawn import lawnutils, seeding, mowing, lawnplanner, weedcontrol, insectcontrol, fertilizer
+from planner import plannerutils
 
-from .code import seeding
+from .lawn import seeding
 
 def index(request):
     return render(request, "planner/index.html", {})
     
 def lawn_detail(request, pk):
     lawn = get_object_or_404(Lawn, pk=pk)
-    my_planner = planner.planner()
+    my_planner = lawnplanner.planner()
     
     # Get the closest station and min/max temperature data for that station based on the ZIP code 
-    closest_station, temp_data = utils.get_closest_station_data(lawn.zip_code)
+    closest_station, temp_data = plannerutils.get_closest_station_data(lawn.zip_code)
 
     """
     This section prepares the Seeding information
@@ -100,16 +101,17 @@ def lawn_detail(request, pk):
     """
     Take out any months in the planner that have no tasks
     """
-    """
+    months_to_del = []
     for season in my_planner.tasks_by_season:
         for month in my_planner.tasks_by_season[season]:
             if not my_planner.tasks_by_season[season][month]: # if list is empty
-                del my_planner.tasks_by_season[season][month]
-    """        
+                months_to_del.append((season,month))
+    for s_m in months_to_del:
+        del my_planner.tasks_by_season[s_m[0]][s_m[1]]
     
     template_vars = {
         'lawn':lawn,
-        'closest_station':closest_station['name'],
+        'closest_station':closest_station.name,
         'germination_time':seeding_info['germination_time'],
         'seed_new_lb_range':seeding_info['seed_new_lb_range'],
         'seed_over_lb_range':seeding_info['seed_over_lb_range'],

@@ -23,7 +23,7 @@ import json
 import math
 import requests
 from datetime import date, datetime, timedelta
-from planner.code import utils
+from . import lawnutils
 
 GRASS_TYPES = (
     ("KBG","Kentucky Bluegrass"),
@@ -83,7 +83,7 @@ def get_seeding_info(closest_station, temp_data, grass_type):
     from December to January.
     """
     
-    current_date = datetime.strptime(closest_station['mindate'], "%Y-%m-%d").date()
+    current_date = closest_station.mindate
     current_year = current_date.year
     
     seed_window = 0   #   This is a variable to track the length of the current seeding window
@@ -91,13 +91,13 @@ def get_seeding_info(closest_station, temp_data, grass_type):
     
     while (current_date.year == current_year):
 
-        if (temp_data[current_date]["TMIN"] >= seed_min_temp and
-            temp_data[current_date]["TMAX"] <= seed_max_temp):
+        if (temp_data[current_date.strftime('%Y-%m-%d')]["TMIN"] >= seed_min_temp and
+            temp_data[current_date.strftime('%Y-%m-%d')]["TMAX"] <= seed_max_temp):
                 
                 seed_window += 1
                 
                 if seed_window >= germination_time:
-                    #add germination_time days ago to seeding_dates
+                    # add germination_time days ago to seeding_dates
                     good_seeding_date = current_date - timedelta(days=germination_time)
                     seeding_dates.append(good_seeding_date)
         else:

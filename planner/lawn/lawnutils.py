@@ -1,4 +1,4 @@
-# utils.py
+# lawnutils.py
 # Patrick W. Montgomery
 # created: 10/21/2016
 
@@ -87,8 +87,7 @@ def get_grass_type():
     grass_type = input("Enter your grass type (KBG, PRG, TTTF): ")
     return grass_type.upper()
 
-
-def get_closest_station_data(zip_code):
+def OLD_get_closest_station_data(zip_code):
     
 #   Load the stations from the data file.
     file_dir = os.path.dirname(os.path.realpath(__file__)) + "/NormalDailyStations.dat"
@@ -177,13 +176,13 @@ def get_gdd_date(target_gdd, base_temp, closest_station, temp_data):
     are met, based on the provided base and the given temperature data set.
     """
     
-    current_date = datetime.strptime(closest_station['mindate'], "%Y-%m-%d").date()
+    current_date = closest_station.mindate
     current_year = current_date.year
     current_gdd = 0
     
     gdd_date = None
     while (current_date.year == current_year):
-        average_temp = (temp_data[current_date]['TMIN'] + temp_data[current_date]['TMAX']) / 2
+        average_temp = (temp_data[current_date.strftime('%Y-%m-%d')]['TMIN'] + temp_data[current_date.strftime('%Y-%m-%d')]['TMAX']) / 2
         
         if average_temp >= base_temp:
             daily_gdd = average_temp - base_temp
