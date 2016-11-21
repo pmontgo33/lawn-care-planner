@@ -9,7 +9,7 @@ See each seasons apps function for the fertilization plan.
 # import statements
 from datetime import datetime, date, timedelta
 from collections import OrderedDict
-from . import planner
+from . import lawnplanner as planner
 
 def spring_apps(closest_station, temp_data):
     """
@@ -28,7 +28,7 @@ def spring_apps(closest_station, temp_data):
         Iterate through the temp_data and find the first day that the average temperature
         is above the APPLY_ABOVE value. We only need the first day, so then the loop breaks
         """
-        average_temp = (temp_data[current_date]['TMIN'] + temp_data[current_date]['TMAX']) / 2
+        average_temp = (temp_data[current_date.strftime('%Y-%m-%d')]['TMIN'] + temp_data[current_date.strftime('%Y-%m-%d')]['TMAX']) / 2
         
         if average_temp >= APPLY_ABOVE:
             my_apps.append({'date':current_date, 'rate':APP_RATE, 'end_date':None})
@@ -55,7 +55,7 @@ def fall_apps(closest_station, temp_data):
     current_date = planner.seasons_dates['fall'][0]
     current_year = current_date.year
     
-    average_temp = (temp_data[current_date]['TMIN'] + temp_data[current_date]['TMAX']) / 2
+    average_temp = (temp_data[current_date.strftime('%Y-%m-%d')]['TMIN'] + temp_data[current_date.strftime('%Y-%m-%d')]['TMAX']) / 2
     
     while (average_temp > APPLY_RANGE[0]):
         """
@@ -63,7 +63,7 @@ def fall_apps(closest_station, temp_data):
         is within the APP_RANGE values.
         """
         current_date += timedelta(days=1)
-        average_temp = (temp_data[current_date]['TMIN'] + temp_data[current_date]['TMAX']) / 2
+        average_temp = (temp_data[current_date.strftime('%Y-%m-%d')]['TMIN'] + temp_data[current_date.strftime('%Y-%m-%d')]['TMAX']) / 2
     
     my_apps[-1] = {'date':current_date, 'rate':APP_RATE, 'end_date':None}
     
@@ -73,7 +73,7 @@ def fall_apps(closest_station, temp_data):
         is within the APP_RANGE values.
         """
         current_date += timedelta(days=1)
-        average_temp = (temp_data[current_date]['TMIN'] + temp_data[current_date]['TMAX']) / 2
+        average_temp = (temp_data[current_date.strftime('%Y-%m-%d')]['TMIN'] + temp_data[current_date.strftime('%Y-%m-%d')]['TMAX']) / 2
     
     my_apps[-1]['end_date'] = current_date
     
@@ -82,16 +82,39 @@ def fall_apps(closest_station, temp_data):
     APPLY_ABOVE = 32 # degrees F
     APPLY_DAYS_BEFORE_TEMP = 14 # days before average temp is 32 degrees F
     my_apps.append(None)
+    print(closest_station.name)
     
-    low_temp = APPLY_ABOVE + 1
-    while (low_temp > APPLY_ABOVE):
+    low_temp = None
+    app_date = None
+    while (current_date < planner.seasons_dates['fall'][1]):
         """
         Iterate through the temp_data and find the first day that the TMIN temperature
-        is above the APP_ABOVE value.
+        is above the APP_ABOVE value. If none is found, than use the last day of fall.
         """
+        low_temp = temp_data[current_date.strftime('%Y-%m-%d')]['TMIN']
+        if (low_temp <= APPLY_ABOVE):
+            app_date = current_date - timedelta(days=APPLY_DAYS_BEFORE_TEMP)
+            break
+        
         current_date += timedelta(days=1)
-        low_temp = temp_data[current_date]['TMIN']
     
+    if app_date == None:
+        """
+        If this weather station temps never reach the APPLY_ABOVE threshold, then
+        the app_date will be APPLY_DAYS_BEFORE_TEMP days before the last day of fall
+        """
+        app_date = planner.seasons_dates['fall'][1] - timedelta(days=APPLY_DAYS_BEFORE_TEMP)
+    
+    # low_temp = APPLY_ABOVE + 1
+    # while (low_temp > APPLY_ABOVE):
+    #     """
+    #     Iterate through the temp_data and find the first day that the TMIN temperature
+    #     is above the APP_ABOVE value.
+    #     """
+    #     current_date += timedelta(days=1)
+    #     print(low_temp, current_date)
+    #     low_temp = temp_data[current_date.strftime('%Y-%m-%d')]['TMIN']
+
     app_date = current_date - timedelta(days=APPLY_DAYS_BEFORE_TEMP)
     my_apps[-1] = {'date':app_date, 'rate':APP_RATE, 'end_date':None}
     
