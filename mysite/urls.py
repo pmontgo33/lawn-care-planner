@@ -27,5 +27,6 @@ urlpatterns = [
     
     url(r'^admin/', admin.site.urls),
     url(r'^', include("planner.urls")),
+    url(r'^contact/', include('contact.urls')),
 #    url(r'^planner/', include("planner.urls")),
 ]
