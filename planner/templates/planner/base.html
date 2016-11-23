@@ -83,5 +83,11 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <!--    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
     <script src="{% static 'js/offcanvas.js' %}"></script>
+    
+    <!-- GOOGLE ANALYTICS -->
+    {% if GOOGLE_ANALYTICS_KEY %}
+      {% include "planner/google_analytics.html" %}
+    {% endif %}
+
   </body>
 </html>

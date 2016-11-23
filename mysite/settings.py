@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'mysite.context_processors.google_analytics',
             ],
         },
     },
@@ -154,3 +155,6 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+# GOOGLE ANALYTICS SETTINGS
+GOOGLE_ANALYTICS_KEY = config('GOOGLE_ANALYTICS_KEY')
