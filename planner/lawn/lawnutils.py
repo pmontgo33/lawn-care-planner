@@ -71,7 +71,6 @@ def get_lat_long(zip):
     
     search = ZipcodeSearchEngine()
     zip_data = search.by_zipcode(zip)
-    
     lat = zip_data['Latitude']
     long = zip_data['Longitude']
     
