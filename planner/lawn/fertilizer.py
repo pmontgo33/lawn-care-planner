@@ -11,6 +11,7 @@ from datetime import datetime, date, timedelta
 from collections import OrderedDict
 from . import lawnplanner as planner
 
+
 def spring_apps(closest_station, temp_data):
     """
     Spring Application plan is to put down one application of .75lb Nitrogen per

@@ -1,6 +1,6 @@
-# plannerutils.py
-# Patrick W. Montgomery
-# created: 11-17-2016
+"""
+Add metadata
+"""
 
 # import statements
 import math
@@ -33,3 +33,14 @@ def get_closest_station_data(zip_code):
             
     
     return closest_station, closest_station.temp_data
+    
+def round_to_quarter(value):
+    """
+    This function is used to round a value to the nearest quarter.
+    Examples:
+    3.82 >> 3.75
+    6.91 >> 7.0
+    5.23 >> 5.25
+    2.11 >> 2.0
+    """
+    return round(value*4)/4

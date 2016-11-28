@@ -67,7 +67,7 @@ def lawn_detail(request, pk):
     
     for season in fertilizer_info:
         for app in fertilizer_info[season]:
-            app['total_lbs'] = (lawn.size / 1000) * app['rate']
+            app['total_lbs'] = plannerutils.round_to_quarter((lawn.size / 1000) * app['rate'])
             
             if app['end_date'] == None:
                 task_name = "Fertilize with %s lbs of Nitrogen" % (str(app['total_lbs']))
