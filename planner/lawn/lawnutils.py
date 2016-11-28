@@ -54,14 +54,20 @@ def update_normal_daily_stations():
     view_data.write(json.dumps(stations, sort_keys=True, indent=4))
     view_data.close()
     
-def get_zip_code():
+def zip_is_valid(zip):
     """
-    This function asks for input from the terminal for the users zip code.
-    Eventually this function will be replaced by a different method of gaining
-    input. ex - a form on a webpage.
+    This function takes a zip code and returns True if it is a valid zip code,
+    otherwise it returns False
     """
-    zip = input("Enter ZIP code: ")
-    return int(zip)
+    search = ZipcodeSearchEngine()
+    zip_data = search.by_zipcode(zip)
+    
+    lat = zip_data['Latitude']
+    
+    if lat != None:
+        return True
+    
+    return False
     
 def get_lat_long(zip):
     """
