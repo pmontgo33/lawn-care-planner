@@ -31,12 +31,31 @@ def lawn_detail(request, pk):
     seeding_info = seeding.get_seeding_info(closest_station, temp_data, lawn.grass_type)
     
     str_ranges = []
-    for range in seeding_info['seed_ranges']:
-        str_ranges.append(range[0].strftime("%B %d") +
-            " to " + range[1].strftime("%B %d"))
+    if len(seeding_info['seed_ranges']) > 0:
+        for range in seeding_info['seed_ranges']:
+            str_ranges.append(range[0].strftime("%B %d") +
+                " to " + range[1].strftime("%B %d"))
+            
+            my_planner.add_task("First day to seed", range[0])
+            my_planner.add_task("Last day to seed", range[1])
+    else:
         
-        my_planner.add_task("First day to seed", range[0])
-        my_planner.add_task("Last day to seed", range[1])
+        """
+        The WARM_COOL_LATITUDE_THRESHOLD value is used when no valid seeding ranges
+        are available for the provided lawn. This is due to the temperatures in the
+        lawn location being too warm to support the grass type, or too cool to support
+        the grass type. If the lawn is located above this threshold it is too cool. 
+        If the lawn is located below this threshold it is too warm.
+        """
+        WARM_COOL_LATITUDE_THRESHOLD = 40 #degrees
+        
+        warm_or_cool = ""
+        if closest_station.latitude >= WARM_COOL_LATITUDE_THRESHOLD:
+            warm_or_cool = "cool"
+        else:
+            warm_or_cool = "warm"
+        
+        str_ranges.append("No possible seeding dates exist! The lawn location is too %s to grow this grass type." % (warm_or_cool))
     
     grass_abv = lawn.grass_type
     lawn.grass_type = seeding.grass_details[lawn.grass_type]['name']

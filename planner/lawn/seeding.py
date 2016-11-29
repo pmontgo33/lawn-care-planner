@@ -111,18 +111,19 @@ def get_seeding_info(closest_station, temp_data, grass_type):
     Below groups seeding date ranges.
     For example seed between 2010-04-19 and 2010-04-27 (9 days)
     """
+    
     seed_ranges = []
-    
-    start_date = seeding_dates[0]
-    for i, curr_date in enumerate(seeding_dates):
-        if (curr_date - seeding_dates[i-1]).days > 1:
-            end_date = seeding_dates[i-1]
-            seed_ranges.append([start_date, end_date])
-            start_date = curr_date
-    
-    # the last date in the list is the last end date.
-    end_date = seeding_dates[-1]
-    seed_ranges.append([start_date, end_date])
+    if len(seeding_dates) > 0:
+        start_date = seeding_dates[0]
+        for i, curr_date in enumerate(seeding_dates):
+            if (curr_date - seeding_dates[i-1]).days > 1:
+                end_date = seeding_dates[i-1]
+                seed_ranges.append([start_date, end_date])
+                start_date = curr_date
+        
+        # the last date in the list is the last end date.
+        end_date = seeding_dates[-1]
+        seed_ranges.append([start_date, end_date])
     
     seeding_info = {
         
