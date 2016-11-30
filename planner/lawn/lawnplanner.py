@@ -18,8 +18,11 @@ def season_of_date(task_date):
     This function takes a date as a perameter and returns the name of the season
     that the date falls in.
     """
-    
-    task_ten = date(2010, task_date.month, task_date.day)
+
+    if task_date.month == 1 or task_date.month == 2:
+        task_ten = date(2011, task_date.month, task_date.day)
+    else:
+        task_ten = date(2010, task_date.month, task_date.day)
 
     for season in seasons_dates.keys():
         if seasons_dates[season][0] <= task_ten <= seasons_dates[season][1]:
