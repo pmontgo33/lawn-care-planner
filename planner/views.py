@@ -60,10 +60,14 @@ def lawn_detail(request, pk):
     grass_abv = lawn.grass_type
     lawn.grass_type = seeding.grass_details[lawn.grass_type]['name']
     
-    # amount of seed based on size of lawn
-    lawn.seed_new_lb_range = [x*(lawn.size / 1000) for x in seeding_info['seed_new_lb_range']]
-    lawn.seed_over_lb_range = [x*(lawn.size / 1000) for x in seeding_info['seed_over_lb_range']]
-
+    # Amount of seed based on size of lawn, rounded to nearest quarter lb
+    lawn.seed_new_lb_range = [plannerutils.round_to_quarter(x*(lawn.size / 1000)) for x in seeding_info['seed_new_lb_range']]
+    lawn.seed_over_lb_range = [plannerutils.round_to_quarter(x*(lawn.size / 1000)) for x in seeding_info['seed_over_lb_range']]
+    
+    # # Round these figures to the nearest quarter lb
+    # lawn.seed_new_lb_range = plannerutils.round_to_quarter(lawn.seed_new_lb_range)
+    # lawn.seed_over_lb_range = plannerutils.round_to_quarter(lawn.seed_over_lb_range)
+    
     """
     This section prepares the Mowing information
     """
