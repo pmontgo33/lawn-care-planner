@@ -39,7 +39,7 @@ def feedback(request):
                 "LCP: New contact form submission: %s" % (subject),
                 content,
                 'noreply@lawncareplanner.com',
-                ['pmontgo33+LCPfeedback@gmail.com'],
+                ['monty@lawncareplanner.com'],
                 headers={'Reply-To': contact_email}
             )
             email.send()
