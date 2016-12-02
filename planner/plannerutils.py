@@ -23,13 +23,17 @@ def get_closest_station_data(zip_code):
     
     delta_lat = my_lat - F('latitude')
     delta_long = my_long - F('longitude')
-    distance_equation = math.sqrt(delta_lat**2+delta_long**2)
+    distance_equation = (delta_lat**2+delta_long**2)**0.5
     
-    query = WeatherStation.objects.all().aggregate(Min(distance_equation))
-    print(query)
-    exit()
+    """
+    This statement queries the database to sort the stations by their distance
+    from the zip_code. Then calling query[0] gives the closest station to the zip
+    code.
+    """
+    query = WeatherStation.objects.all().annotate(distance=distance_equation).order_by('distance')
+    closest_station = query[0]
     
-#    return closest_station, closest_station.temp_data
+    return closest_station, closest_station.temp_data
 
 def OLD_get_closest_station_data(zip_code):
     
