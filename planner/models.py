@@ -8,6 +8,7 @@ from jsonfield import JSONField
 
 import os
 import json
+import math
 
 class Lawn(models.Model):
     """
@@ -40,7 +41,7 @@ class WeatherStation(models.Model):
     
     def __str__(self):
         return self.name
-    
+   
     @staticmethod    
     def load_stations_to_database():
     
@@ -95,40 +96,3 @@ class WeatherStation(models.Model):
                 )
         
         temp_data_file.close()
-"""        
-        while True:
-            for i in range(BATCH_SIZE):
-                print(i)
-                station_json = "".join([temp_data_file.readline() for x in range(LINES_IN_STATION)])
-                station_json = station_json[:-2] # remove the comma at the end
-                
-                if station_json == "":
-                    # if the end of the file is reached, break the for loop
-                    break
-                
-                stations_batch.append(json.loads(station_json))
-            else:
-                # after each batch size, this will start the next batch. If the end of the file was
-                # reached in the above if statement, then continue will not run, and the break below will run.
-                continue
-            break
-"""        
-
-        
-        ## 11 gets you up to openning temp_data. each temp date is 4 lines.
-    
-"""        
-new_weather_station = WeatherStation(
-            name = station['name'],
-            stationid = station['id'],
-            latitude = station['latitude'],
-            longitude = station['longitude'],
-            datacoverage = station['datacoverage'],
-            elevation = station['elevation'],
-            elevationUnit = station['elevationUnit'],
-            maxdate = station['maxdate'],
-            mindate = station['mindate'],
-            temp_data = station['temp_data']
-        )
-        new_weather_station.save()
-"""    
