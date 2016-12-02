@@ -7,3 +7,4 @@ db.sqlite3
 local_settings.py
 /planner/lawn/FullNormalTempData.dat
 .env
+.idea
