@@ -43,7 +43,7 @@ class planner:
     def add_task(self, task_name, task_date):
         """
         This function takes a task and a date, and adds it into the planner. It 
-        adds it into its corrisponding dictionary for the season and month the task
+        adds it into its corresponding dictionary for the season and month the task
         occurs.
         """
         
@@ -52,7 +52,7 @@ class planner:
         else:
             task_season = season_of_date(task_date)
             task_month = task_date.strftime("%B")
-            self.tasks_by_season[task_season][task_month].append({'name':task_name, 'date':task_date.strftime("%B %-d")})
+            self.tasks_by_season[task_season][task_month].append({'name':task_name, 'date':task_date.strftime("%B %d")})
 
     def __str__(self):
         return str(self.tasks_by_season)

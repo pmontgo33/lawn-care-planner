@@ -96,12 +96,12 @@ def lawn_detail(request, pk):
                 task_name = "Fertilize with %s lbs of Nitrogen" % (str(app['total_lbs']))
                 app['title'] = task_name
             else:
-                task_name = "%s - Fertilize with %s lbs of Nitrogen" % (app['end_date'].strftime("%B %-d"), str(app['total_lbs']))
+                task_name = "%s - Fertilize with %s lbs of Nitrogen" % (app['end_date'].strftime("%B %d"), str(app['total_lbs']))
                 app['title'] = task_name
-                app['end_date'] = app['end_date'].strftime("%B %-d")
+                app['end_date'] = app['end_date'].strftime("%B %d")
             
             my_planner.add_task(task_name, app['date'])
-            app['date'] = app['date'].strftime("%B %-d")
+            app['date'] = app['date'].strftime("%B %d")
     
     """
     This section prepares the Weed Control information
