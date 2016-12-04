@@ -115,25 +115,39 @@
             <div role="tabpanel" class="tab-pane fade" id="seeding">
               <div class="seeding">
                 <div class="row">
-                  <p class="col-sm-9">The ideal days for seeding have nighttime temperatures above 40&degF, 
-                  and daytime temperatures below 80&degF for the entirty of the germination period. 
-                  The dates listed below are days with average historic temperatures in your area within this range. 
-                  These should only be used as a guideline, and actual weather conditions should be used to determine actual seeding dates.</p>
+                    <div class="col-lg-9">
+                        <p>The ideal days for seeding have nighttime temperatures above 40&degF,
+                            and daytime temperatures below 80&degF for the entirety of the germination period.
+                            The dates listed below are days with average historic temperatures in your area within this range.
+                            These should only be used as a guideline, and actual weather conditions should be used to determine actual seeding dates.</p>
+                        <p>Typically fall is a more effective seeding season than spring.
+                            Soils tend to be dryer and warmer during late August and early September than in spring.
+                            When planted in late summer, seedlings will have two cool growing seasons (fall and spring) to become established,
+                            whereas seedlings developing from spring establishments will be subjected to the heat and drought of summer,
+                            making survival more difficult. Weeds are usually more of a problem in spring establishments than in late summer
+                            establishments as the cool temperatures and frosts in late summer/early fall will slow weed development
+                            (<a href="http://plantscience.psu.edu/research/centers/turf/extension/factsheets/lawn-establishment">source</a>).</p>
+                    </div>
                 </div>
                 <br>
-                <p><strong>Amount of Seed (<a href="http://plantscience.psu.edu/research/centers/turf/extension/factsheets/seed">source</a>):</strong></p>
-                  <ul>
-                    <li>Establish New Lawn: {{ lawn.seed_new_lb_range.0 }} to {{ lawn.seed_new_lb_range.1 }} lbs</li>
-                    <li>Overseed: {{ lawn.seed_over_lb_range.0 }} to {{ lawn.seed_over_lb_range.1 }} lbs</li>
-                  </ul>
-                  </p>
-                <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ germination_time }} days</p>
-                <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
-                <ul>
-                    {% for range in seeding_ranges %}
-                        <li>{{ range }}</li>
-                    {% endfor %}
-                </ul>
+                 <div class="col-lg-4">
+                      <p><strong>Amount of Seed (<a href="http://plantscience.psu.edu/research/centers/turf/extension/factsheets/seed">source</a>):</strong></p>
+                        <ul>
+                          <li>Establish New Lawn: {{ lawn.seed_new_lb_range.0 }} to {{ lawn.seed_new_lb_range.1 }} lbs</li>
+                          <li>Overseed: {{ lawn.seed_over_lb_range.0 }} to {{ lawn.seed_over_lb_range.1 }} lbs</li>
+                        </ul>
+                        </p>
+                      <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ germination_time }} days</p>
+                      <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
+                      <ul>
+                          {% for range in seeding_ranges %}
+                              <li>{{ range }}</li>
+                          {% endfor %}
+                      </ul>
+                 </div>
+                 <div class="col-lg-4">
+
+                 </div>
               </div>
             </div>
             
