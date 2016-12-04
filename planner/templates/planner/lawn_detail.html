@@ -82,26 +82,68 @@
                 
                 <div class="row">
                   
-                  <div class="col-sm-5">
-                    {% for key,list in fertilizer_apps.items %}
-                      <h4>{{ key | capfirst }}:</h4>
-                      {% for value in list %}
-                          <ul>
-                            {% if value.end_date is None %}
-                              <li>{{ value.date }}</li>
-                            {% else %}
-                              <li>{{ value.date }} - {{ value.end_date }}</li>
-                            {% endif %}
-                            <ul>
-                              <li>Application Total: {{ value.total_lbs }} lbs of Nitrogen</li>
-                              <li>Rate: {{ value.rate }} lbs per 1000 sf</li>
-                            </ul>
-                          </ul>
+                  <div class="col-lg-5">
+                      <h4><strong>Application Schedule</strong></h4>
+                        {% for key,list in fertilizer_apps.items %}
+                          <h4>{{ key | capfirst }}:</h4>
+                          {% for value in list %}
+                              <ul>
+                                {% if value.end_date is None %}
+                                  <li>{{ value.date }}</li>
+                                {% else %}
+                                  <li>{{ value.date }} - {{ value.end_date }}</li>
+                                {% endif %}
+                                <ul>
+                                  <li>Application Total: {{ value.total_lbs }} lbs of Nitrogen</li>
+                                  <li>Rate: {{ value.rate }} lbs per 1000 sf</li>
+                                </ul>
+                              </ul>
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
-                    </div>
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-4">
+                  </div>
+
+                    <div class="col-lg-4">
+                        <h4><strong>Common Products and Amounts</strong></h4>
+                        <p>Here are links to commonly sold products. The weight listed is the recommended amount
+                            to spread evenly over your lawn in one application.</p>
+
+                        <p><strong>Organic</strong></p>
+                        <ul>
+                            {% for product in fertilizer_products %}
+                                {% if product.organic %}
+                                    <li>{{ product.name }} - {{ product.weight }} lbs
+                                        <ul>
+                                            <li>
+                                                <p>
+                                                {% for site,url in product.links.items %}
+                                                <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                {% endfor %}
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+
+                        <p><strong>Synthetic</strong></p>
+                        <ul>
+                            {% for product in fertilizer_products %}
+                                {% if not product.organic %}
+                                    <li>{{ product.name }} - {{ product.weight }} lbs
+                                        <ul>
+                                            <li>
+                                                <p>
+                                                {% for site,url in product.links.items %}
+                                                <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                {% endfor %}
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
                       <!--<p>N-P-K CALCULATOR</p>-->
                     </div>
                 </div>

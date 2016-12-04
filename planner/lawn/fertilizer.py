@@ -131,6 +131,18 @@ def summer_apps(closest_station, temp_data, between_dates):
     
     return my_apps
     
+def get_fert_weight(npk, required_nitrogen):
+    """
+    :param required_nitrogen: this is the required lbs of nitrogen required for the application
+    :return: the amount of product required for an application
+
+    This method calculates the required amount of product for an application.
+    """
+    print(npk['N'], required_nitrogen)
+    product_nitrogen = npk['N'] / 100.0
+    app_weight = required_nitrogen / product_nitrogen
+
+    return app_weight
 
 def get_fertilizer_info(closest_station, temp_data):
     
@@ -138,25 +150,76 @@ def get_fertilizer_info(closest_station, temp_data):
     This function iterates through the temperature data of the closest station
     and returns the applicable fertilzier info
     """
-    
-    fertilizer_info = OrderedDict([
-        
+
+    fertilizer_info = {
+        'apps':None,
+        'products':None,
+    }
+
+    # Fertilizer Applications
+    fertilizer_info['apps'] = OrderedDict([
+
         ('spring',[]),
         ('summer',[]),
         ('fall',[]),
     ])
-    
+
     # Add spring applications
     spring_applications = spring_apps(closest_station, temp_data)
-    fertilizer_info['spring'].extend(spring_applications)
+    fertilizer_info['apps']['spring'].extend(spring_applications)
     
     # Add fall applications
     fall_applications = fall_apps(closest_station, temp_data)
-    fertilizer_info['fall'].extend(fall_applications)
+    fertilizer_info['apps']['fall'].extend(fall_applications)
     
     # Add summer applications
     between_dates = [spring_applications[0]['date'], fall_applications[0]['date']]
     summer_applications = summer_apps(closest_station, temp_data, between_dates)
-    fertilizer_info['summer'].extend(summer_applications)
-    
+    fertilizer_info['apps']['summer'].extend(summer_applications)
+
+    # Fertilizer Products
+    fertilizer_info['products'] = [
+        #ORGANICS
+        {
+            'name': "Milorganite",
+            'organic':True,
+            'npk':{'N': 5, 'P': 2, 'K': 0},
+            'links': OrderedDict([
+                ("Amazon", "http://amzn.to/2h6z5Ur"),
+                ("Home Depot", "homedepot.com"),        #NEED TO FIX HOME DEPOT ONCE APPROVAL COMES THROUGH
+            ]),
+        },
+        {
+            'name': "Scotts Natural Lawn Food",
+            'organic': True,
+            'npk': {'N': 11, 'P': 2, 'K': 2},
+            'links': OrderedDict([
+                ("Amazon", "http://amzn.to/2gCD89E"),
+                ("Home Depot", "homedepot.com"),        #NEED TO FIX HOME DEPOT ONCE APPROVAL COMES THROUGH
+            ]),
+        },
+
+        #SYNTHETICS
+        {
+            'name': "Scotts Turf Builder",
+            'organic': False,
+            'npk': {'N': 32, 'P': 0, 'K': 4},
+            'links': OrderedDict([
+                ("Amazon","http://amzn.to/2fUDr0v"),
+            ]),
+        },
+        {
+            'name': "Vigoro Lawn Fertilizer",
+            'organic': False,
+            'npk': {'N': 29, 'P': 0, 'K': 4},
+            'links': OrderedDict([
+                ("Home Depot", "homedepot.com"),        #NEED TO FIX HOME DEPOT ONCE APPROVAL COMES THROUGH
+            ]),
+        },
+    ]
+
+    # Set the fertilizer weight for each product
+    for product in fertilizer_info['products']:
+        product['weight'] = get_fert_weight(product['npk'], .75)
+
     return fertilizer_info

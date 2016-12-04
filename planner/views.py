@@ -89,11 +89,13 @@ def lawn_detail(request, pk):
     """
     
     fertilizer_info = fertilizer.get_fertilizer_info(closest_station, temp_data)
-    
-    for season in fertilizer_info:
-        for app in fertilizer_info[season]:
+
+    # Fertilizer Applications
+    total_fert_lb = 0
+    for season in fertilizer_info['apps']:
+        for app in fertilizer_info['apps'][season]:
             app['total_lbs'] = plannerutils.round_to_quarter((lawn.size / 1000) * app['rate'])
-            
+
             if app['end_date'] == None:
                 task_name = "Fertilize with %s lbs of Nitrogen" % (str(app['total_lbs']))
                 app['title'] = task_name
@@ -105,7 +107,11 @@ def lawn_detail(request, pk):
             
             my_planner.add_task(task_name, app['date'])
             app['date'] = app['date'].strftime("%B %d").replace(" 0", " ")
-    
+
+    # Fertilizer Products
+    for product in fertilizer_info['products']:
+        product['weight'] = plannerutils.round_to_quarter((lawn.size / 1000) * product['weight'])
+
     """
     This section prepares the Weed Control information
     """
@@ -145,7 +151,8 @@ def lawn_detail(request, pk):
         'mowing_heights':mowing_heights,
         'summer_weed_deadline':summer_weed_deadline,
         'grub_deadline':grub_deadline,
-        'fertilizer_apps':fertilizer_info,
+        'fertilizer_apps':fertilizer_info['apps'],
+        'fertilizer_products':fertilizer_info['products'],
         
         'planner':my_planner.tasks_by_season,
     }
