@@ -1,6 +1,8 @@
-# planner/views.py
-# Patrick W. Montgomery
-# created: 10-8-2016
+"""
+planner/views.py
+
+This file contains the views for the planner app.
+"""
 
 # import statements
 from datetime import date
@@ -33,8 +35,8 @@ def lawn_detail(request, pk):
     str_ranges = []
     if len(seeding_info['seed_ranges']) > 0:
         for range in seeding_info['seed_ranges']:
-            str_ranges.append(range[0].strftime("%B %d") +
-                " to " + range[1].strftime("%B %d"))
+            str_ranges.append(range[0].strftime("%B %d").replace(" 0", " ") +
+                " to " + range[1].strftime("%B %d").replace(" 0", " "))
             
             my_planner.add_task("First day to seed", range[0])
             my_planner.add_task("Last day to seed", range[1])
@@ -96,19 +98,20 @@ def lawn_detail(request, pk):
                 task_name = "Fertilize with %s lbs of Nitrogen" % (str(app['total_lbs']))
                 app['title'] = task_name
             else:
-                task_name = "%s - Fertilize with %s lbs of Nitrogen" % (app['end_date'].strftime("%B %d"), str(app['total_lbs']))
+                task_name = "%s - Fertilize with %s lbs of Nitrogen" % \
+                            (app['end_date'].strftime("%B %d").replace(" 0", " "), str(app['total_lbs']))
                 app['title'] = task_name
-                app['end_date'] = app['end_date'].strftime("%B %d")
+                app['end_date'] = app['end_date'].strftime("%B %d").replace(" 0", " ")
             
             my_planner.add_task(task_name, app['date'])
-            app['date'] = app['date'].strftime("%B %d")
+            app['date'] = app['date'].strftime("%B %d").replace(" 0", " ")
     
     """
     This section prepares the Weed Control information
     """
     
     weed_info = weedcontrol.get_weed_control_info(closest_station, temp_data)
-    summer_weed_deadline = weed_info['summer_deadline'].strftime("%B %d")
+    summer_weed_deadline = weed_info['summer_deadline'].strftime("%B %d").replace(" 0", " ")
     my_task_name = "Summer annual weed pre-emergent herbicide application deadline."
     my_planner.add_task(my_task_name, weed_info['summer_deadline'])
     
@@ -117,7 +120,7 @@ def lawn_detail(request, pk):
     """
     
     insect_info = insectcontrol.get_insect_control_info(closest_station, temp_data)
-    grub_deadline = insect_info['grub_deadline'].strftime("%B %d")
+    grub_deadline = insect_info['grub_deadline'].strftime("%B %d").replace(" 0", " ")
     my_task_name = "Grub worm preventer application deadline."
     my_planner.add_task(my_task_name, insect_info['grub_deadline'])
     

@@ -52,7 +52,9 @@ class planner:
         else:
             task_season = season_of_date(task_date)
             task_month = task_date.strftime("%B")
-            self.tasks_by_season[task_season][task_month].append({'name':task_name, 'date':task_date.strftime("%B %d")})
+            self.tasks_by_season[task_season][task_month].append({
+                'name':task_name, 'date':task_date.strftime("%B %d").replace(" 0", " ")
+            })
 
     def __str__(self):
         return str(self.tasks_by_season)

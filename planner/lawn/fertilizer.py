@@ -105,16 +105,6 @@ def fall_apps(closest_station, temp_data):
         the app_date will be APPLY_DAYS_BEFORE_TEMP days before the last day of fall
         """
         app_date = planner.seasons_dates['fall'][1] - timedelta(days=APPLY_DAYS_BEFORE_TEMP)
-    
-    # low_temp = APPLY_ABOVE + 1
-    # while (low_temp > APPLY_ABOVE):
-    #     """
-    #     Iterate through the temp_data and find the first day that the TMIN temperature
-    #     is above the APP_ABOVE value.
-    #     """
-    #     current_date += timedelta(days=1)
-    #     print(low_temp, current_date)
-    #     low_temp = temp_data[current_date.strftime('%Y-%m-%d')]['TMIN']
 
     app_date = current_date - timedelta(days=APPLY_DAYS_BEFORE_TEMP)
     my_apps[-1] = {'date':app_date, 'rate':APP_RATE, 'end_date':None}
