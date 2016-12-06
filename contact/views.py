@@ -13,6 +13,7 @@ from django.template.loader import get_template
 
 from contact.forms import ContactForm
 
+
 def feedback(request):
     form_class = ContactForm
     

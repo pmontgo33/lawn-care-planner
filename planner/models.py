@@ -96,3 +96,22 @@ class WeatherStation(models.Model):
                 )
         
         temp_data_file.close()
+
+
+class LawnProduct(models.Model):
+
+    name = models.CharField(max_length=200)
+    type = models.CharField(max_length=140, choices=(
+        ("Grass Seed", "Grass Seed"),
+        ("Fertilizer", "Fertilizer"),
+        ("Weed Control", "Weed Control"),
+        ("Insect Control", "Insect Control")
+    ))
+    links = JSONField()
+    specs = JSONField()
+
+    class Meta:
+        ordering = ['type', 'name']
+
+    def __str__(self):
+        return "%s - %s" % (self.type,self.name)

@@ -6,6 +6,7 @@ created: 11-21-2016
 
 from django import forms
 
+
 class ContactForm(forms.Form):
     
     # Form Fields

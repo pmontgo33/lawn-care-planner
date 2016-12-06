@@ -143,6 +143,7 @@ def get_fert_weight(npk, required_nitrogen):
 
     return app_weight
 
+
 def get_fertilizer_info(closest_station, temp_data):
     
     """
