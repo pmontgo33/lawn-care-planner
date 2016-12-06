@@ -138,7 +138,6 @@ def get_fert_weight(npk, required_nitrogen):
 
     This method calculates the required amount of product for an application.
     """
-    print(npk['N'], required_nitrogen)
     product_nitrogen = npk['N'] / 100.0
     app_weight = required_nitrogen / product_nitrogen
 
