@@ -110,13 +110,13 @@
                         <p><strong>Organic</strong></p>
                         <ul>
                             {% for product in fertilizer_products %}
-                                {% if product.organic %}
-                                    <li>{{ product.name }} - {{ product.weight }} lbs
+                                {% if product.specs.organic %}
+                                    <li>{{ product.name }} {{ product.specs.npk }} - {{ product.weight }} lbs
                                         <ul>
                                             <li>
                                                 <p>
                                                 {% for site,url in product.links.items %}
-                                                <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                    <a href={{ url }} target="_blank">{{ site }}</a> |
                                                 {% endfor %}
                                                 </p>
                                             </li>
@@ -129,8 +129,8 @@
                         <p><strong>Synthetic</strong></p>
                         <ul>
                             {% for product in fertilizer_products %}
-                                {% if not product.organic %}
-                                    <li>{{ product.name }} - {{ product.weight }} lbs
+                                {% if not product.specs.organic %}
+                                    <li>{{ product.name }} {{ product.specs.npk }} - {{ product.weight }} lbs
                                         <ul>
                                             <li>
                                                 <p>

@@ -5,8 +5,11 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Lawn
+import json
+
+from .models import Lawn, LawnProduct
 from planner.lawn import lawnutils
+
 
 class LawnForm(forms.ModelForm):
     
@@ -25,4 +28,3 @@ class LawnForm(forms.ModelForm):
         if not lawnutils.zip_is_valid(zip_code):
             raise forms.ValidationError("Invalid ZIP code")
         return zip_code
-        

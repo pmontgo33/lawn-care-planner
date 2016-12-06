@@ -9,7 +9,7 @@ from datetime import date
 import math
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
-from planner.models import Lawn, WeatherStation
+from planner.models import Lawn, WeatherStation, LawnProduct
 from planner.forms import LawnForm
 from planner.lawn import lawnutils, seeding, mowing, lawnplanner, weedcontrol, insectcontrol, fertilizer
 from planner import plannerutils
@@ -109,8 +109,14 @@ def lawn_detail(request, pk):
             app['date'] = app['date'].strftime("%B %d").replace(" 0", " ")
 
     # Fertilizer Products
-    for product in fertilizer_info['products']:
-        product['weight'] = plannerutils.round_to_quarter((lawn.size / 1000) * product['weight'])
+    fert_products = LawnProduct.objects.filter(type='Fertilizer')
+    for product in fert_products:
+        first_app_total = fertilizer_info['apps']['spring'][0]['total_lbs']
+        product_nitrogen = product.specs['npk'][0] / 100
+
+        product.weight = plannerutils.round_to_quarter(first_app_total / product_nitrogen)
+        product.specs['npk'] = "(%s-%s-%s)" % \
+                                  (product.specs['npk'][0], product.specs['npk'][1], product.specs['npk'][2])
 
     """
     This section prepares the Weed Control information
@@ -152,7 +158,7 @@ def lawn_detail(request, pk):
         'summer_weed_deadline':summer_weed_deadline,
         'grub_deadline':grub_deadline,
         'fertilizer_apps':fertilizer_info['apps'],
-        'fertilizer_products':fertilizer_info['products'],
+        'fertilizer_products':fert_products,
         
         'planner':my_planner.tasks_by_season,
     }

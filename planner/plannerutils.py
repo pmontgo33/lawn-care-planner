@@ -9,9 +9,7 @@ import math
 from planner.models import WeatherStation
 from planner.lawn import lawnutils
 
-
 def get_closest_station_data(zip_code):
-    
 
     # get the users zip code, and look up the latitude and longitude
     my_lat, my_long = lawnutils.get_lat_long(zip_code)
