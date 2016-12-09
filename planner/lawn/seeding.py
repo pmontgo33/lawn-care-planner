@@ -118,18 +118,6 @@ def get_seeding_info(closest_station, temp_data, grass_type):
         end_date = seeding_dates[-1]
         seed_ranges.append([start_date, end_date])
 
-    # SEEDING PRODUCTS
-    # seed_products = [
-    #     {
-    #         'name': "Scotts Kentucky Bluegrass Mix",
-    #         'type': "KBG",
-    #         'links': OrderedDict([
-    #             ("Amazon", "http://amzn.to/2h8BFJc"),
-    #             ("Home Depot", "homedepot.com"),  # NEED TO FIX HOME DEPOT ONCE APPROVAL COMES THROUGH
-    #         ]),
-    #     },
-    # ]
-
     seeding_info = {
 
         'germination_time': germination_time,

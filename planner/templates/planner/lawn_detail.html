@@ -154,6 +154,7 @@
             </div>
             
             <!-- Seeding Tab -->
+            
             <div role="tabpanel" class="tab-pane fade" id="seeding">
               <div class="seeding">
                 <div class="row">
@@ -172,26 +173,50 @@
                     </div>
                 </div>
                 <br>
-                 <div class="col-lg-4">
-                      <p><strong>Amount of Seed (<a href="http://plantscience.psu.edu/research/centers/turf/extension/factsheets/seed">source</a>):</strong></p>
+                
+                <div class="row">
+                  
+                  <!-- SEEDING SCHEDULE -->
+                  <div class="col-lg-4">
+                        <p><strong>Amount of Seed (<a href="http://plantscience.psu.edu/research/centers/turf/extension/factsheets/seed">source</a>):</strong></p>
+                          <ul>
+                            <li>Establish New Lawn: {{ lawn.seed_new_lb_range.0 }} to {{ lawn.seed_new_lb_range.1 }} lbs</li>
+                            <li>Overseed: {{ lawn.seed_over_lb_range.0 }} to {{ lawn.seed_over_lb_range.1 }} lbs</li>
+                          </ul>
+                          </p>
+                        <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ germination_time }} days</p>
+                        <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
                         <ul>
-                          <li>Establish New Lawn: {{ lawn.seed_new_lb_range.0 }} to {{ lawn.seed_new_lb_range.1 }} lbs</li>
-                          <li>Overseed: {{ lawn.seed_over_lb_range.0 }} to {{ lawn.seed_over_lb_range.1 }} lbs</li>
+                            {% for range in seeding_ranges %}
+                                <li>{{ range }}</li>
+                            {% endfor %}
                         </ul>
-                        </p>
-                      <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ germination_time }} days</p>
-                      <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
-                      <ul>
-                          {% for range in seeding_ranges %}
-                              <li>{{ range }}</li>
-                          {% endfor %}
-                      </ul>
-                 </div>
+                  </div>
+                  
                   <!-- SEEDING PRODUCTS -->
-                 <div class="col-lg-4">
+                  <div class="col-lg-4">
+                    <h4><strong>Common Products</strong></h4>
+                        <p>Here are links to commonly sold products. See the weights listed on the left for amount of 
+                            seed to spread evenly across your lawn.</p>
 
-
-                 </div>
+                        <ul>
+                            {% for product in seed_products %}
+                                <li>{{ product.name }}
+                                    <ul>
+                                        <li>
+                                            <p>
+                                            {% for site,url in product.links.items %}
+                                                <a href={{ url }} target="_blank">{{ site }}</a> |
+                                            {% endfor %}
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+  
+                  </div>
+                </div>
               </div>
             </div>
             
