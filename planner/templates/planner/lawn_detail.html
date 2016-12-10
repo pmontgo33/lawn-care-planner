@@ -253,7 +253,6 @@
                 </div>
                 <br>
 
-                  <!-- WEED CONTROL PRODUCTS -->
                   <div class="row">
 
                     <!-- APPLICATION INFO -->
@@ -262,7 +261,7 @@
                           <p><strong>Summer Annual Pre-emergent Deadline: </strong>{{ summer_weed_deadline }}</p>
                       </div>
 
-                      <!-- WEED CONTROL PRODUCTS
+                      <!-- WEED CONTROL PRODUCTS -->
                       <div class="col-lg-4">
                           <h4><strong>Common Products</strong></h4>
                           <p>Here are links to commonly sold products. See the weights listed on the left for amount of
@@ -283,7 +282,7 @@
                                         </li>
                                 {% endfor %}
                             </ul>
-                      </div> -->
+                      </div>
                   </div>
                 <br>
               </div>
@@ -299,8 +298,39 @@
                   These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates.</p>
                 </div>
                 <br>
-                  <p><strong>Grub worm preventer application deadline: </strong>{{ grub_deadline }}</p>
-                <br>
+
+                  <div class="row">
+                      <div class="col-lg-4">
+                          <h4><strong>Application Schedule</strong></h4>
+                          <p><strong>Grub preventer application deadline: </strong>{{ grub_deadline }}</p>
+                      </div>
+
+                    <!-- Insect CONTROL PRODUCTS-->
+                      <div class="col-lg-4">
+                          <h4><strong>Common Products</strong></h4>
+                          <p>Here are links to commonly sold products. Application amounts vary for different products,
+                              so follow the instructions on the label.</p>
+
+                          <p><strong>Grub Control</strong></p>
+                            <ul>
+                                {% for product in insect_products %}
+                                    {% if product.specs.type == "Grub" %}
+                                        <li>{{ product.name }}
+                                            <ul>
+                                                <li>
+                                                    <p>
+                                                    {% for site,url in product.links.items %}
+                                                        <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                    {% endfor %}
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                      </div>
+                  </div> <!-- div row -->
               </div>
             </div>
             

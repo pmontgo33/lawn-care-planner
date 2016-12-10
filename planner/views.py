@@ -125,6 +125,9 @@ def lawn_detail(request, pk):
     summer_weed_deadline = weed_info['summer_deadline'].strftime("%B %d").replace(" 0", " ")
     my_task_name = "Summer annual weed pre-emergent herbicide application deadline."
     my_planner.add_task(my_task_name, weed_info['summer_deadline'])
+
+    # Weed Control Products
+    weed_products = LawnProduct.objects.filter(type='Weed Control')
     
     """
     This section prepares the Insect Control information
@@ -134,6 +137,9 @@ def lawn_detail(request, pk):
     grub_deadline = insect_info['grub_deadline'].strftime("%B %d").replace(" 0", " ")
     my_task_name = "Grub worm preventer application deadline."
     my_planner.add_task(my_task_name, insect_info['grub_deadline'])
+
+    # Insect Control Products
+    insect_products = LawnProduct.objects.filter(type='Insect Control')
     
     """
     Take out any months in the planner that have no tasks
@@ -156,7 +162,9 @@ def lawn_detail(request, pk):
         'seed_products':seed_products,
         'mowing_heights':mowing_heights,
         'summer_weed_deadline':summer_weed_deadline,
+        "weed_products":weed_products,
         'grub_deadline':grub_deadline,
+        'insect_products':insect_products,
         'fertilizer_apps':fertilizer_info['apps'],
         'fertilizer_products':fert_products,
         
