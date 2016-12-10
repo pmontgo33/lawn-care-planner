@@ -178,6 +178,7 @@
                   
                   <!-- SEEDING SCHEDULE -->
                   <div class="col-lg-4">
+                      <h4><strong>Seeding Schedule</strong></h4>
                         <p><strong>Amount of Seed (<a href="http://plantscience.psu.edu/research/centers/turf/extension/factsheets/seed">source</a>):</strong></p>
                           <ul>
                             <li>Establish New Lawn: {{ lawn.seed_new_lb_range.0 }} to {{ lawn.seed_new_lb_range.1 }} lbs</li>
@@ -201,17 +202,19 @@
 
                         <ul>
                             {% for product in seed_products %}
-                                <li>{{ product.name }}
-                                    <ul>
-                                        <li>
-                                            <p>
-                                            {% for site,url in product.links.items %}
-                                                <a href={{ url }} target="_blank">{{ site }}</a> |
-                                            {% endfor %}
-                                            </p>
-                                        </li>
-                                    </ul>
-                                </li>
+                                {% if product.specs.type == lawn.grass_type %}
+                                    <li>{{ product.name }}
+                                        <ul>
+                                            <li>
+                                                <p>
+                                                {% for site,url in product.links.items %}
+                                                    <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                {% endfor %}
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
   
@@ -249,7 +252,39 @@
                   These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates.</p>
                 </div>
                 <br>
-                  <p><strong>Summer Annual Weed Pre-emergent Deadline: </strong>{{ summer_weed_deadline }}</p>
+
+                  <!-- WEED CONTROL PRODUCTS -->
+                  <div class="row">
+
+                    <!-- APPLICATION INFO -->
+                      <div class="col-lg-4">
+                          <h4><strong>Application Schedule</strong></h4>
+                          <p><strong>Summer Annual Pre-emergent Deadline: </strong>{{ summer_weed_deadline }}</p>
+                      </div>
+
+                      <!-- WEED CONTROL PRODUCTS
+                      <div class="col-lg-4">
+                          <h4><strong>Common Products</strong></h4>
+                          <p>Here are links to commonly sold products. See the weights listed on the left for amount of
+                            seed to spread evenly across your lawn.</p>
+
+                            <ul>
+                                {% for product in weed_products %}
+                                        <li>{{ product.name }}
+                                            <ul>
+                                                <li>
+                                                    <p>
+                                                    {% for site,url in product.links.items %}
+                                                        <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                    {% endfor %}
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                {% endfor %}
+                            </ul>
+                      </div> -->
+                  </div>
                 <br>
               </div>
             </div>
