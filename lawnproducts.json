@@ -1,0 +1,132 @@
+[
+{
+    "model": "planner.lawnproduct",
+    "pk": 1,
+    "fields": {
+        "name": "Milorganite",
+        "type": "Fertilizer",
+        "links": "{\"Amazon\":\"http://amzn.to/2h6z5Ur\",\"Home Depot\":\"http://homedepot.com\"}",
+        "specs": "{\"npk\":[5,2,0],\"organic\":true}"
+    }
+},
+{
+    "model": "planner.lawnproduct",
+    "pk": 2,
+    "fields": {
+        "name": "Scotts Turf Builder",
+        "type": "Fertilizer",
+        "links": "{\"Amazon\":\"http://amzn.to/2fUDr0v\",\"Home Depot\":\"http://homedepot.com\"}",
+        "specs": "{\"npk\":[32,0,4],\"organic\":false}"
+    }
+},
+{
+    "model": "planner.lawnproduct",
+    "pk": 3,
+    "fields": {
+        "name": "Scotts Natural Lawn Food",
+        "type": "Fertilizer",
+        "links": "{\"Amazon\":\"http://amzn.to/2gCD89E\",\"Home Depot\":\"http://homedepot.com\"}",
+        "specs": "{\"npk\":[11,2,2],\"organic\":true}"
+    }
+},
+{
+    "model": "planner.lawnproduct",
+    "pk": 5,
+    "fields": {
+        "name": "Vigoro Lawn Fertilizer",
+        "type": "Fertilizer",
+        "links": "{\"Home Depot\":\"http://homedepot.com\"}",
+        "specs": "{\"npk\":[29,0,4],\"organic\":false}"
+    }
+},
+{
+    "model": "planner.lawnproduct",
+    "pk": 6,
+    "fields": {
+        "name": "Scotts Kentucky Bluegrass Mix",
+        "type": "Grass Seed",
+        "links": "{\"Amazon\":\"http://amzn.to/2g7XF6Y\",\"Home Depot\":\"http://www.homedepot.com/p/Scotts-Turf-Builder-7-lb-Kentucky-Bluegrass-Mix-Seed-18269/203760929\"}",
+        "specs": "{\"type\":\"KBG\",\"coated\":true}"
+    }
+},
+{
+    "model": "planner.lawnproduct",
+    "pk": 7,
+    "fields": {
+        "name": "Scotts Perennial Ryegrass Mix",
+        "type": "Grass Seed",
+        "links": "{\"Amazon\":\"http://amzn.to/2gH5Ovn\",\"Home Depot\":\"http://www.homedepot.com/p/Scotts-Turf-Builder-7-lb-Perennial-Ryegrass-Mix-Seed-18363/203760922\"}",
+        "specs": "{\"type\":\"Perennial Ryegrass\",\"coated\":true}"
+    }
+},
+{
+    "model": "planner.lawnproduct",
+    "pk": 8,
+    "fields": {
+        "name": "Scotts Tall Fescue Mix",
+        "type": "Grass Seed",
+        "links": "{\"Amazon\":\"http://amzn.to/2gglPro\",\"Home Depot\":\"http://www.homedepot.com/p/Scotts-Turf-Builder-7-lb-Tall-Fescue-Mix-Grass-Seed-18346/203760986\"}",
+        "specs": "{\"type\":\"Turf Type Tall Fescue\",\"coated\":true}"
+    }
+},
+{
+    "model": "planner.lawnproduct",
+    "pk": 9,
+    "fields": {
+        "name": "Pennington Kentucky Blue Blend",
+        "type": "Grass Seed",
+        "links": "{\"Amazon\":\"http://amzn.to/2hliL1U\",\"Home Depot\":\"http://www.homedepot.com/p/Pennington-Smart-Seed-7-lb-Kentucky-Bluegrass-Grass-Seed-Blend-100086848/100618537\"}",
+        "specs": "{\"type\":\"Kentucky Bluegrass\",\"coated\":false}"
+    }
+},
+{
+    "model": "planner.lawnproduct",
+    "pk": 10,
+    "fields": {
+        "name": "Pennington Perennial Ryegrass Blend",
+        "type": "Grass Seed",
+        "links": "{\"Amazon\":\"http://amzn.to/2ghHKmM\",\"Home Depot\":\"http://www.homedepot.com/p/Pennington-Smart-Seed-3-lb-Perennial-Ryegrass-Blend-118538/100618545\"}",
+        "specs": "{\"type\":\"Perennial Ryegrass\",\"coated\":false}"
+    }
+},
+{
+    "model": "planner.lawnproduct",
+    "pk": 11,
+    "fields": {
+        "name": "Pennington Tall Fescue Blend",
+        "type": "Grass Seed",
+        "links": "{\"Home Depot\":\"http://www.homedepot.com/p/Pennington-Smart-Seed-7-lb-Tall-Fescue-Grass-Seed-100086831/100618534\"}",
+        "specs": "{\"type\":\"Turf Type Tall Fescue\",\"coated\":false}"
+    }
+},
+{
+    "model": "planner.lawnproduct",
+    "pk": 12,
+    "fields": {
+        "name": "Scotts GrubEx",
+        "type": "Insect Control",
+        "links": "{\"Amazon\":\"http://amzn.to/2gKJG3q\",\"Home Depot\":\"http://www.homedepot.com/p/Scotts-GrubEx1-15-11-lb-Season-Long-Grub-Killer-36605/100619063\"}",
+        "specs": "{\"Active Ingredient\":\"Chlorantraniliprole\",\"type\":\"Grub\"}"
+    }
+},
+{
+    "model": "planner.lawnproduct",
+    "pk": 13,
+    "fields": {
+        "name": "Bayer Advanced Grub Control",
+        "type": "Insect Control",
+        "links": "{\"Amazon\":\"http://amzn.to/2h7YImH\"}",
+        "specs": "{\"Active Ingredient\":\"Merit\",\"type\":\"Grub\"}"
+    }
+},
+{
+    "model": "planner.lawnproduct",
+    "pk": 14,
+    "fields": {
+        "name": "Scotts Halts Crabgrass and Grassy Weed Preventer",
+        "type": "Weed Control",
+        "links": "{\"Amazon\":\"http://amzn.to/2hgkSDZ\",\"Home Depot\":\"http://www.homedepot.com/p/Scotts-Halts-11-lb-Crabgrass-and-Grassy-Weed-Preventer-49900APM/204867898\"}",
+        "specs": "{\"Active Ingredient\":\"Pendimethalin\",\"type\":\"pre-emergent\"}"
+    }
+}
+]
