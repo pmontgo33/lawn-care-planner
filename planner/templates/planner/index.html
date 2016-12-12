@@ -1,48 +1,54 @@
 {% extends "planner/base.html" %}
 
+{% block metadata %}
+    <meta name="description" content="Create a personalized schedule for your annual lawn care based on your location. 
+        Your personal planner includes a recommended schedule for fertilizer, grass seed, mowing, weed control, and insect control."
+    />
+{% endblock %}
+
 {% block content %}
 {% load staticfiles %}
 
-  <div class="row row-offcanvas row-offcanvas-right">
+    <div class="row row-offcanvas row-offcanvas-right">
 
-    <div class="col-xs-12 col-sm-9">
-        <p>Welcome to the Lawn Care Planner. This web application is designed to create a personalized schedule for your annual lawn care.
-          Currently this application only applies to <strong>COOL SEASON GRASS TYPES</strong>. 
-          It utilizes Normal Daily Temperature data for your area, and estimates dates when specific lawn care activities should be completed.
-        </p>
-        <p>
-            Your personal planner includes a recommended schedule for fertilizer, grass seed, mowing, weed control, and insect control.
-        </p>
-        <p>
-          The information on this site should be used for planning purposes only, and actual weather forecasts and conditions should be used to 
-          pinpoint exact dates. I hope this information helps you to grow and maintain a thinker, greener lawn
-            free from pests such as crabgrass and grub worms!
-        </p>
-    </div><!--/.col-xs-12.col-sm-9-->
+        <div class="col-xs-12 col-sm-9">
+            <p>Welcome to the Lawn Care Planner. This web application is designed to create a personalized schedule for your annual lawn care.
+                Currently this application only applies to <strong>COOL SEASON GRASS TYPES</strong>. 
+                It utilizes Normal Daily Temperature data for your area, and estimates dates when specific lawn care activities should be completed.
+            </p>
+            <p>
+                Your personal planner includes a recommended schedule for fertilizer, grass seed, mowing, weed control, and insect control.
+            </p>
+            <p>
+                The information on this site should be used for planning purposes only, and actual weather forecasts and conditions should be used to 
+                pinpoint exact dates. I hope this information helps you to grow and maintain a thinker, greener lawn
+                free from pests such as crabgrass and grub worms!
+            </p>
+        </div><!--/.col-xs-12.col-sm-9-->
     
-  </div><!--/row-->
-  <br>
+    </div><!--/row-->
+    <br>
   <!-- HOMEPAGE COLUMNS -->
   
     <!--HEADINGS AND TEXT-->
     <div class="row">
-          <div class="col-lg-3">
+        <div class="col-lg-3">
             <h4><strong>Create my Lawn Care Plan</strong></h4>
             <p>Continue on and create your own personalized lawn care plan.</p>
             <br>
             <p><a class="btn btn-success" href="/planner" role="button">GO &raquo;</a></p>
-          </div>
-          <div class="col-lg-3">
+        </div>
+        <div class="col-lg-3">
             <h4><strong>View Example Plans</strong></h4>
             <p>Click here to view example plans from across the country.</p>
             <br>
             <p><a class="btn btn-success" href="/planner/lawn/list" role="button">Examples &raquo;</a></p>
-          </div>
-          <div class="col-lg-3">
+        </div>
+        <div class="col-lg-3">
             <h4><strong>Feedback</strong></h4>
             <p>Please help me to improve this web application by providing any questions, comments, or concerns that you have. </p>
             <p><a class="btn btn-success" href="/contact/feedback" role="button">Feedback &raquo;</a></p>
-          </div>
+        </div>
     </div><!--/row-->
 
 {% endblock %}
