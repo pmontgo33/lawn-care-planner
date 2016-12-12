@@ -1,6 +1,6 @@
-# planner/urls.py
-# Patrick W. Montgomery
-# created: 10-8-2016
+"""
+planner/urls.py
+"""
 
 # import statements
 from django.conf.urls import url
