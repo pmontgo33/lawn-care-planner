@@ -72,7 +72,12 @@
       <hr>
       
       <footer>
-        <p>&copy; 2016 Monty Project</p>
+          <p><a href="{% url 'index' %}">Home</a> |
+              <a href="{% url 'lawn_new' %}">Planner</a> |
+              <a href="{% url 'lawn_list' %}">Examples</a> |
+              <a href="{% url 'feedback' %}">Feedback</a>
+          </p>
+          <p>&copy; 2016 Monty Project</p>
       </footer>
     </div>
     

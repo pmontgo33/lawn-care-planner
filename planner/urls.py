@@ -19,7 +19,7 @@ urlpatterns = [
     
     url(r'^planner/lawn/list/$', ListView.as_view(
                         queryset=Lawn.objects.filter(user__username="examples").order_by('name'),
-                        template_name="planner/lawn_list.html")),
+                        template_name="planner/lawn_list.html"), name="lawn_list"),
     
 #    url(r'planner/lawn/new/$', views.lawn_new, name="lawn_new")
     
