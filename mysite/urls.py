@@ -21,12 +21,10 @@ Including another URLconf
 # import statements
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.views.generic import RedirectView
 
 urlpatterns = [
     
     url(r'^admin/', admin.site.urls),
     url(r'^', include("planner.urls")),
     url(r'^contact/', include('contact.urls')),
-#    url(r'^planner/', include("planner.urls")),
 ]
