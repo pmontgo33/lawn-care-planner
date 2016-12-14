@@ -3,6 +3,8 @@
 # created: 10/14/2016
 
 # import statements
+from . import seeding, fertilizer, mowing, insectcontrol, weedcontrol
+
 from datetime import date
 from collections import OrderedDict
 
@@ -12,6 +14,7 @@ seasons_dates = {
         "fall": [date(2010, 9, 1), date(2010, 11, 30)],
         "winter": [date(2010, 12, 1), date(2011, 2, 28)],
     }
+
 
 def season_of_date(task_date):
     """
@@ -30,16 +33,28 @@ def season_of_date(task_date):
     
     return None
 
-class planner:
+
+class Planner:
     
-    def __init__(self):
+    def __init__(self, lawn, closest_station):
         
         self.tasks_by_season = OrderedDict()
         self.tasks_by_season['spring'] = OrderedDict([("All Season",[]), ("March",[]), ("April",[]), ("May",[])])
         self.tasks_by_season['summer'] = OrderedDict([("All Season",[]), ("June",[]), ("July",[]), ("August",[])])
         self.tasks_by_season['fall'] = OrderedDict([("All Season",[]), ("September",[]), ("October",[]), ("November",[])])
         self.tasks_by_season['winter'] = OrderedDict([("All Season",[]), ("December",[]), ("January",[]), ("February",[])])
-    
+
+        self.lawn = lawn
+        self.closest_station = closest_station
+
+        self.seeding_info = seeding.get_seeding_info(self, closest_station, lawn)
+        self.mowing_info = mowing.get_mowing_info(self, closest_station, lawn)
+        self.fertilizer_info = fertilizer.get_fertilizer_info(self, closest_station, lawn)
+        self.weed_info = weedcontrol.get_weed_control_info(self, closest_station, lawn)
+        self.insect_info = insectcontrol.get_insect_control_info(self, closest_station, lawn)
+
+        self.trim_empty()
+
     def add_task(self, task_name, task_date):
         """
         This function takes a task and a date, and adds it into the planner. It 
@@ -52,9 +67,36 @@ class planner:
         else:
             task_season = season_of_date(task_date)
             task_month = task_date.strftime("%B")
+
+            if task_season not in self.tasks_by_season.keys():
+                self.tasks_by_season[task_season] = None
+            if task_month not in self.tasks_by_season[task_season].keys():
+                self.tasks_by_season[task_season][task_month] = None
+
             self.tasks_by_season[task_season][task_month].append({
-                'name':task_name, 'date':task_date.strftime("%B %d").replace(" 0", " ")
+                'name':task_name, 'date':task_date
             })
+
+
+    def trim_empty(self):
+        """
+        This function removes any months from the tasks_by_season dictionary
+        that do not contain any tasks.
+        """
+        months_to_del = []
+        for season in self.tasks_by_season:
+            for month in self.tasks_by_season[season]:
+                if not self.tasks_by_season[season][month]:  # if list is empty
+                    months_to_del.append((season, month))
+        for s_m in months_to_del:
+            del self.tasks_by_season[s_m[0]][s_m[1]]
+
+        seasons_to_del = []
+        for season in self.tasks_by_season:
+            if not self.tasks_by_season[season]:
+                seasons_to_del.append(season)
+        for s in seasons_to_del:
+            del self.tasks_by_season[s]
 
     def __str__(self):
         return str(self.tasks_by_season)

@@ -7,7 +7,7 @@ from datetime import datetime, date, timedelta
 from . import lawnutils
 
     
-def get_insect_control_info(closest_station, temp_data):
+def get_insect_control_info(planner, closest_station, lawn):
     
     """
     This function uses the Growing Degree Day method of determining when the
@@ -28,7 +28,11 @@ def get_insect_control_info(closest_station, temp_data):
         
         'grub_deadline':None,
     }
-    beetle_emergence_date = lawnutils.get_gdd_date(GRUB_GDD_TARGET, GDD_BASE_TEMP, closest_station, temp_data)
+    beetle_emergence_date = lawnutils.get_gdd_date(GRUB_GDD_TARGET, GDD_BASE_TEMP, closest_station)
     insect_info['grub_deadline'] = beetle_emergence_date
+
+    # Add to planner
+    my_task_name = "Grub worm preventer application deadline."
+    planner.add_task(my_task_name, insect_info['grub_deadline'])
     
     return insect_info

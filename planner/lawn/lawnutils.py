@@ -13,6 +13,7 @@ import math
 from datetime import date, datetime, timedelta
 from uszipcode import ZipcodeSearchEngine
 
+
 def update_normal_daily_stations():
     """
     This function updates the data file NormalDailyStations.dat (or creates it 
@@ -53,7 +54,8 @@ def update_normal_daily_stations():
     view_data.write("Normal Daily Stations List\nUpdated: %s\n" % date.today())
     view_data.write(json.dumps(stations, sort_keys=True, indent=4))
     view_data.close()
-    
+
+
 def zip_is_valid(zip):
     """
     This function takes a zip code and returns True if it is a valid zip code,
@@ -68,7 +70,8 @@ def zip_is_valid(zip):
         return True
     
     return False
-    
+
+
 def get_lat_long(zip):
     """
     This function takes a zip code and looks up the latitude and longitude using
@@ -82,6 +85,7 @@ def get_lat_long(zip):
     
     return lat, long
 
+
 def get_grass_type():
     """
     This function asks for input from the terminal for the users grass type.
@@ -92,89 +96,8 @@ def get_grass_type():
     grass_type = input("Enter your grass type (KBG, PRG, TTTF): ")
     return grass_type.upper()
 
-def OLD_get_closest_station_data(zip_code):
-    
-#   Load the stations from the data file.
-    file_dir = os.path.dirname(os.path.realpath(__file__)) + "/NormalDailyStations.dat"
-    stations_file = open(file_dir, "r")
-    stations_file_title = stations_file.readline()
-    stations_file_updated = stations_file.readline()
-    
-    stations = json.loads(stations_file.read())
-    stations_file.close()
-    
-    # get the users zip code, and look up the latitude and longitude
-    my_lat, my_long = get_lat_long(zip_code)
-    
-    """
-    Below finds the closest station to the zip code by finding the distance
-    between two points.
-    """
-    
-    min_distance = 100
-    closest_station = None
-    for station in stations:
-        delta_lat = my_lat - station['latitude']
-        delta_long = my_long - station['longitude']
-        distance = math.sqrt(delta_lat**2+delta_long**2)
-        
-        if distance < min_distance:
-            min_distance = distance
-            closest_station = station
-            
-    
-    """
-    Below pulls the Normal Daily date from the closest station
-    """
-    
-    #token = "KCAsygyVaVBxjhTOgyYnMCEOjKVOnCIj" pmontgo33@gmail.com token
-    token = "pRciHRBTwdPoyMKflOPcUdTKYiGEzWbn" # pmontgo.33@gmail.com token
-    
-    headers = {'token':token, 'User-Agent':"lawn care planner"}
-    url_base = "http://www.ncdc.noaa.gov/cdo-web/api/v2/data"
-    
-    payload = {
-            "datasetid":"NORMAL_DLY",            #required
-            "datatypeid":["DLY-TMIN-NORMAL","DLY-TMAX-NORMAL"],
-            "locationid":None,
-            "stationid":closest_station['id'],
-            "startdate":closest_station['mindate'],       #required
-            "enddate":closest_station['maxdate'],         #required
-            "units":"standard",
-            "sortfield":None,
-            "sortorder":None,
-            "limit":"1000",
-            "offset":None,
-            "includemetadata":None
-    }
-    
-    response = requests.get(url_base, headers=headers, params=payload)
-    station_temps = response.json()['results']
-    
-    """
-    Below takes the raw data from the closet station Normals Daily, and organizes
-    it into a dictionary where the date is the key, and the value is a dictionary with
-    keys TMIN and TMAX
-    """
-    
-    temp_data = {}
-    
-    for day_temp in station_temps:
-        my_date = datetime.strptime(day_temp['date'][:10], "%Y-%m-%d").date()
-        if my_date not in temp_data.keys():
-            temp_data[my_date] = {"TMIN":None, "TMAX":None}
-        
-        if day_temp["datatype"] == "DLY-TMIN-NORMAL":
-            temp_data[my_date]["TMIN"] = day_temp["value"]
-        elif day_temp["datatype"] == "DLY-TMAX-NORMAL":
-            temp_data[my_date]["TMAX"] = day_temp["value"]
-        else:
-            print("NOT A MIN OR MAX TEMPURATURE!!!")
-            # this should throw an error.
-    
-    return closest_station, temp_data
-    
-def get_gdd_date(target_gdd, base_temp, closest_station, temp_data):
+
+def get_gdd_date(target_gdd, base_temp, closest_station):
     
     """
     This function calculates the date that the target growing degree days
@@ -186,9 +109,10 @@ def get_gdd_date(target_gdd, base_temp, closest_station, temp_data):
     current_gdd = 0
     
     gdd_date = None
-    while (current_date.year == current_year):
-        average_temp = (temp_data[current_date.strftime('%Y-%m-%d')]['TMIN'] + temp_data[current_date.strftime('%Y-%m-%d')]['TMAX']) / 2
-        
+    while current_date.year == current_year:
+        average_temp = (closest_station.temp_data[current_date.strftime('%Y-%m-%d')]['TMIN'] +
+                        closest_station.temp_data[current_date.strftime('%Y-%m-%d')]['TMAX']) / 2
+
         if average_temp >= base_temp:
             daily_gdd = average_temp - base_temp
             current_gdd += daily_gdd
@@ -200,3 +124,15 @@ def get_gdd_date(target_gdd, base_temp, closest_station, temp_data):
         current_date += timedelta(days=1)
     
     return gdd_date
+
+
+def round_to_quarter(value):
+    """
+    This function is used to round a value to the nearest quarter.
+    Examples:
+    3.82 >> 3.75
+    6.91 >> 7.0
+    5.23 >> 5.25
+    2.11 >> 2.0
+    """
+    return round(value*4)/4

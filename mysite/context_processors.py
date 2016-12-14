@@ -6,6 +6,7 @@ created: 11/22/2016
 
 from django.conf import settings
 
+
 def google_analytics(request):
     """
     Use the variables returned in this function to

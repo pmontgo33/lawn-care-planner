@@ -3,12 +3,12 @@
 # created: 10/9/2016
 
 from django.db import models
-from planner.lawn import seeding
+from planner.lawn import seeding, lawnutils
 from jsonfield import JSONField
 
 import os
 import json
-import math
+
 
 class Lawn(models.Model):
     """
@@ -112,6 +112,19 @@ class LawnProduct(models.Model):
 
     class Meta:
         ordering = ['type', 'name']
+
+    # def get_application_weight(self, total_nitrogen):
+    #     """
+    #     :param total_nitrogen: The total nitrogen required for a given application
+    #     :return: weight: the amount of product required to achieve the total_nitrogen
+    #     """
+    #
+    #     weight = None
+    #     if 'npk' in self.specs.keys():
+    #         product_nitrogen = self.specs['npk'][0] / 100
+    #         weight = lawnutils.round_to_quarter(total_nitrogen / product_nitrogen)
+    #
+    #     return weight
 
     def __str__(self):
         return "%s - %s" % (self.type,self.name)

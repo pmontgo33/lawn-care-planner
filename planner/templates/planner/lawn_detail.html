@@ -19,8 +19,8 @@
             <p class="col-sm-6"><strong>ZIP Code: </strong>{{ lawn.zip_code }}</p>
           </div>
           <div class="row">
-            <p class="col-sm-5"><strong>Grass Type: </strong>{{ lawn.grass_type }}</p>
-            <p class="col-sm-6"><strong>Closest Weather Station: </strong>{{ closest_station }}</p>
+            <p class="col-sm-5"><strong>Grass Type: </strong>{{ lawn.grass_long_name }}</p>
+            <p class="col-sm-6"><strong>Closest Weather Station: </strong>{{ closest_station.name }}</p>
           </div>
           <div class="row">
             <p class="col-sm-5"><strong>Lawn Size: </strong>{{ lawn.size|intcomma }} sf</p>
@@ -44,7 +44,7 @@
                 <br>
                 <div class="col-sm-8 container-fluid">
                   
-                  {% for season, months in planner.items %}
+                  {% for season, months in planner.tasks_by_season.items %}
                     <div class="panel-default">
                       <div class="panel-heading">
                         <h3 class="panel-title">{{ season|capfirst }}</h3>
@@ -57,7 +57,7 @@
                               {% if task.date is None %}
                                 <li>{{ task.name }}</li>
                               {% else %}
-                                <li>{{ task.date }} - {{ task.name }}</li>
+                                <li>{{ task.date|date:"F j" }} - {{ task.name }}</li>
                               {% endif %}
                             {% endfor %}
                           </ul>
@@ -185,7 +185,7 @@
                             <li>Overseed: {{ lawn.seed_over_lb_range.0 }} to {{ lawn.seed_over_lb_range.1 }} lbs</li>
                           </ul>
                           </p>
-                        <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ germination_time }} days</p>
+                        <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ planner.seeding_info.germination_time }} days</p>
                         <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
                         <ul>
                             {% for range in seeding_ranges %}
@@ -202,7 +202,7 @@
 
                         <ul>
                             {% for product in seed_products %}
-                                {% if product.specs.type == lawn.grass_type %}
+                                {% if product.specs.type == lawn.grass_long_name %}
                                     <li>{{ product.name }}
                                         <ul>
                                             <li>
@@ -230,7 +230,7 @@
                   <p class="col-sm-9">Based on your grass type, the below schedule of mowing heights is recommended.</p>
                 </div>
                 <br>
-                {% for key,value in mowing_heights.items %}
+                {% for key,value in mowing_info.heights.items %}
                   <h4>{{ value.title }}:</h4>
                     <ul>
                       <li><strong>Height: </strong>{{ value.height }}"</li>
@@ -258,7 +258,7 @@
                     <!-- APPLICATION INFO -->
                       <div class="col-lg-4">
                           <h4><strong>Application Schedule</strong></h4>
-                          <p><strong>Summer Annual Pre-emergent Deadline: </strong>{{ summer_weed_deadline }}</p>
+                          <p><strong>Summer Annual Pre-emergent Deadline: </strong>{{ weed_info.summer_deadline|date:"F j" }}</p>
                       </div>
 
                       <!-- WEED CONTROL PRODUCTS -->
@@ -302,7 +302,7 @@
                   <div class="row">
                       <div class="col-lg-4">
                           <h4><strong>Application Schedule</strong></h4>
-                          <p><strong>Grub preventer application deadline: </strong>{{ grub_deadline }}</p>
+                          <p><strong>Grub preventer application deadline: </strong>{{ insect_info.grub_deadline|date:"F j" }}</p>
                       </div>
 
                     <!-- Insect CONTROL PRODUCTS-->

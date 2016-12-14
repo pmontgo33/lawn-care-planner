@@ -7,7 +7,7 @@ from datetime import datetime, date, timedelta
 from . import lawnutils
 
     
-def get_weed_control_info(closest_station, temp_data):
+def get_weed_control_info(planner, closest_station, lawn):
     
     """
     This function uses the Growing Degree Day method of determining when the
@@ -30,42 +30,11 @@ def get_weed_control_info(closest_station, temp_data):
         'summer_deadline':None,
     }
     
-    summer_germination_date = lawnutils.get_gdd_date(SUMMER_GDD_TARGET, GDD_BASE_TEMP, closest_station, temp_data)
+    summer_germination_date = lawnutils.get_gdd_date(SUMMER_GDD_TARGET, GDD_BASE_TEMP, closest_station)
     weed_info['summer_deadline'] = summer_germination_date - timedelta(days=APP_PRIOR_TO_GERMINATION)
-    
-    return weed_info
-    
-def get_old_weed_control_info(closest_station, temp_data):
-    
-    """
-    These are all static variables, and the basis for the summer annual pre-emergent
-    application timing based on air temperature.
-    """
-    SUMMER_GERMINATION_TEMP = 55.0 # degrees F
-    SUMMER_GERMINATION_TIME = 5 # days
-    APP_PRIOR_TO_GERMINATION = 10 # days
-    
-    weed_info = {
-        
-        'summer_deadline':None,
-    }
-    
-    current_date = datetime.strptime(closest_station['mindate'], "%Y-%m-%d").date()
-    current_year = current_date.year
-    
-    days_at_temp = 0
-    while (current_date.year == current_year):
-        average_temp = (temp_data[current_date]['TMIN'] + temp_data[current_date]['TMAX']) / 2
-        
-        if average_temp >= SUMMER_GERMINATION_TEMP:
-            days_at_temp += 1
-            
-            if days_at_temp >= SUMMER_GERMINATION_TIME:
-                weed_info['summer_deadline'] = current_date - timedelta(days=APP_PRIOR_TO_GERMINATION)
-                break
-        else:
-            days_at_temp = 0
-        
-        current_date += timedelta(days=1)    
-    
+
+    # Add to planner
+    my_task_name = "Summer annual weed pre-emergent herbicide application deadline."
+    planner.add_task(my_task_name, weed_info['summer_deadline'])
+
     return weed_info
