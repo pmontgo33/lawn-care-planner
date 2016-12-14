@@ -120,12 +120,12 @@ def get_seeding_info(planner, closest_station, lawn):
 
     str_ranges = []
     if len(seed_ranges) > 0:
-        for range in seed_ranges:
-            str_ranges.append(range[0].strftime("%B %d").replace(" 0", " ") +
-                              " to " + range[1].strftime("%B %d").replace(" 0", " "))
+        for first_day, last_day in seed_ranges:
+            str_ranges.append(first_day.strftime("%B %d").replace(" 0", " ") +
+                              " to " + last_day.strftime("%B %d").replace(" 0", " "))
 
-            planner.add_task("First day to seed", range[0])
-            planner.add_task("Last day to seed", range[1])
+            planner.add_task("First day to seed", first_day)
+            planner.add_task("Last day to seed", last_day)
     else:
 
         """
