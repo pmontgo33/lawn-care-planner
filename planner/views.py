@@ -30,7 +30,6 @@ def lawn_detail(request, pk):
     my_planner = lawnplanner.Planner(lawn, closest_station)
 
     # Separate the Products by type
-    seed_products = LawnProduct.objects.filter(type='Grass Seed')
     fert_products = LawnProduct.objects.filter(type='Fertilizer')
     # Add the application weight to the fertilizer products
     for product in fert_products:
@@ -39,30 +38,22 @@ def lawn_detail(request, pk):
 
         product.weight = plannerutils.round_to_quarter(first_app_total / product_nitrogen)
         product.specs['npk'] = "(%s-%s-%s)" % \
-                                  (product.specs['npk'][0], product.specs['npk'][1], product.specs['npk'][2])
+                               (product.specs['npk'][0], product.specs['npk'][1], product.specs['npk'][2])
 
+    seed_products = LawnProduct.objects.filter(type='Grass Seed')
     weed_products = LawnProduct.objects.filter(type='Weed Control')
     insect_products = LawnProduct.objects.filter(type='Insect Control')
 
-    # Finish reducing these and replace them with planner.__.__ in template.
     template_vars = {
         'lawn': lawn,
         'closest_station': closest_station,
         'planner': my_planner,
-        'seed_new_lb_range':my_planner.seeding_info['seed_new_lb_range'],
-        'seed_over_lb_range':my_planner.seeding_info['seed_over_lb_range'],
-        'seeding_ranges':my_planner.seeding_info['seed_ranges'],
+        'fertilizer_products': fert_products,
         'seed_products':seed_products,
-        'mowing_info':my_planner.mowing_info,
-        'weed_info':my_planner.weed_info,
         "weed_products":weed_products,
-        'insect_info':my_planner.insect_info,
         'insect_products':insect_products,
-        'fertilizer_apps':my_planner.fertilizer_info['apps'],
-        'fertilizer_products':fert_products,
 
     }
-
     return render(request, 'planner/lawn_detail.html', template_vars)
 
 

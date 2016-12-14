@@ -84,7 +84,7 @@ def get_seeding_info(planner, closest_station, lawn):
     seed_window = 0  # This is a variable to track the length of the current seeding window
     seeding_dates = []
 
-    while (current_date.year == current_year):
+    while current_date.year == current_year:
 
         if (closest_station.temp_data[current_date.strftime('%Y-%m-%d')]["TMIN"] >= seed_min_temp and
                     closest_station.temp_data[current_date.strftime('%Y-%m-%d')]["TMAX"] <= seed_max_temp):
@@ -158,8 +158,6 @@ def get_seeding_info(planner, closest_station, lawn):
 
         'germination_time': germination_time,
         'seed_ranges': str_ranges,
-        'seed_new_lb_range': seed_new_lb_range,
-        'seed_over_lb_range': seed_over_lb_range,
     }
 
     return seeding_info
