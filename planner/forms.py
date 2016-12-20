@@ -5,9 +5,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-import json
-
-from .models import Lawn, LawnProduct
+from .models import Lawn
 from planner.lawn import lawnutils
 
 

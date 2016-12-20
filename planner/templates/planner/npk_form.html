@@ -1,0 +1,24 @@
+{% load staticfiles %}
+{% block content %}
+
+<h4><strong>Other Product Calculator</strong></h4>
+<p>Using a different product? Enter the nutrient analysis found on the label of your product to
+    calculate how much to apply in an application.</p>
+<p>(format: Nitrogen-Phosphorus-Potassium)</p>
+<br>
+
+<form method="POST" id="npk-form" action="">
+    {% csrf_token %}
+    <input id='input-n' maxlength="2" size="2"> -
+    <input id='input-p' maxlength="2" size="2"> -
+    <input id='input-k' maxlength="2" size="2">
+    <button type="submit" class="save btn btn-success" style="margin-left:20px">Calculate</button>
+    <br>
+    <div id="results"><p>&nbsp;</p></div> <!-- errors go here -->
+
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="{% static 'js/npk_form.js' %}"></script>
+
+{% endblock %}
