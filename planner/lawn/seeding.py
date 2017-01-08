@@ -15,19 +15,22 @@ returning the smallest.
 """
 
 #   import statements
-import os
+from datetime import timedelta
 import json
-import math
-import requests
-from datetime import datetime, timedelta
 from . import lawnutils
 
 GRASS_TYPES = (
     ("KBG", "Kentucky Bluegrass"),
     ("PRG", "Perennial Ryegrass"),
     ("TTTF", "Turf Type Tall Fescue"),
+    ("BMG-C", "Bermudagrass, common"),
+    ("BMG-H", "Bermudagrass, hybrid")
 )
 
+with open('planner/lawn/grass_details.dat') as json_data:
+    grass_details = json.load(json_data)
+
+"""
 grass_details = {
 
     "KBG": {
@@ -56,6 +59,13 @@ grass_details = {
         "seed_over_lb_range": [3.0, 4.0],
     },
 }
+"""
+
+def output_grass_details():
+    import json
+
+    with open('planner/lawn/grass_details.dat', 'w') as outfile:
+        json.dump(grass_details, outfile, sort_keys=True, indent=4)
 
 
 def get_seeding_info(planner, closest_station, lawn):
@@ -65,12 +75,12 @@ def get_seeding_info(planner, closest_station, lawn):
     Normal Daily temperatures (NOAA dataset) of the closest weather station.
     """
 
-    grass_name = grass_details[lawn.grass_type]["name"]
-    seed_min_temp = grass_details[lawn.grass_type]["seed_min_temp"]
-    seed_max_temp = grass_details[lawn.grass_type]["seed_max_temp"]
-    germination_time = grass_details[lawn.grass_type]["germination_time"]
-    seed_new_lb_range = grass_details[lawn.grass_type]["seed_new_lb_range"]
-    seed_over_lb_range = grass_details[lawn.grass_type]["seed_over_lb_range"]
+    grass_name = lawn.grass_type.name
+    seed_min_temp = lawn.grass_type.specs['seed_min_temp']
+    seed_max_temp = lawn.grass_type.specs['seed_max_temp']
+    germination_time = lawn.grass_type.specs['germination_time']
+    seed_new_lb_range = lawn.grass_type.specs['seed_new_lb_range']
+    seed_over_lb_range = lawn.grass_type.specs['seed_over_lb_range']
 
     """
     Below iterates through the temp_data for each date, and looks for windows of
@@ -145,8 +155,6 @@ def get_seeding_info(planner, closest_station, lawn):
 
         str_ranges.append(
             "No possible seeding dates exist! The lawn location is too %s to grow this grass type." % (warm_or_cool))
-
-    lawn.grass_long_name = grass_details[lawn.grass_type]['name']
 
     # Amount of seed based on size of lawn, rounded to nearest quarter lb
     lawn.seed_new_lb_range = [lawnutils.round_to_quarter(x * (lawn.size / 1000)) for x in

@@ -8,6 +8,7 @@ from jsonfield import JSONField
 
 import os
 import json
+import collections
 
 
 class Lawn(models.Model):
@@ -17,7 +18,7 @@ class Lawn(models.Model):
     user = models.ForeignKey('auth.user')
     name = models.CharField(max_length=140)
     zip_code = models.CharField(max_length=5)
-    grass_type = models.CharField(max_length=140, choices=seeding.GRASS_TYPES)
+    grass_type = models.ForeignKey('GrassType')
     size = models.IntegerField()
     
     def __str__(self):
@@ -113,18 +114,18 @@ class LawnProduct(models.Model):
     class Meta:
         ordering = ['type', 'name']
 
-    # def get_application_weight(self, total_nitrogen):
-    #     """
-    #     :param total_nitrogen: The total nitrogen required for a given application
-    #     :return: weight: the amount of product required to achieve the total_nitrogen
-    #     """
-    #
-    #     weight = None
-    #     if 'npk' in self.specs.keys():
-    #         product_nitrogen = self.specs['npk'][0] / 100
-    #         weight = lawnutils.round_to_quarter(total_nitrogen / product_nitrogen)
-    #
-    #     return weight
-
     def __str__(self):
         return "%s - %s" % (self.type,self.name)
+
+
+class GrassType(models.Model):
+
+    name = models.CharField(max_length=200)
+    season = models.CharField(choices=(("Cool Season", "Cool Season"), ("Warm Season", "Warm Season")), max_length=200)
+    seed = models.BooleanField(default=True)
+    plugs = models.BooleanField(default=False)
+    mowing = JSONField(load_kwargs={'object_pairs_hook': collections.OrderedDict})
+    specs = JSONField()
+
+    def __str__(self):
+        return self.name
