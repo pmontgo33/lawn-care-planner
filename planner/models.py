@@ -3,7 +3,6 @@
 # created: 10/9/2016
 
 from django.db import models
-from planner.lawn import seeding, lawnutils
 from jsonfield import JSONField
 
 import os

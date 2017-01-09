@@ -3,7 +3,7 @@
 # created: 10/14/2016
 
 # import statements
-from . import seeding, fertilizer, mowing, insectcontrol, weedcontrol
+from . import establishment, fertilizer, mowing, insectcontrol, weedcontrol
 
 from datetime import date
 from collections import OrderedDict
@@ -47,7 +47,7 @@ class Planner:
         self.lawn = lawn
         self.closest_station = closest_station
 
-        self.seeding_info = seeding.get_seeding_info(self, closest_station, lawn)
+        self.seeding_info = establishment.get_establishment_info(self, closest_station, lawn)
         self.mowing_info = mowing.get_mowing_info(self, closest_station, lawn)
         self.fertilizer_info = fertilizer.get_fertilizer_info(self, closest_station, lawn)
         self.weed_info = weedcontrol.get_weed_control_info(self, closest_station, lawn)

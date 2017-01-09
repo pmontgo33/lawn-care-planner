@@ -19,7 +19,7 @@
             <p class="col-sm-6"><strong>ZIP Code: </strong>{{ lawn.zip_code }}</p>
           </div>
           <div class="row">
-            <p class="col-sm-5"><strong>Grass Type: </strong>{{ lawn.grass_long_name }}</p>
+            <p class="col-sm-5"><strong>Grass Type: </strong>{{ lawn.grass_type.name }}</p>
             <p class="col-sm-6"><strong>Closest Weather Station: </strong>{{ closest_station.name }}</p>
           </div>
           <div class="row">
@@ -180,20 +180,30 @@
                   
                   <!-- SEEDING SCHEDULE -->
                   <div class="col-lg-4">
-                      <h4><strong>Seeding Schedule</strong></h4>
-                        <p><strong>Amount of Seed (<a href="http://plantscience.psu.edu/research/centers/turf/extension/factsheets/seed">source</a>):</strong></p>
-                          <ul>
-                            <li>Establish New Lawn: {{ lawn.seed_new_lb_range.0 }} to {{ lawn.seed_new_lb_range.1 }} lbs</li>
-                            <li>Overseed: {{ lawn.seed_over_lb_range.0 }} to {{ lawn.seed_over_lb_range.1 }} lbs</li>
-                          </ul>
-                          </p>
-                        <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ planner.seeding_info.germination_time }} days</p>
-                        <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
-                        <ul>
-                            {% for range in planner.seeding_info.seed_ranges %}
-                                <li>{{ range }}</li>
-                            {% endfor %}
-                        </ul>
+                      {% if lawn.grass_type.seed %}
+                      <div class="establish from seed">
+                          <h4><strong>Seeding Schedule</strong></h4>
+                            <p><strong>Amount of Seed (<a href="http://plantscience.psu.edu/research/centers/turf/extension/factsheets/seed">source</a>):</strong></p>
+                              <ul>
+                                <li>Establish New Lawn: {{ lawn.seed_new_lb_range.0 }} to {{ lawn.seed_new_lb_range.1 }} lbs</li>
+                                <li>Overseed: {{ lawn.seed_over_lb_range.0 }} to {{ lawn.seed_over_lb_range.1 }} lbs</li>
+                              </ul>
+                              </p>
+                            <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ lawn.grass_type.specs.germination_time }} days</p>
+                            <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
+                            <ul>
+                                {% for range in planner.seeding_info.seed_ranges %}
+                                    <li>{{ range }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        {% if lawn.grass_type.plugs %}
+                        <div class="establish from plugs">
+                            <h4><strong>Plugs Schedule</strong></h4>
+                        </div>
+                        {% endif %}
                   </div>
                   
                   <!-- SEEDING PRODUCTS -->
