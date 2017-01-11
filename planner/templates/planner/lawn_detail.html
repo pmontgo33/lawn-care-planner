@@ -188,7 +188,6 @@
                                 <li>Establish New Lawn: {{ lawn.seed_new_lb_range.0 }} to {{ lawn.seed_new_lb_range.1 }} lbs</li>
                                 <li>Overseed: {{ lawn.seed_over_lb_range.0 }} to {{ lawn.seed_over_lb_range.1 }} lbs</li>
                               </ul>
-                              </p>
                             <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ lawn.grass_type.specs.germination_time }} days</p>
                             <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
                             <ul>
@@ -198,10 +197,19 @@
                             </ul>
                         </div>
                         {% endif %}
-
+                        <br>
                         {% if lawn.grass_type.plugs %}
                         <div class="establish from plugs">
                             <h4><strong>Plugs Schedule</strong></h4>
+                            <p><strong>Number of Plugs (<a href="http://lawnplugs.com/info/howmanyplugs.html">source</a>):</strong> {{ lawn.number_of_plugs }}</p>
+
+                            <p><strong>Establishment Period (<a href="http://lawnplugs.com/info/whentoplant.html">source</a>): </strong>{{ lawn.grass_type.specs.plugs_time }} days</p>
+                            <p><strong>Best Dates for Planting Plugs (<a href="http://lawnplugs.com/info/whentoplant.html">source</a>):</strong></p>
+                            <ul>
+                                {% for range in planner.seeding_info.plugs_ranges %}
+                                    <li>{{ range }}</li>
+                                {% endfor %}
+                            </ul>
                         </div>
                         {% endif %}
                   </div>
@@ -214,7 +222,7 @@
 
                         <ul>
                             {% for product in seed_products %}
-                                {% if product.specs.type == lawn.grass_long_name %}
+                                {% if product.specs.type == lawn.grass_type.name %}
                                     <li>{{ product.name }}
                                         <ul>
                                             <li>

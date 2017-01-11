@@ -9,6 +9,7 @@ import os
 import json
 import collections
 
+from planner.lawn import lawnutils
 
 class Lawn(models.Model):
     """
@@ -19,6 +20,28 @@ class Lawn(models.Model):
     zip_code = models.CharField(max_length=5)
     grass_type = models.ForeignKey('GrassType')
     size = models.IntegerField()
+
+    @property
+    def seed_new_lb_range(self):
+        if not self.grass_type.seed:
+            return None
+        return [lawnutils.round_to_quarter(x * (self.size / 1000)) for x in
+                self.grass_type.specs['seed_new_lb_range']]
+
+    @property
+    def seed_over_lb_range(self):
+        if not self.grass_type.seed:
+            return None
+        return [lawnutils.round_to_quarter(x * (self.size / 1000)) for x in
+                self.grass_type.specs['seed_over_lb_range']]
+
+    @property
+    def number_of_plugs(self):
+        if not self.grass_type.plugs:
+            return None
+
+        PLUGS_PER_SF = .5625
+        return round(PLUGS_PER_SF * self.size)
     
     def __str__(self):
         return self.name
