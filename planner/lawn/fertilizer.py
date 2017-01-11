@@ -11,20 +11,27 @@ from datetime import datetime, date, timedelta
 from collections import OrderedDict
 from . import lawnplanner, lawnutils
 
+COOL_SPRING_APPLY_ABOVE = 60 # degrees F
+WARM_SPRING_APPLY_ABOVE = 80 # degrees F
 
-def spring_apps(closest_station):
+
+def spring_apps(closest_station, lawn):
     """
     Spring Application plan is to put down one application of .75lb Nitrogen per
-    1000 sf when the average temperatures get above 60F. 
+    1000 sf when the average temperatures get above COOL_SPRING_APPLY_ABOVE or WARM_SPRING_APPLY_ABOVE.
     """
-    
-    APPLY_ABOVE = 60 # degrees F
+
+    if lawn.grass_type.season == "Cool Season":
+        APPLY_ABOVE = COOL_SPRING_APPLY_ABOVE
+    else:
+        APPLY_ABOVE = WARM_SPRING_APPLY_ABOVE
+
     APP_RATE = .75 # lb per 1000 sf
     my_apps = []
     current_date = lawnplanner.seasons_dates['spring'][0]
     current_year = current_date.year
     
-    while (current_date.year == current_year): # should this be date < end of spring date??????
+    while current_date.year == current_year: # should this be date < end of spring date??????
         """
         Iterate through the temp_data and find the first day that the average temperature
         is above the APPLY_ABOVE value. We only need the first day, so then the loop breaks
@@ -41,7 +48,7 @@ def spring_apps(closest_station):
     return my_apps
 
 
-def fall_apps(closest_station):
+def cool_fall_apps(closest_station):
     """
     Fall Application plan is to put down two applications of .75 lb Nitrogen per
     1000 sf
@@ -90,9 +97,8 @@ def fall_apps(closest_station):
     my_apps.append(None)
     print(closest_station.name)
     
-    low_temp = None
     app_date = None
-    while (current_date < lawnplanner.seasons_dates['fall'][1]):
+    while current_date < lawnplanner.seasons_dates['fall'][1]:
         """
         Iterate through the temp_data and find the first day that the TMIN temperature
         is above the APP_ABOVE value. If none is found, than use the last day of fall.
@@ -104,19 +110,18 @@ def fall_apps(closest_station):
         
         current_date += timedelta(days=1)
     
-    if app_date == None:
+    if app_date is None:
         """
         If this weather station temps never reach the APPLY_ABOVE threshold, then
         the app_date will be APPLY_DAYS_BEFORE_TEMP days before the last day of fall
         """
         app_date = lawnplanner.seasons_dates['fall'][1] - timedelta(days=APPLY_DAYS_BEFORE_TEMP)
 
-    app_date = current_date - timedelta(days=APPLY_DAYS_BEFORE_TEMP)
     my_apps[-1] = {'date':app_date, 'rate':APP_RATE, 'end_date':None}
     
     return my_apps
 
-def summer_apps(between_dates):
+def cool_summer_apps(between_dates):
     """
     Summer Application plan is to put down one application of .75lb Nitrogen per
     1000 sf right between the Fall and Spring applications. 
@@ -136,6 +141,69 @@ def summer_apps(between_dates):
     
     return my_apps
 
+def warm_summer_apps(first_app_date, last_app_date):
+    """
+    Warm Season Summer Application plan is to put down an application of .75lb Nitrogen per
+    1000 sf every RANGE_BETWEEN_APPS two times.
+    """
+
+    APP_RATE = .75  # lb per 1000 sf
+    RANGE_BETWEEN_APPS = (28, 56)
+    my_apps = []
+
+    days_btwn_apps = int((last_app_date - first_app_date).days / 3)
+
+    if days_btwn_apps < RANGE_BETWEEN_APPS[0]:
+        # One application if there is not time for two
+        days_btwn_apps = int((last_app_date - first_app_date).days / 2)
+        start_app_date = first_app_date + timedelta(days=days_btwn_apps)
+        my_apps.append({'date': start_app_date, 'rate': APP_RATE, 'end_date': None})
+    else:
+        # Two applications
+        start_app_date = first_app_date + timedelta(days=days_btwn_apps)
+        my_apps.append({'date': start_app_date, 'rate': APP_RATE, 'end_date': None})
+
+        start_app_date += timedelta(days=days_btwn_apps)
+        my_apps.append({'date': start_app_date, 'rate': APP_RATE, 'end_date': None})
+
+    return my_apps
+
+def warm_fall_apps(closest_station):
+    """
+    Warm Season Fall Application plan is to put down an application of .75lb Nitrogen per
+    1000 sf 56 days before low temp reaches 32 degrees F.
+    """
+
+    APP_RATE = .75  # lb per 1000 sf
+    APPLY_ABOVE = 32  # degrees F
+    APPLY_DAYS_BEFORE_TEMP = 42  # days before average temp is 32 degrees F
+    my_apps = []
+    print(closest_station.name)
+
+    current_date = lawnplanner.seasons_dates['fall'][0]
+    app_date = None
+    while current_date < lawnplanner.seasons_dates['fall'][1]:
+        """
+        Iterate through the temp_data and find the first day that the TMIN temperature
+        is above the APP_ABOVE value. If none is found, than use the last day of fall.
+        """
+        low_temp = closest_station.temp_data[current_date.strftime('%Y-%m-%d')]['TMIN']
+        if low_temp <= APPLY_ABOVE:
+            app_date = current_date - timedelta(days=APPLY_DAYS_BEFORE_TEMP)
+            break
+
+        current_date += timedelta(days=1)
+
+    if app_date is None:
+        """
+        If this weather station temps never reach the APPLY_ABOVE threshold, then
+        the app_date will be APPLY_DAYS_BEFORE_TEMP days before the last day of fall
+        """
+        app_date = lawnplanner.seasons_dates['fall'][1] - timedelta(days=APPLY_DAYS_BEFORE_TEMP)
+
+    my_apps.append({'date': app_date, 'rate': APP_RATE, 'end_date': None})
+
+    return my_apps
 
 def get_fert_weight(npk, required_nitrogen):
     """
@@ -170,17 +238,26 @@ def get_fertilizer_info(planner, closest_station, lawn):
     ])
 
     # Add spring applications
-    spring_applications = spring_apps(closest_station)
+    spring_applications = spring_apps(closest_station, lawn)
     fertilizer_info['apps']['spring'].extend(spring_applications)
-    
-    # Add fall applications
-    fall_applications = fall_apps(closest_station)
-    fertilizer_info['apps']['fall'].extend(fall_applications)
-    
-    # Add summer applications
-    between_dates = [spring_applications[0]['date'], fall_applications[0]['date']]
-    summer_applications = summer_apps(between_dates)
-    fertilizer_info['apps']['summer'].extend(summer_applications)
+
+    if lawn.grass_type.season == "Cool Season":
+        # Add fall applications
+        fall_applications = cool_fall_apps(closest_station)
+        fertilizer_info['apps']['fall'].extend(fall_applications)
+
+        # Add summer applications
+        between_dates = [spring_applications[0]['date'], fall_applications[0]['date']]
+        summer_applications = cool_summer_apps(between_dates)
+        fertilizer_info['apps']['summer'].extend(summer_applications)
+    else:
+        # Add fall applications
+        fall_applications = warm_fall_apps(closest_station)
+        fertilizer_info['apps']['fall'].extend(fall_applications)
+
+        # Add summer applications
+        summer_applications = warm_summer_apps(spring_applications[0]['date'], fall_applications[0]['date'])
+        fertilizer_info['apps']['summer'].extend(summer_applications)
 
     # Finalize applications and add to planner
     for season in fertilizer_info['apps']:
