@@ -121,6 +121,7 @@ def cool_fall_apps(closest_station):
     
     return my_apps
 
+
 def cool_summer_apps(between_dates):
     """
     Summer Application plan is to put down one application of .75lb Nitrogen per
@@ -140,6 +141,7 @@ def cool_summer_apps(between_dates):
     my_apps.append({'date':start_app_date, 'rate':APP_RATE, 'end_date':end_app_date})
     
     return my_apps
+
 
 def warm_summer_apps(first_app_date, last_app_date):
     """
@@ -167,6 +169,7 @@ def warm_summer_apps(first_app_date, last_app_date):
         my_apps.append({'date': start_app_date, 'rate': APP_RATE, 'end_date': None})
 
     return my_apps
+
 
 def warm_fall_apps(closest_station):
     """
@@ -205,6 +208,7 @@ def warm_fall_apps(closest_station):
 
     return my_apps
 
+
 def get_fert_weight(npk, required_nitrogen):
     """
     :param required_nitrogen: this is the required lbs of nitrogen required for the application
@@ -219,7 +223,6 @@ def get_fert_weight(npk, required_nitrogen):
 
 
 def get_fertilizer_info(planner, closest_station, lawn):
-    
     """
     This function iterates through the temperature data of the closest station
     and returns the applicable fertilizer info
@@ -227,6 +230,7 @@ def get_fertilizer_info(planner, closest_station, lawn):
 
     fertilizer_info = {
         'apps':None,
+        'description':None
     }
 
     # Fertilizer Applications
@@ -275,5 +279,21 @@ def get_fertilizer_info(planner, closest_station, lawn):
 
             planner.add_task(task_name, app['date'])
             app['date'] = app['date'].strftime("%B %d").replace(" 0", " ")
+
+    # Generate the Fertilizer Description to be displayed on the detail page.
+    if lawn.grass_type.season == "Cool Season":
+        fertilizer_info['description'] = (
+            "This fertilizer plan is based four applications per year: late Spring, mid Summer, early Fall, and late Fall. "
+            "The mid Summer application should only be done if your lawn is properly irrigated. "
+            "The dates listed below are based on average historic temperatures in your area. "
+            "These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates."
+        )
+    else:
+        fertilizer_info['description'] = (
+            "This fertilizer plan is based four applications per year: late Spring, two Summer, and late Fall. "
+            "The Summer applications should only be done if your lawn is properly irrigated. "
+            "The dates listed below are based on average historic temperatures in your area. "
+            "These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates."
+        )
 
     return fertilizer_info

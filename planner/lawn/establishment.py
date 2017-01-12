@@ -54,6 +54,30 @@ def get_establishment_info(planner, closest_station, lawn):
                                                                lawn.grass_type.specs['plugs_time'],
                                                                "plant plugs")
 
+    if lawn.grass_type.season == "Cool Season":
+        establishment_info['description'] = (
+            "The ideal days for seeding have nighttime temperatures above 40 &degF, and daytime temperatures below "
+            "80 &degF for the entirety of the germination period. The dates listed below are days with average "
+            "historic temperatures in your area within this range. These should only be used as a guideline, "
+            "and actual weather conditions should be used to determine actual seeding dates."
+            "\n"
+            "Typically fall is a more effective seeding season than spring. Soils tend to be dryer and warmer during "
+            "late August and early September than in spring. When planted in late summer, seedlings will have two cool "
+            "growing seasons (fall and spring) to become established, whereas seedlings developing from spring "
+            "establishments will be subjected to the heat and drought of summer, making survival more difficult. "
+            "Weeds are usually more of a problem in spring establishments than in late summer establishments as the "
+            "cool temperatures and frosts in late summer / early fall will slow weed development."
+        )
+        establishment_info['source'] = "http://plantscience.psu.edu/research/centers/turf/extension/factsheets/lawn-establishment"
+    else:
+        establishment_info['description'] = (
+            "The ideal days for establishment have nighttime temperatures above 65 &degF, and daytime temperatures below "
+            "95 &degF for the entirety of the growth period. The dates listed below are days with average "
+            "historic temperatures in your area within this range. These should only be used as a guideline, "
+            "and actual weather conditions should be used to determine actual dates."
+        )
+        establishment_info['source'] = "http://lawnplugs.com/info/whentoplant.html"
+
     return establishment_info
 
 

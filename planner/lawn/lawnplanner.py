@@ -47,7 +47,7 @@ class Planner:
         self.lawn = lawn
         self.closest_station = closest_station
 
-        self.seeding_info = establishment.get_establishment_info(self, closest_station, lawn)
+        self.establishment_info = establishment.get_establishment_info(self, closest_station, lawn)
         self.mowing_info = mowing.get_mowing_info(self, closest_station, lawn)
         self.fertilizer_info = fertilizer.get_fertilizer_info(self, closest_station, lawn)
         self.weed_info = weedcontrol.get_weed_control_info(self, closest_station, lawn)
