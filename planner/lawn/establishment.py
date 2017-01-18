@@ -56,8 +56,8 @@ def get_establishment_info(planner, closest_station, lawn):
 
     if lawn.grass_type.season == "Cool Season":
         establishment_info['description'] = (
-            "The ideal days for seeding have nighttime temperatures above 40 &degF, and daytime temperatures below "
-            "80 &degF for the entirety of the germination period. The dates listed below are days with average "
+            "The ideal days for seeding have nighttime temperatures above 40\u00b0F, and daytime temperatures below "
+            "80\u00b0F for the entirety of the germination period. The dates listed below are days with average "
             "historic temperatures in your area within this range. These should only be used as a guideline, "
             "and actual weather conditions should be used to determine actual seeding dates."
             "\n"
@@ -71,8 +71,8 @@ def get_establishment_info(planner, closest_station, lawn):
         establishment_info['source'] = "http://plantscience.psu.edu/research/centers/turf/extension/factsheets/lawn-establishment"
     else:
         establishment_info['description'] = (
-            "The ideal days for establishment have nighttime temperatures above 65 &degF, and daytime temperatures below "
-            "95 &degF for the entirety of the growth period. The dates listed below are days with average "
+            "The ideal days for establishment have nighttime temperatures above 65\u00b0F, and daytime temperatures below "
+            "95\u00b0F for the entirety of the growth period. The dates listed below are days with average "
             "historic temperatures in your area within this range. These should only be used as a guideline, "
             "and actual weather conditions should be used to determine actual dates."
         )

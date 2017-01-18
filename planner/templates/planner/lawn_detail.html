@@ -265,7 +265,11 @@
                     <!-- APPLICATION INFO -->
                       <div class="col-lg-4">
                           <h4><strong>Application Schedule</strong></h4>
-                          <p><strong>Summer Annual Pre-emergent Deadline: </strong>{{ planner.weed_info.summer_deadline|date:"F j" }}</p>
+                          {% if planner.weed_info.summer_deadline is None %}
+                            <p><strong>Summer Annual Pre-emergent Deadline: </strong>Can be put down any time of year</p>
+                          {% else %}
+                            <p><strong>Summer Annual Pre-emergent Deadline: </strong>{{ planner.weed_info.summer_deadline|date:"F j" }}</p>
+                          {% endif %}
                       </div>
 
                       <!-- WEED CONTROL PRODUCTS -->
