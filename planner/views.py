@@ -28,8 +28,13 @@ class LawnDetailView(View):
         # Separate the Products by type
         fert_products = LawnProduct.objects.filter(type='Fertilizer')
         # Add the application weight to the fertilizer products
-        for product in fert_products:
+
+        if len(my_planner.fertilizer_info['apps']['spring']) == 0:
+            first_app_total = my_planner.fertilizer_info['apps']['summer'][0]['total_lbs']
+        else:
             first_app_total = my_planner.fertilizer_info['apps']['spring'][0]['total_lbs']
+
+        for product in fert_products:
             product_nitrogen = product.specs['npk'][0] / 100
 
             product.weight = plannerutils.round_to_quarter(first_app_total / product_nitrogen)

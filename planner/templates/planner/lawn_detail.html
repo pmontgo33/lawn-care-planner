@@ -353,7 +353,11 @@
         <span data-toggle="offcanvas">
           <a class="list-group-item active" href="#planner" data-target="#planner" data-toggle="tab">Planner</a>
           <a class="list-group-item" href="#fertilizer" data-target="#fertilizer" data-toggle="tab">Fertilizer</a>
-          <a class="list-group-item" href="#" data-target="#seeding" data-toggle="tab">Seeding</a>
+          {% if lawn.grass_type.plugs %}
+            <a class="list-group-item" href="#" data-target="#seeding" data-toggle="tab">Seeding & Plugs</a>
+          {% else %}
+            <a class="list-group-item" href="#" data-target="#seeding" data-toggle="tab">Seeding</a>
+          {% endif %}
           <a class="list-group-item" href="#" data-target="#mowing" data-toggle="tab">Mowing</a>
           <a class="list-group-item" href="#" data-target="#weedcontrol" data-toggle="tab">Weed Control</a>
           <a class="list-group-item" href="#" data-target="#insectcontrol" data-toggle="tab">Insect Control</a>

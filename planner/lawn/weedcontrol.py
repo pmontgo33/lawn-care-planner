@@ -35,6 +35,7 @@ def get_weed_control_info(planner, closest_station, lawn):
 
     # Add to planner
     my_task_name = "Summer annual weed pre-emergent herbicide application deadline."
+    print(weed_info['summer_deadline'])
     planner.add_task(my_task_name, weed_info['summer_deadline'])
 
     return weed_info

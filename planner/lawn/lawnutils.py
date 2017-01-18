@@ -116,10 +116,13 @@ def get_gdd_date(target_gdd, base_temp, closest_station):
         if average_temp >= base_temp:
             daily_gdd = average_temp - base_temp
             current_gdd += daily_gdd
-            
+            # print(daily_gdd, current_gdd)
+
             if current_gdd >= target_gdd:
                 gdd_date = current_date
-                break
+                print(current_date)
+                return gdd_date
+                print('HI')
 
         current_date += timedelta(days=1)
     

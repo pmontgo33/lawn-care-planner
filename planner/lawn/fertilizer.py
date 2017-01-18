@@ -260,7 +260,14 @@ def get_fertilizer_info(planner, closest_station, lawn):
         fertilizer_info['apps']['fall'].extend(fall_applications)
 
         # Add summer applications
-        summer_applications = warm_summer_apps(spring_applications[0]['date'], fall_applications[0]['date'])
+        last_app_date = fall_applications[0]['date']
+
+        if len(spring_applications) == 0:
+            first_app_date = lawnplanner.seasons_dates['spring'][1]
+        else:
+            first_app_date = spring_applications[0]['date']
+        summer_applications = warm_summer_apps(first_app_date, last_app_date)
+
         fertilizer_info['apps']['summer'].extend(summer_applications)
 
     # Finalize applications and add to planner
