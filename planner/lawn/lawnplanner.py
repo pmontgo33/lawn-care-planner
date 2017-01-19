@@ -54,6 +54,7 @@ class Planner:
         self.insect_info = insectcontrol.get_insect_control_info(self, closest_station, lawn)
 
         self.trim_empty()
+        self.sort_all()
 
     def add_task(self, task_name, task_date):
         """
@@ -97,6 +98,14 @@ class Planner:
                 seasons_to_del.append(season)
         for s in seasons_to_del:
             del self.tasks_by_season[s]
+
+    def sort_all(self):
+
+        for season in self.tasks_by_season:
+            for month in self.tasks_by_season[season]:
+                if month == "All Season":
+                    continue
+                self.tasks_by_season[season][month].sort(key=lambda x: x['date'])
 
     def __str__(self):
         return str(self.tasks_by_season)
