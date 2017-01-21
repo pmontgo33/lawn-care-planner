@@ -149,5 +149,8 @@ class GrassType(models.Model):
     mowing = JSONField(load_kwargs={'object_pairs_hook': collections.OrderedDict})
     specs = JSONField()
 
+    class Meta:
+        ordering = ['season','name']
+
     def __str__(self):
         return self.name
