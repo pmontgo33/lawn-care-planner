@@ -15,7 +15,7 @@ class LawnForm(forms.ModelForm):
         model = Lawn
         
         fields = ('zip_code', 'grass_type', 'size')
-        
+
         labels = {
             'size': _('Lawn Size (square feet)'),
         }

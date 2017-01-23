@@ -18,7 +18,7 @@ class Lawn(models.Model):
     user = models.ForeignKey('auth.user')
     name = models.CharField(max_length=140)
     zip_code = models.CharField(max_length=5)
-    grass_type = models.ForeignKey('GrassType')
+    grass_type = models.ForeignKey('GrassType', default=1)
     size = models.IntegerField()
 
     @property
