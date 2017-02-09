@@ -115,7 +115,11 @@
                                             <li>
                                                 <p>
                                                 {% for site,url in product.links.items %}
-                                                    <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                    {% if site == "Home Depot" %}
+                                                        <a href={{ url.0 }} target="_blank"><img src={{ url.1 }} width="1" height="1" border="0"/>{{ site }}</a> |
+                                                    {% else %}
+                                                        <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                    {% endif %}
                                                 {% endfor %}
                                                 </p>
                                             </li>
@@ -134,8 +138,12 @@
                                             <li>
                                                 <p>
                                                 {% for site,url in product.links.items %}
-                                                <a href={{ url }} target="_blank">{{ site }}</a> |
-                                                {% endfor %}
+                                                    {% if site == "Home Depot" %}
+                                                            <a href={{ url.0 }} target="_blank"><img src={{ url.1 }} width="1" height="1" border="0"/>{{ site }}</a> |
+                                                        {% else %}
+                                                            <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                        {% endif %}
+                                                    {% endfor %}
                                                 </p>
                                             </li>
                                         </ul>
@@ -215,7 +223,11 @@
                                             <li>
                                                 <p>
                                                 {% for site,url in product.links.items %}
-                                                    <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                    {% if site == "Home Depot" %}
+                                                        <a href={{ url.0 }} target="_blank"><img src={{ url.1 }} width="1" height="1" border="0"/>{{ site }}</a> |
+                                                    {% else %}
+                                                        <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                    {% endif %}
                                                 {% endfor %}
                                                 </p>
                                             </li>
@@ -285,7 +297,11 @@
                                                 <li>
                                                     <p>
                                                     {% for site,url in product.links.items %}
-                                                        <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                        {% if site == "Home Depot" %}
+                                                            <a href={{ url.0 }} target="_blank"><img src={{ url.1 }} width="1" height="1" border="0"/>{{ site }}</a> |
+                                                        {% else %}
+                                                            <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                        {% endif %}
                                                     {% endfor %}
                                                     </p>
                                                 </li>
@@ -331,7 +347,11 @@
                                                 <li>
                                                     <p>
                                                     {% for site,url in product.links.items %}
-                                                        <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                        {% if site == "Home Depot" %}
+                                                            <a href={{ url.0 }} target="_blank"><img src={{ url.1 }} width="1" height="1" border="0"/>{{ site }}</a> |
+                                                        {% else %}
+                                                            <a href={{ url }} target="_blank">{{ site }}</a> |
+                                                        {% endif %}
                                                     {% endfor %}
                                                     </p>
                                                 </li>
