@@ -1,0 +1,8 @@
+<!-- DISPLAY PRODUCT LINKS LOOP -->
+{% for site,url in product.links.items %}
+    {% if url|length is 2 %}
+        <a href={{ url.0 }} target="_blank"><img src={{ url.1 }} width="1" height="1" border="0"/>{{ site }}</a> |
+    {% else %}
+        <a href={{ url }} target="_blank">{{ site }}</a> |
+    {% endif %}
+{% endfor %}
