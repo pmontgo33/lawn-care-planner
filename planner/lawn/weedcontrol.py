@@ -39,7 +39,8 @@ def get_weed_control_info(planner, closest_station, lawn):
         weed_info['summer_deadline'] = summer_germination_date - timedelta(days=APP_PRIOR_TO_GERMINATION)
 
         # Add to planner
-        my_task_name = "Summer annual weed pre-emergent herbicide application deadline."
+        my_task_name = "Weed pre-emergent herbicide application deadline.\n " \
+                       "NOTE: If pre-emergent is used, wait until Fall for seeding."
         planner.add_task(my_task_name, weed_info['summer_deadline'])
 
     return weed_info

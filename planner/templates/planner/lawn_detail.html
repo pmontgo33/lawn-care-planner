@@ -174,9 +174,11 @@
                             <p><strong>Germination Period (<a href="http://ipm.ucanr.edu/TOOLS/TURF/ESTABLISH/germin.html">source</a>): </strong>{{ lawn.grass_type.specs.germination_time }} days</p>
                             <p><strong>Best Dates for Seeding (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
                             <ul>
-                                {% for range in planner.establishment_info.seed_ranges %}
-                                    <li>{{ range }}</li>
-                                {% endfor %}
+                                <li>{{ planner.establishment_info.seed_ranges.1 }}</li>
+                            </ul>
+                            <p><strong>Other Potential Seeding Dates (<a href="https://youtu.be/iJeUeOq1m2E?t=1m24s">source</a>):</strong></p>
+                            <ul>
+                                <li>{{ planner.establishment_info.seed_ranges.0 }}</li>
                             </ul>
                         </div>
                         {% endif %}
