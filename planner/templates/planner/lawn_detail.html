@@ -228,18 +228,20 @@
             <div role="tabpanel" class="tab-pane fade" id="mowing">
               <div class="mowing">
                 <div class="row">
-                  <p class="col-sm-9">Based on your grass type, the below schedule of mowing heights is recommended.</p>
+                  <p class="col-lg-9">Based on your grass type, the below schedule of mowing heights is recommended.</p>
                 </div>
                 <br>
-                {% for key,value in planner.mowing_info.heights.items %}
-                  <h4>{{ value.title }}:</h4>
-                    <ul>
-                      <li><strong>Height: </strong>{{ value.height }}"</li>
-                      <li>{{ value.description }}</li>
-                    </ul>
-                {% endfor %}
-                <br>
-                <p>(<a href="https://youtu.be/6ISw5ODvKNo">source</a>)</p>
+                  <div class="col-lg-9">
+                    {% for key,value in planner.mowing_info.heights.items %}
+                      <h4>{{ value.title }}:</h4>
+                        <ul>
+                          <li><strong>Height: </strong>{{ value.height }}"</li>
+                          <li>{{ value.description }}</li>
+                        </ul>
+                    {% endfor %}
+                    <br>
+                    <p>(<a href="https://youtu.be/6ISw5ODvKNo">source</a>)</p>
+                  </div>
               </div>
             </div>
             
