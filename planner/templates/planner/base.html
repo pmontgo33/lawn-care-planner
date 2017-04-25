@@ -54,9 +54,12 @@
                 </ul>
                 <p class="navbar-text navbar-right" style="color: white;">
                 {% if user.is_authenticated %}
-                    Signed in as <a href="/accounts/email" class="navbar-link" style="color: white;">{{ user.email }}</a> / <a href="/accounts/logout" class="navbar-link" style="color: white;">Sign out</a>
+                    <a href="/accounts/email" class="navbar-link" style="color: white;">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ user.email }}
+                    </a>
+                    <a href="/accounts/logout" class="navbar-link" style="color: white;">(Sign out)</a>
                 {% else %}
-                <a href="/accounts/login" class="navbar-link" style="color: white;">Sign in</a> / <a href="/accounts/signup" class="navbar-link" style="color: white;">Sign up</a>
+                    <a href="/accounts/login" class="navbar-link" style="color: white;">Sign in</a> / <a href="/accounts/signup" class="navbar-link" style="color: white;">Sign up</a>
                 {% endif %}
                 </p>
             </div><!-- /.nav-collapse -->
