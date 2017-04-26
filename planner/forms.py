@@ -13,13 +13,19 @@ class LawnForm(forms.ModelForm):
     
     class Meta:
         model = Lawn
-        
-        fields = ('zip_code', 'grass_type', 'size')
+
+        fields = ('name', 'zip_code', 'grass_type', 'size')
 
         labels = {
             'size': _('Lawn Size (square feet)'),
         }
-        
+
+    def __init__(self, *args, **kwargs):
+        is_authenticated = kwargs.pop('is_authenticated', False)
+        super(LawnForm, self).__init__(*args, **kwargs)
+        if not is_authenticated:
+            del self.fields['name']
+
     def clean_zip_code(self):
         zip_code = self.cleaned_data['zip_code']
         

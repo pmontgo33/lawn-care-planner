@@ -118,12 +118,15 @@ def lawn_new(request):
         form = LawnForm(request.POST)
         if form.is_valid():
             lawn = form.save(commit=False)
-            lawn.user = User.objects.get(username="guest")            #either make this User guest, or look into cookie based sessions.`
-            lawn.save()
-            lawn.name = "Lawn " + str(lawn.zip_code)
+            print(lawn.name)
+            if request.user.is_anonymous():
+                lawn.user = User.objects.get(username="guest")
+                lawn.name = "Lawn " + str(lawn.zip_code)
+            else:
+                lawn.user = request.user
             lawn.save()
 
             return redirect('lawn_detail', pk=lawn.pk)
     else:
-        form = LawnForm()
-    return render(request, 'planner/lawn_edit.html', {"form":form})
+        form = LawnForm(is_authenticated=request.user.is_authenticated())
+    return render(request, 'planner/lawn_edit.html', {"form": form})

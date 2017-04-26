@@ -11,6 +11,7 @@ import collections
 
 from planner.lawn import lawnutils
 
+
 class Lawn(models.Model):
     """
     The Lawn model contains all of the properties for a specific lawn.
