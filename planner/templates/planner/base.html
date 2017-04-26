@@ -54,7 +54,7 @@
                 </ul>
                 <p class="navbar-text navbar-right" style="color: white;">
                 {% if user.is_authenticated %}
-                    <a href="/accounts/email" class="navbar-link" style="color: white;">
+                    <a href="/accounts/profile" class="navbar-link" style="color: white;">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ user.first_name }}
                     </a>
                     <a href="/accounts/logout" class="navbar-link" style="color: white;">(Sign out)</a>

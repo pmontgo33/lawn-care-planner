@@ -1,0 +1,15 @@
+{% extends "account/base.html" %}
+
+{% block content %}
+    <br>
+    <div class="user">
+        <h5><strong>First name: </strong>{{ object.first_name }}</h5>
+        <h5><strong>Last name: </strong>{{ object.last_name }}</h5>
+        <h5><strong>Email: </strong>{{ object.email }}</h5>
+    </div>
+    <br>
+    <div class="buttons">
+        <a href="/accounts/profile/edit" type="submit" class="save btn btn-default">Edit Profile</a>
+    </div>
+
+{% endblock %}

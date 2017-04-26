@@ -7,7 +7,8 @@ This file contains the views for the planner app.
 # import statements
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
-from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import View, DetailView
 from django.views.generic.edit import UpdateView
 from django.http import JsonResponse
 from planner.models import Lawn, LawnProduct
@@ -80,9 +81,9 @@ class LawnDetailView(View):
         return JsonResponse(response)
 
 
-class ProfileUpdate(UpdateView):
+class ProfileUpdate(LoginRequiredMixin, UpdateView):
     model = User
-    template_name = 'planner/profile_update_form.html'
+    template_name = 'account/profile_update_form.html'
     fields = ('first_name', 'last_name')
 
     def get(self, request, *args, **kwargs):
@@ -101,6 +102,11 @@ class ProfileUpdate(UpdateView):
     def get_object(self, queryset=None):
         return self.request.user
 
+
+class UserDetailView(LoginRequiredMixin, DetailView):
+    template_name = 'account/user_detail.html'
+    def get_object(self):
+        return self.request.user
 
 def index(request):
     return render(request, "planner/index.html", {})
