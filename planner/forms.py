@@ -26,3 +26,14 @@ class LawnForm(forms.ModelForm):
         if not lawnutils.zip_is_valid(zip_code):
             raise forms.ValidationError("Invalid ZIP code")
         return zip_code
+
+
+class SignupForm(forms.Form):
+
+    first_name = forms.CharField(max_length=45, widget=forms.TextInput(attrs={'placeholder': 'First name'}))
+    last_name = forms.CharField(max_length=45, widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
+
+    def signup(self, request, user):
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.save()

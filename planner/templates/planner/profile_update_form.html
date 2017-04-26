@@ -1,0 +1,19 @@
+{% extends "planner/base.html" %}
+
+{% block content %}
+
+    <h3>Edit Profile</h3>
+    <br>
+    
+    <form method="POST" class="ProfileUpdate">{% csrf_token %}
+        {{ form.as_p }}
+        <br>
+        <a href="/accounts/password/change" class="btn btn-link">Change Password</a>
+        <br>
+        <a href="/accounts/email" class="btn btn-link">Change Email</a>
+        <br>
+        <br>
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+
+{% endblock %}

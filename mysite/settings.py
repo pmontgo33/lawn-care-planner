@@ -105,6 +105,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_REQUIRED = False
 # After successful login, redirect to homepage
 LOGIN_REDIRECT_URL = '/'
+# Custom signup form
+ACCOUNT_SIGNUP_FORM_CLASS = 'planner.forms.SignupForm'
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 

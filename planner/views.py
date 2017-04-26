@@ -8,6 +8,7 @@ This file contains the views for the planner app.
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.views.generic import View
+from django.views.generic.edit import UpdateView
 from django.http import JsonResponse
 from planner.models import Lawn, LawnProduct
 from planner.forms import LawnForm
@@ -77,6 +78,28 @@ class LawnDetailView(View):
 
         # Send the response as a JSON response(check the docs on how to import this)
         return JsonResponse(response)
+
+
+class ProfileUpdate(UpdateView):
+    model = User
+    template_name = 'planner/profile_update_form.html'
+    fields = ('first_name', 'last_name')
+
+    def get(self, request, *args, **kwargs):
+        self.object = User.objects.get(username=self.request.user)
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        context = self.get_context_data(object=self.object, form=form)
+        return self.render_to_response(context)
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return redirect('index')
+
+    def get_object(self, queryset=None):
+        return self.request.user
 
 
 def index(request):
