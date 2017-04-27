@@ -13,17 +13,16 @@ class LawnForm(forms.ModelForm):
     
     class Meta:
         model = Lawn
-
-        fields = ('name', 'zip_code', 'grass_type', 'size')
+        exclude = ['user']
 
         labels = {
             'size': _('Lawn Size (square feet)'),
         }
 
-    def __init__(self, *args, **kwargs):
-        is_authenticated = kwargs.pop('is_authenticated', False)
+    def __init__(self, user, *args, **kwargs):
         super(LawnForm, self).__init__(*args, **kwargs)
-        if not is_authenticated:
+        print(user.is_anonymous())
+        if user.is_anonymous():
             del self.fields['name']
 
     def clean_zip_code(self):

@@ -115,7 +115,7 @@ def index(request):
 def lawn_new(request):
 
     if request.method == "POST":
-        form = LawnForm(request.POST)
+        form = LawnForm(request.user, request.POST)
         if form.is_valid():
             lawn = form.save(commit=False)
             print(lawn.name)
@@ -128,5 +128,5 @@ def lawn_new(request):
 
             return redirect('lawn_detail', pk=lawn.pk)
     else:
-        form = LawnForm(is_authenticated=request.user.is_authenticated())
+        form = LawnForm(request.user)
     return render(request, 'planner/lawn_edit.html', {"form": form})
