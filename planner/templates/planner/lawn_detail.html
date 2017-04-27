@@ -15,11 +15,14 @@
       </div>
       <div class="lawn-info">
           <div class="row">
-            <p class="col-sm-5"><strong>Lawn Name: </strong>{{ lawn.name }}</p>
-            <p class="col-sm-6"><strong>ZIP Code: </strong>{{ lawn.zip_code }}</p>
+              <p class="col-sm-4"><strong>Lawn Name: </strong>{{ lawn.name }}</p>
+              <p class="col-sm-6"><strong>ZIP Code: </strong>{{ lawn.zip_code }}</p>
+              {% if lawn.user == user %}
+              <a href="/" type="submit" class="btn btn-secondary">Edit Lawn</a>
+              {% endif %}
           </div>
           <div class="row">
-            <p class="col-sm-5"><strong>Grass Type: </strong>{{ lawn.grass_type.name }}</p>
+            <p class="col-sm-4"><strong>Grass Type: </strong>{{ lawn.grass_type.name }}</p>
             <p class="col-sm-6"><strong>Closest Weather Station: </strong>{{ closest_station.name }}</p>
           </div>
           <div class="row">

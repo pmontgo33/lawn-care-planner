@@ -47,6 +47,9 @@
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="/planner/mylawns">My Lawns</a></li>
+                    {% endif %}
                     <li><a href="/planner">Planner</a></li>
                     <li><a href="/planner/lawn/list">Examples</a></li>
                     <li><a href="/contact/feedback">Feedback</a></li>
