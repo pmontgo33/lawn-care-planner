@@ -2,13 +2,22 @@
 
 {% block content %}
 
-    <h3>New Lawn</h3>
+    {% if lawn.user == user %}
+        <h3>Edit Lawn</h3>
+    {% else %}
+        <h3>Create Lawn</h3>
+    {% endif %}
     <br>
     
     <form method="POST" class="lawn-form">{% csrf_token %}
         {{ form.as_p }}
         <br>
-        <button type="submit" class="save btn btn-default">Save</button>
+        {% if lawn.user == user %}
+            <button type="submit" class="save btn btn-success">Save</button>
+            <a href="{% url 'lawn_delete' pk=lawn.pk %}"><button type="button" class="btn btn-danger">Delete Lawn</button></a>
+        {% else %}
+            <button type="submit" class="save btn btn-success">Create</button>
+        {% endif %}
     </form>
 
 {% endblock %}

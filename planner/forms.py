@@ -13,7 +13,7 @@ class LawnForm(forms.ModelForm):
     
     class Meta:
         model = Lawn
-        exclude = ['user']
+        fields = ['name', 'zip_code', 'grass_type', 'size']
 
         labels = {
             'size': _('Lawn Size (square feet)'),
@@ -21,7 +21,6 @@ class LawnForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(LawnForm, self).__init__(*args, **kwargs)
-        print(user.is_anonymous())
         if user.is_anonymous():
             del self.fields['name']
 

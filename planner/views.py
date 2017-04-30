@@ -7,17 +7,43 @@ This file contains the views for the planner app.
 # import statements
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import View, DetailView, ListView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, DeleteView
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 from planner.models import Lawn, LawnProduct
 from planner.forms import LawnForm
 from planner.lawn import lawnplanner
 from planner import plannerutils
 
 
-class LawnDetailView(View):
+class LawnDetailView(UserPassesTestMixin, View):
+
+    def __init__(self):
+        self.raise_exception = True
+
+    def get_permission_denied_message(self):
+        return "You do not have access to this Lawn! Please go back, and create your own."
+
+    def test_func(self):
+        """
+        Tests and allows access to the specific lawn if user is superuser, user owns the lawn,
+        lawn is guest, or lawn is an example.
+        :return: True if access is allowed, False otherwise
+        """
+        lawn = get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
+
+        if self.request.user.is_superuser:
+            return True
+        elif lawn.user == User.objects.get(username="guest"):
+            return True
+        elif lawn.user == User.objects.get(username="examples"):
+            return True
+        elif lawn.user == self.request.user:
+            return True
+        else:
+            return False
 
     def get(self, request, pk, *args, **kwargs):
         lawn = get_object_or_404(Lawn, pk=pk)
@@ -117,6 +143,12 @@ class UserLawnListView(LoginRequiredMixin, ListView):
         return Lawn.objects.filter(user=self.request.user)
 
 
+class LawnDeleteView(DeleteView):
+    model = Lawn
+    success_url = reverse_lazy('user_lawn_list')
+    template_name = 'planner/lawn_confirm_delete.html'
+
+
 def index(request):
     return render(request, "planner/index.html", {})
 
@@ -127,7 +159,7 @@ def lawn_new(request):
         form = LawnForm(request.user, request.POST)
         if form.is_valid():
             lawn = form.save(commit=False)
-            print(lawn.name)
+
             if request.user.is_anonymous():
                 lawn.user = User.objects.get(username="guest")
                 lawn.name = "Lawn " + str(lawn.zip_code)
@@ -139,3 +171,20 @@ def lawn_new(request):
     else:
         form = LawnForm(request.user)
     return render(request, 'planner/lawn_edit.html', {"form": form})
+
+
+# Change to a class based view and make this a UserPassesTextMixen
+def lawn_edit(request, pk):
+    lawn = get_object_or_404(Lawn, pk=pk)
+
+    if request.method == "POST":
+        form = LawnForm(request.user, request.POST, instance=lawn)
+        if form.is_valid():
+            lawn = form.save(commit=False)
+            lawn.user = request.user
+            lawn.save()
+
+            return redirect('lawn_detail', pk=lawn.pk)
+    else:
+        form = LawnForm(request.user, instance=lawn)
+    return render(request, 'planner/lawn_edit.html', {"form": form, "lawn":lawn})
