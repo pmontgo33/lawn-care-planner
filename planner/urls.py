@@ -7,7 +7,7 @@ from django.conf.urls import url
 from django.views.generic import ListView
 from . import views
 from planner.models import Lawn
-from planner.views import LawnDetailView, ProfileUpdate, UserDetailView, UserLawnListView, LawnDeleteView
+from planner.views import LawnDetailView, ProfileUpdate, UserDetailView, UserLawnListView, LawnDeleteView, LawnNewView
 
 from django.contrib.sitemaps.views import sitemap
 from .sitemaps import StaticViewSitemap
@@ -19,7 +19,8 @@ sitemaps = {
 urlpatterns = [
     
     url(r'^$', views.index, name="index"),
-    url(r'planner/$', views.lawn_new, name="lawn_new"),
+#    url(r'planner/$', views.lawn_new, name="lawn_new"),
+    url(r'planner/$', LawnNewView.as_view(), name='lawn_new'),
     url(r'^planner/lawn/(?P<pk>\d+)/$', LawnDetailView.as_view(), name="lawn_detail"),
     url(r'^planner/lawn/(?P<pk>\d+)/edit/$', views.lawn_edit, name='lawn_edit'),
     url(r'^planner/lawn/list/$', ListView.as_view(
