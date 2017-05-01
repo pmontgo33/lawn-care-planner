@@ -104,7 +104,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # Eliminate need to provide username, as it's a very old practice
 ACCOUNT_USERNAME_REQUIRED = False
 # After successful login, redirect to homepage
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/planner/mylawns/'
 # Custom signup form
 ACCOUNT_SIGNUP_FORM_CLASS = 'planner.forms.SignupForm'
 
