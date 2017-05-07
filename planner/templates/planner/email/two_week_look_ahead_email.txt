@@ -1,0 +1,20 @@
+{% autoescape off %}
+Hello {{ lawn.user.first_name }},
+
+You have some upcoming lawn care activities on your planner. Get prepared!
+
+Two week look ahead:
+{% for task in lawn.upcoming %}
+    • {{ task.date|date:"F j"  }} - {{ task.name }}
+{% endfor %}
+
+Lawn: {{ lawn.name }}
+Location: {{ lawn.zip_code }}
+Grass Type: {{ lawn.grass_type }}{% endautoescape %}
+
+Click the link below for more details on these tasks, and to view your entire planner.
+{{ planner_url }}
+
+Stay green!
+
+-lcp

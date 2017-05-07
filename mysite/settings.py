@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+
 ]
 
 MIDDLEWARE = [
@@ -93,7 +94,7 @@ AUTHENTICATION_BACKENDS = (
 
 # Added for django-allauth
 SITE_ID = 1
-#EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 
 # Custom allauth settings
 # Use email as the primary identifier
@@ -170,7 +171,7 @@ EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
-DEFAULT_FROM_EMAIL = 'noreply@lawncareplanner.com'
+DEFAULT_FROM_EMAIL = 'Lawn Care Planner <noreply@lawncareplanner.com>'
 
 # The following was added from the below site in order to set up Heroku:
 # https://djangogirls.gitbooks.io/django-girls-tutorial-extensions/content/heroku/

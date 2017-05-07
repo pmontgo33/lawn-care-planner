@@ -107,5 +107,16 @@ class Planner:
                     continue
                 self.tasks_by_season[season][month].sort(key=lambda x: x['date'])
 
+    def all_tasks(self):
+
+        tasks = []
+        for season in self.tasks_by_season:
+            for month in self.tasks_by_season[season]:
+                if month == "All Season":
+                    continue
+                for task in self.tasks_by_season[season][month]:
+                    tasks.append(task)
+        return tasks
+
     def __str__(self):
         return str(self.tasks_by_season)
