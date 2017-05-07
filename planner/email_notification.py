@@ -55,7 +55,7 @@ def send_two_week_look_ahead():
     data = get_two_week_data()
     for lawn in data:
         send_to = lawn.user.email
-        subject = "LCP: %s - Two Week Look Ahead" % (lawn.name)
+        subject = "%s - Two Week Look Ahead" % (lawn.name)
 
         planner_url = "http://lawncareplanner.com/planner/lawn/%s/" % (str(lawn.pk))
         context = Context({'lawn': lawn, 'planner_url': planner_url})
