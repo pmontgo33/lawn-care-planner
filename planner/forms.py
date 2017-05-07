@@ -1,6 +1,6 @@
-# planner/forms.py
-# Patrick W. Montgomery
-# created: 10/12/2016
+"""
+This file contains all forms for the planner app
+"""
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -13,16 +13,18 @@ class LawnForm(forms.ModelForm):
     
     class Meta:
         model = Lawn
-        fields = ['name', 'zip_code', 'grass_type', 'size']
+        fields = ['name', 'zip_code', 'grass_type', 'size', 'weekly_notify']
 
         labels = {
             'size': _('Lawn Size (square feet)'),
+            'weekly_notify': _('Send me email notifications for upcoming lawn care activites'),
         }
 
     def __init__(self, user, *args, **kwargs):
         super(LawnForm, self).__init__(*args, **kwargs)
         if user.is_anonymous():
             del self.fields['name']
+            del self.fields['weekly_notify']
 
     def clean_zip_code(self):
         zip_code = self.cleaned_data['zip_code']

@@ -36,16 +36,15 @@ def get_two_week_data():
         if lawn.user in (User.objects.get(username="guest"), User.objects.get(username="examples")):
             # skip this lawn if it is not a real user
             continue
-
-        # TODO add in way to skip a lawn if the user has opted out of notifications
-
-        my_planner = get_planner_data(lawn)
-        my_upcoming = []
-        for task in my_planner.all_tasks():
-            if today <= task['date'].replace(year=today.year) <= two_weeks_from_today:
-                my_upcoming.append(task)
-        lawn.upcoming = my_upcoming
-        upcoming_lawns.append(lawn)
+        if lawn.weekly_notify == True:
+            # if the user has elected to receive email notifications.
+            my_planner = get_planner_data(lawn)
+            my_upcoming = []
+            for task in my_planner.all_tasks():
+                if today <= task['date'].replace(year=today.year) <= two_weeks_from_today:
+                    my_upcoming.append(task)
+            lawn.upcoming = my_upcoming
+            upcoming_lawns.append(lawn)
 
     return upcoming_lawns
 

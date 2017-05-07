@@ -21,6 +21,7 @@ class Lawn(models.Model):
     zip_code = models.CharField(max_length=5)
     grass_type = models.ForeignKey('GrassType')
     size = models.IntegerField()
+    weekly_notify = models.BooleanField(default=True)
 
     @property
     def seed_new_lb_range(self):
