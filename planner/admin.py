@@ -4,7 +4,6 @@ This file creates custom admin sections for models, and registers models on the 
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
 from planner.models import Lawn, WeatherStation, LawnProduct, GrassType
 
 
@@ -19,11 +18,23 @@ class LawnAdmin(admin.ModelAdmin):
         return str(obj.user.email)
     user_email.admin_order_field = 'user__email'
 
+
+class LawnProductAdmin(admin.ModelAdmin):
+    list_display = ['name', 'type']
+    list_filter = ('type',)
+
+
+class GrassTypeAdmin(admin.ModelAdmin):
+    list_display = ['name', 'season']
+    list_filter = ('season',)
+
+
 class WeatherStationAdmin(admin.ModelAdmin):
     list_display = ['name', 'stationid', 'latitude', 'longitude']
     search_fields = ['name']
 
+
 admin.site.register(WeatherStation, WeatherStationAdmin)
-admin.site.register(Lawn, LawnAdmin )
-admin.site.register(LawnProduct)
-admin.site.register(GrassType)
+admin.site.register(Lawn, LawnAdmin)
+admin.site.register(LawnProduct, LawnProductAdmin)
+admin.site.register(GrassType, GrassTypeAdmin)
