@@ -36,7 +36,7 @@ def get_two_week_data():
         if lawn.user in (User.objects.get(username="guest"), User.objects.get(username="examples")):
             # skip this lawn if it is not a real user
             continue
-        if lawn.weekly_notify == True:
+        if lawn.weekly_notify:
             # if the user has elected to receive email notifications.
             my_planner = get_planner_data(lawn)
             my_upcoming = []
