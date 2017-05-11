@@ -30,19 +30,18 @@ def get_two_week_data():
     today = date.today()
     two_weeks_from_today = today + timedelta(days=14)
 
-    lawns = Lawn.objects.all()
+    # filter lawns that want notifications and are real users (not guest or examples)
+    lawns = Lawn.objects.filter(weekly_notify=True).exclude(user__username__in=['guest', 'examples'])
     upcoming_lawns = []
     for lawn in lawns:
-        if lawn.user in (User.objects.get(username="guest"), User.objects.get(username="examples")):
-            # skip this lawn if it is not a real user
-            continue
-        if lawn.weekly_notify == True:
-            # if the user has elected to receive email notifications.
-            my_planner = get_planner_data(lawn)
-            my_upcoming = []
-            for task in my_planner.all_tasks():
-                if today <= task['date'].replace(year=today.year) <= two_weeks_from_today:
-                    my_upcoming.append(task)
+        my_planner = get_planner_data(lawn)
+        my_upcoming = []
+        for task in my_planner.all_tasks():
+            if today <= task['date'].replace(year=today.year) <= two_weeks_from_today:
+                my_upcoming.append(task)
+
+        # if there are any upcoming tasks, add this lawn to the upcoming lawns list.
+        if len(my_upcoming) > 0:
             lawn.upcoming = my_upcoming
             upcoming_lawns.append(lawn)
 
