@@ -12,10 +12,14 @@ from django.views.generic import View, DetailView, ListView
 from django.views.generic.edit import UpdateView, DeleteView, FormView
 from django.http import JsonResponse
 from django.urls import reverse_lazy, reverse
+
 from planner.models import Lawn, LawnProduct
 from planner.forms import LawnForm
 from planner.lawn import lawnplanner
 from planner import plannerutils
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 def user_can_view_lawn(lawn, user):
@@ -52,6 +56,7 @@ def user_can_edit_lawn(lawn, user):
 
 
 def index(request):
+    logger.debug("Index View (homepage)")
     return render(request, "planner/index.html", {})
 
 
@@ -61,6 +66,7 @@ class LawnDetailView(UserPassesTestMixin, View):
         self.raise_exception = True
 
     def get_permission_denied_message(self):
+        logger.info("LawnDetailView - Access Denied")
         return "You do not have access to this Lawn! Please go back, and create your own."
 
     def test_func(self):
@@ -68,10 +74,13 @@ class LawnDetailView(UserPassesTestMixin, View):
         return user_can_view_lawn(lawn, self.request.user)
 
     def get(self, request, pk, *args, **kwargs):
+        logger.debug("LawnDetailView GET")
+
         lawn = get_object_or_404(Lawn, pk=pk)
 
         # Get the closest station and min/max temperature data for that station based on the ZIP code
         closest_station = plannerutils.get_closest_station_data(lawn.zip_code)
+        logger.info("Closest Staion: %s" % (closest_station))
 
         my_planner = lawnplanner.Planner(lawn, closest_station)
 
@@ -108,7 +117,8 @@ class LawnDetailView(UserPassesTestMixin, View):
         return render(request, 'planner/lawn_detail.html', template_vars)
 
     def post(self, request, pk, *args, **kwargs):
-        print("post")
+        logger.debug("LawnDetailView POST (NPK Calculator submitted)")
+
         lawn = get_object_or_404(Lawn, pk=pk)
         # Create an empty dictionary
         response = {}
@@ -135,6 +145,7 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     fields = ('first_name', 'last_name')
 
     def get(self, request, *args, **kwargs):
+        logger.debug("ProfileUpdateView GET")
         self.object = User.objects.get(username=self.request.user)
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -145,7 +156,8 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
-        return redirect('index')
+        logger.info("Profile Updated - User: %s" % (self.object.user))
+        return redirect('user_detail')
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -155,6 +167,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     template_name = 'account/user_detail.html'
 
     def get_object(self):
+        logger.debug("UserDetailView")
         return self.request.user
 
 
@@ -163,6 +176,7 @@ class UserLawnListView(LoginRequiredMixin, ListView):
     template_name = 'planner/user_lawn_list.html'
 
     def get_queryset(self):
+        logger.debug("UserLawnListView")
         return Lawn.objects.filter(user=self.request.user)
 
 
@@ -172,9 +186,11 @@ class LawnDeleteView(UserPassesTestMixin, DeleteView):
     template_name = 'planner/lawn_confirm_delete.html'
 
     def __init__(self):
+        logger.debug("LawnDeleteView")
         self.raise_exception = True
 
     def get_permission_denied_message(self):
+        logger.info("LawnDeleteView - Access Denied")
         return "You do not have access to this Lawn! Please go back, and create your own."
 
     def test_func(self):
@@ -195,11 +211,13 @@ class LawnNewView(FormView):
         else:
             lawn.user = self.request.user
         lawn.save()
+        logger.info("New Lawn Created - Name: %s, User: %s" % (lawn.name, lawn.user.email))
 
         self.kwargs['lawn_pk'] = lawn.pk
         return super(LawnNewView, self).form_valid(form)
 
     def get_form_kwargs(self):
+        logger.debug("LawnNewView")
         kwargs = super(LawnNewView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
@@ -214,9 +232,11 @@ class LawnEditView(UserPassesTestMixin, UpdateView):
     template_name = 'planner/lawn_edit.html'
 
     def __init__(self):
+        logger.debug("LawnEditView")
         self.raise_exception = True
 
     def get_permission_denied_message(self):
+        logger.info("LawnEditView - Access Denied")
         return "You do not have access to this Lawn! Please go back, and create your own."
 
     def get_object(self, queryset=None):
@@ -228,6 +248,8 @@ class LawnEditView(UserPassesTestMixin, UpdateView):
         return kwargs
 
     def get_success_url(self):
+        lawn = self.get_object()
+        logger.info("Lawn Edited - Name: %s, User: %s" % (lawn.name, lawn.user.email))
         return reverse('lawn_detail', kwargs={'pk':self.kwargs.get('pk')})
 
     def test_func(self):

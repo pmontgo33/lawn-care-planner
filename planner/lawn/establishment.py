@@ -20,6 +20,9 @@ returning the smallest.
 from datetime import timedelta
 from . import lawnutils
 
+import logging
+logger = logging.getLogger(__name__)
+
 """
 with open('planner/lawn/grass_details.dat') as json_data:
     grass_details = json.load(json_data)
@@ -39,7 +42,7 @@ def get_establishment_info(planner, closest_station, lawn):
     and return the expecting seeding dates for that grass type based on the
     Normal Daily temperatures (NOAA dataset) of the closest weather station.
     """
-
+    logger.debug("get_establishment_info - Lawn: %s, Station: %s" % (lawn, closest_station))
     establishment_info = {}
     if lawn.grass_type.seed:
         establishment_info['seed_ranges'] = get_growth_ranges(planner, closest_station, lawn,

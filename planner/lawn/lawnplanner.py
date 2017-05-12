@@ -8,6 +8,9 @@ from . import establishment, fertilizer, mowing, insectcontrol, weedcontrol
 from datetime import date
 from collections import OrderedDict
 
+import logging
+logger = logging.getLogger(__name__)
+
 seasons_dates = {
         "spring": [date(2010, 3, 1), date(2010, 5, 31)],
         "summer": [date(2010, 6, 1), date(2010, 8, 31)],
@@ -37,7 +40,8 @@ def season_of_date(task_date):
 class Planner:
     
     def __init__(self, lawn, closest_station):
-        
+        logger.info("New Planner Started - Lawn: %s, Station: %s" % (lawn, closest_station))
+
         self.tasks_by_season = OrderedDict()
         self.tasks_by_season['spring'] = OrderedDict([("All Season",[]), ("March",[]), ("April",[]), ("May",[])])
         self.tasks_by_season['summer'] = OrderedDict([("All Season",[]), ("June",[]), ("July",[]), ("August",[])])
@@ -46,6 +50,7 @@ class Planner:
 
         self.lawn = lawn
         self.closest_station = closest_station
+        # TODO Move closest_staition finding function to the lawn module, and just pass the zip code?
 
         self.establishment_info = establishment.get_establishment_info(self, closest_station, lawn)
         self.mowing_info = mowing.get_mowing_info(self, closest_station, lawn)
@@ -55,6 +60,7 @@ class Planner:
 
         self.trim_empty()
         self.sort_all()
+        logger.info("New Planner Created - Lawn: %s, Station: %s" % (lawn, closest_station))
 
     def add_task(self, task_name, task_date):
         """

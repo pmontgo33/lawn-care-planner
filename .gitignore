@@ -7,6 +7,7 @@ db.sqlite3
 local_settings.py
 /planner/lawn/FullNormalTempData.dat
 /planner/fixtures
+/logs
 .env
 settings.ini
 .idea
