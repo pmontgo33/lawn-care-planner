@@ -25,10 +25,10 @@ urlpatterns = [
     url(r'^planner/lawn/(?P<pk>\d+)/edit/$', LawnEditView.as_view(), name='lawn_edit'),
     url(r'^planner/lawn/list/$', ListView.as_view(
                         queryset=Lawn.objects.filter(user__username="examples").order_by('name'),
-                        template_name="planner/lawn_list.html"), name="lawn_list"),
+                        template_name="planner/lawn_list.html"), name="example_lawn_list"),
     url(r'^planner/lawn/(?P<pk>\d+)/delete/$', LawnDeleteView.as_view(), name="lawn_delete"),
-    url(r'^accounts/profile/$', UserDetailView.as_view(), name="user_detail"),
-    url(r'^accounts/profile/edit/$', ProfileUpdate.as_view(), name="user_profile"),
+    url(r'^accounts/profile/$', UserDetailView.as_view(), name="account_profile"),
+    url(r'^accounts/profile/edit/$', ProfileUpdate.as_view(), name="account_profile_edit"),
     url(r'^planner/mylawns/$', UserLawnListView.as_view(), name="user_lawn_list"),
 
 

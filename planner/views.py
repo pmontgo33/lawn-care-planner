@@ -43,13 +43,16 @@ def user_can_view_lawn(lawn, user):
 
 def user_can_edit_lawn(lawn, user):
     """
-    Tests and allows edit & delete access to the specific lawn if user is superuser or if user owns the lawn
+    Tests and allows edit & delete access to the specific lawn if user is superuser, if user owns the lawn, or if
+    guest owns the lawn.
     :return: True if access is allowed, False otherwise
     """
 
     if user.is_superuser:
         return True
     elif lawn.user == user:
+        return True
+    elif lawn.user == User.objects.get(username="guest"):
         return True
     else:
         return False
@@ -226,10 +229,12 @@ class LawnNewView(FormView):
         return reverse('lawn_detail', kwargs={'pk':self.kwargs.get('lawn_pk')})
 
 
-class LawnEditView(UserPassesTestMixin, UpdateView):
+class LawnEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Lawn
     form_class = LawnForm
     template_name = 'planner/lawn_edit.html'
+
+    # TODO add function to redirect to previous page if cancel button is clicked.
 
     def __init__(self):
         logger.debug("LawnEditView")
@@ -238,6 +243,14 @@ class LawnEditView(UserPassesTestMixin, UpdateView):
     def get_permission_denied_message(self):
         logger.info("LawnEditView - Access Denied")
         return "You do not have access to this Lawn! Please go back, and create your own."
+
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            lawn = form.save(commit=False)
+            if lawn.user == User.objects.get(username="guest"):
+                lawn.user = self.request.user
+                lawn.save()
+        return super(LawnEditView, self).form_valid(form)
 
     def get_object(self, queryset=None):
         return get_object_or_404(Lawn, pk=self.kwargs.get('pk'))

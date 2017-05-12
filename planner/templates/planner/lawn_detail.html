@@ -19,6 +19,8 @@
               <p class="col-sm-6"><strong>ZIP Code: </strong>{{ lawn.zip_code }}</p>
               {% if lawn.user == user %}
               <a href="{% url 'lawn_edit' pk=lawn.pk %}"><button type="button" class="btn btn-secondary" style="color: #006400;">Edit Lawn</button></a>
+              {% elif lawn.user.username == 'guest' %}
+              <a href="{% url 'lawn_edit' pk=lawn.pk %}"><button type="button" class="btn btn-success">Save Lawn...</button></a>
               {% endif %}
           </div>
           <div class="row">
