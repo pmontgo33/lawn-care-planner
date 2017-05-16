@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import View, DetailView, ListView
 from django.views.generic.edit import UpdateView, DeleteView, FormView
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 
 from planner.models import Lawn, LawnProduct
@@ -239,6 +239,14 @@ class LawnEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def __init__(self):
         logger.debug("LawnEditView")
         self.raise_exception = True
+
+    def post(self, request, *args, **kwargs):
+        if 'cancel' in request.POST:
+            # ref = request.GET['ref']
+            # logger.debug("Cancel URL is ?%s?" % (ref))
+            return HttpResponseRedirect(reverse('lawn_detail', kwargs={'pk':self.get_object().pk}))
+        else:
+            return super(LawnEditView, self).post(request, *args, **kwargs)
 
     def get_permission_denied_message(self):
         logger.info("LawnEditView - Access Denied")
