@@ -226,7 +226,7 @@ LOGGING = {
         },
         'debug_file': {
             'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
+            'class': 'logging.FileHandler',
             'filters': ['require_debug_true'],
             'filename': 'logs/main_debug.log',
             'maxBytes': 1024 * 1024 * 5,  # 5 MB
