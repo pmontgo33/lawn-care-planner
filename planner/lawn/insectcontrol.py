@@ -3,8 +3,10 @@
 # created: 10/24/2016
 
 # import statements
-from datetime import datetime, date, timedelta
 from . import lawnutils
+
+import logging
+logger = logging.getLogger(__name__)
 
     
 def get_insect_control_info(planner, closest_station, lawn):
@@ -16,7 +18,9 @@ def get_insect_control_info(planner, closest_station, lawn):
     http://www.omafra.gov.on.ca/english/crops/pub811/10using.htm
     http://crops.extension.iastate.edu/cropnews/2015/06/japanese-beetles-begin-emergence
     """
-    
+
+    logger.debug("get_insect_control_info - Lawn: %s, Station: %s" % (lawn, closest_station))
+
     """
     These are all static variables, and the basis for the grub preventer
     application timing based on air temperature.

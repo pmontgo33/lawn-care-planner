@@ -6,6 +6,9 @@
 from datetime import datetime, date, timedelta
 from . import lawnutils
 
+import logging
+logger = logging.getLogger(__name__)
+
     
 def get_weed_control_info(planner, closest_station, lawn):
     
@@ -16,7 +19,9 @@ def get_weed_control_info(planner, closest_station, lawn):
     http://www.omafra.gov.on.ca/english/crops/pub811/10using.htm
     http://www.uky.edu/Ag/ukturf/4-1-14.html
     """
-    
+
+    logger.debug("get_insect_control_info - Lawn: %s, Station: %s" % (lawn, closest_station))
+
     """
     These are all static variables, and the basis for the summer annual pre-emergent
     application timing based on air temperature.

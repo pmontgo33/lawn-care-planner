@@ -11,6 +11,9 @@ import collections
 
 from planner.lawn import lawnutils
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class Lawn(models.Model):
     """

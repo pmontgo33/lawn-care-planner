@@ -10,68 +10,88 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import View, DetailView, ListView
 from django.views.generic.edit import UpdateView, DeleteView, FormView
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+
 from planner.models import Lawn, LawnProduct
 from planner.forms import LawnForm
 from planner.lawn import lawnplanner
 from planner import plannerutils
 
-
-def user_can_view_lawn(lawn, user):
-    """
-    Tests and allows view of the specific lawn if user is superuser, user owns the lawn,
-    lawn is guest, or lawn is an example.
-    :return: True if access is allowed, False otherwise
-    """
-
-    if user.is_superuser:
-        return True
-    elif lawn.user == User.objects.get(username="guest"):
-        return True
-    elif lawn.user == User.objects.get(username="examples"):
-        return True
-    elif lawn.user == user:
-        return True
-    else:
-        return False
+import logging
+logger = logging.getLogger(__name__)
 
 
-def user_can_edit_lawn(lawn, user):
-    """
-    Tests and allows edit & delete access to the specific lawn if user is superuser or if user owns the lawn
-    :return: True if access is allowed, False otherwise
-    """
+class UserCanViewLawnMixin(UserPassesTestMixin):
+    def test_func(self):
+        """
+        Tests and allows view of the specific lawn if user is superuser, user owns the lawn,
+        lawn is guest, or lawn is an example.
+        :return: True if access is allowed, False otherwise
+        """
+        lawn = get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
+        if self.request.user.is_superuser:
+            return True
+        elif lawn.user == User.objects.get(username="guest"):
+            return True
+        elif lawn.user == User.objects.get(username="examples"):
+            return True
+        elif lawn.user == self.request.user:
+            return True
+        else:
+            return False
 
-    if user.is_superuser:
-        return True
-    elif lawn.user == user:
-        return True
-    else:
-        return False
+    def get_permission_denied_message(self):
+        logger.info("Access Denied - Cannot View")
+        return "You do not have access to view this Lawn! Please go back, and create your own."
+
+
+class UserCanEditLawnMixin(UserPassesTestMixin):
+    def test_func(self):
+        """
+        Tests and allows edit & delete access to the specific lawn if user is superuser, if user owns the lawn, or if
+        guest owns the lawn.
+        :return: True if access is allowed, False otherwise
+        """
+        logger.debug("test_func, Lawn pk=%s" % (self.kwargs.get('pk')))
+        if self.request.user.is_authenticated:
+            self.raise_exception = True
+
+        lawn = get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
+        if self.request.user.is_superuser:
+            return True
+        elif self.request.user.is_anonymous:
+            return False
+        elif lawn.user == self.request.user:
+            return True
+        elif lawn.user == User.objects.get(username="guest"):
+            return True
+        else:
+            return False
+
+    def get_permission_denied_message(self):
+        logger.info("Access Denied - Cannot Edit")
+        return "You do not have access to edit this Lawn! Please go back, and create your own."
 
 
 def index(request):
+    logger.debug("Index View (homepage)")
     return render(request, "planner/index.html", {})
 
 
-class LawnDetailView(UserPassesTestMixin, View):
+class LawnDetailView(UserCanViewLawnMixin, View):
 
     def __init__(self):
         self.raise_exception = True
 
-    def get_permission_denied_message(self):
-        return "You do not have access to this Lawn! Please go back, and create your own."
-
-    def test_func(self):
-        lawn = get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
-        return user_can_view_lawn(lawn, self.request.user)
-
     def get(self, request, pk, *args, **kwargs):
+        logger.debug("LawnDetailView GET")
+
         lawn = get_object_or_404(Lawn, pk=pk)
 
         # Get the closest station and min/max temperature data for that station based on the ZIP code
         closest_station = plannerutils.get_closest_station_data(lawn.zip_code)
+        logger.info("Closest Staion: %s" % (closest_station))
 
         my_planner = lawnplanner.Planner(lawn, closest_station)
 
@@ -108,7 +128,8 @@ class LawnDetailView(UserPassesTestMixin, View):
         return render(request, 'planner/lawn_detail.html', template_vars)
 
     def post(self, request, pk, *args, **kwargs):
-        print("post")
+        logger.debug("LawnDetailView POST (NPK Calculator submitted)")
+
         lawn = get_object_or_404(Lawn, pk=pk)
         # Create an empty dictionary
         response = {}
@@ -135,6 +156,7 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
     fields = ('first_name', 'last_name')
 
     def get(self, request, *args, **kwargs):
+        logger.debug("ProfileUpdateView GET")
         self.object = User.objects.get(username=self.request.user)
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -145,7 +167,8 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
-        return redirect('index')
+        logger.info("Profile Updated - User: %s" % (self.object.user))
+        return redirect('user_detail')
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -155,6 +178,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     template_name = 'account/user_detail.html'
 
     def get_object(self):
+        logger.debug("UserDetailView")
         return self.request.user
 
 
@@ -163,24 +187,17 @@ class UserLawnListView(LoginRequiredMixin, ListView):
     template_name = 'planner/user_lawn_list.html'
 
     def get_queryset(self):
+        logger.debug("UserLawnListView")
         return Lawn.objects.filter(user=self.request.user)
 
 
-class LawnDeleteView(UserPassesTestMixin, DeleteView):
+class LawnDeleteView(UserCanEditLawnMixin, DeleteView):
     model = Lawn
     success_url = reverse_lazy('user_lawn_list')
     template_name = 'planner/lawn_confirm_delete.html'
 
     def __init__(self):
-        self.raise_exception = True
-
-    def get_permission_denied_message(self):
-        return "You do not have access to this Lawn! Please go back, and create your own."
-
-    def test_func(self):
-        lawn = get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
-        return user_can_edit_lawn(lawn, self.request.user)
-
+        logger.debug("LawnDeleteView")
 
 class LawnNewView(FormView):
     form_class = LawnForm
@@ -195,11 +212,13 @@ class LawnNewView(FormView):
         else:
             lawn.user = self.request.user
         lawn.save()
+        logger.info("New Lawn Created - Name: %s, User: %s" % (lawn.name, lawn.user.email))
 
         self.kwargs['lawn_pk'] = lawn.pk
         return super(LawnNewView, self).form_valid(form)
 
     def get_form_kwargs(self):
+        logger.debug("LawnNewView")
         kwargs = super(LawnNewView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
@@ -208,16 +227,29 @@ class LawnNewView(FormView):
         return reverse('lawn_detail', kwargs={'pk':self.kwargs.get('lawn_pk')})
 
 
-class LawnEditView(UserPassesTestMixin, UpdateView):
+class LawnEditView(UserCanEditLawnMixin, UpdateView):
     model = Lawn
     form_class = LawnForm
     template_name = 'planner/lawn_edit.html'
 
     def __init__(self):
-        self.raise_exception = True
+        logger.debug("LawnEditView")
 
-    def get_permission_denied_message(self):
-        return "You do not have access to this Lawn! Please go back, and create your own."
+    def post(self, request, *args, **kwargs):
+        if 'cancel' in request.POST:
+            # ref = request.GET['ref']
+            # logger.debug("Cancel URL is ?%s?" % (ref))
+            return HttpResponseRedirect(reverse('lawn_detail', kwargs={'pk':self.get_object().pk}))
+        else:
+            return super(LawnEditView, self).post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            lawn = form.save(commit=False)
+            if lawn.user == User.objects.get(username="guest"):
+                lawn.user = self.request.user
+                lawn.save()
+        return super(LawnEditView, self).form_valid(form)
 
     def get_object(self, queryset=None):
         return get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
@@ -228,8 +260,6 @@ class LawnEditView(UserPassesTestMixin, UpdateView):
         return kwargs
 
     def get_success_url(self):
+        lawn = self.get_object()
+        logger.info("Lawn Edited - Name: %s, User: %s" % (lawn.name, lawn.user.email))
         return reverse('lawn_detail', kwargs={'pk':self.kwargs.get('pk')})
-
-    def test_func(self):
-        lawn = get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
-        return user_can_edit_lawn(lawn, self.request.user)

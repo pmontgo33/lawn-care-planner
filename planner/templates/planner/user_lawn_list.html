@@ -5,7 +5,7 @@
     <strong><a href="{% url 'lawn_new' %}" class="top-menu">Create a New Lawn</a></strong>
     <br>
     {% for lawn in object_list %}
-		<h5><a href="/planner/lawn/{{ lawn.id }}">{{ lawn.name }}</a></h5>
+		<h5><a href="{% url 'lawn_detail' pk=lawn.id %}">{{ lawn.name }}</a></h5>
 	{% endfor %}
 
 {% endblock %}

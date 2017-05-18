@@ -173,6 +173,89 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
 DEFAULT_FROM_EMAIL = 'Lawn Care Planner <noreply@lawncareplanner.com>'
 
+# Logging settings below were taken from https://gist.github.com/st4lk/6725777#file-django_log_settings-py-L1
+# and modified to fit Heroku and his project.
+# Logging settings for django projects, works with django 1.5+
+# If DEBUG=True, all logs (including django logs) will be
+# written to console and to debug_file.
+# If DEBUG=False, logs with level INFO or higher will be
+# saved to production_file.
+# Logging usage:
+
+# import logging
+# logger = logging.getLogger(__name__)
+# logger.info("Log this message")
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue'
+        }
+    },
+    'formatters': {
+        'main_formatter': {
+            'format': '%(levelname)s:%(name)s: %(message)s '
+                      '(%(asctime)s; %(filename)s:%(lineno)d)',
+            'datefmt': "%Y-%m-%d %H:%M:%S",
+        },
+        'verbose': {
+            'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
+                       'pathname=%(pathname)s lineno=%(lineno)s ' +
+                       'funcname=%(funcName)s %(message)s'),
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'main_formatter',
+        },
+        'debug_file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filters': ['require_debug_true'],
+            'filename': 'logs/main_debug.log',
+            'maxBytes': 1024*1024*5,  # 5 MB
+            'backupCount': 7,
+            'formatter': 'main_formatter',
+        },
+        'null': {
+            "class": 'logging.NullHandler',
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins', 'console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['null', ],
+        },
+        'py.warnings': {
+            'handlers': ['null', ],
+        },
+        '': {
+            'handlers': ['console', 'debug_file'],
+            'level': "DEBUG",
+        },
+    }
+}
+
 # The following was added from the below site in order to set up Heroku:
 # https://djangogirls.gitbooks.io/django-girls-tutorial-extensions/content/heroku/
 

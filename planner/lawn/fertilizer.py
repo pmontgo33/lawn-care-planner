@@ -11,6 +11,9 @@ from datetime import datetime, date, timedelta
 from collections import OrderedDict
 from . import lawnplanner, lawnutils
 
+import logging
+logger = logging.getLogger(__name__)
+
 COOL_SPRING_APPLY_ABOVE = 60 # degrees F
 WARM_SPRING_APPLY_ABOVE = 80 # degrees F
 
@@ -95,8 +98,7 @@ def cool_fall_apps(closest_station):
     APPLY_ABOVE = 32 # degrees F
     APPLY_DAYS_BEFORE_TEMP = 14 # days before average temp is 32 degrees F
     my_apps.append(None)
-    print(closest_station.name)
-    
+
     app_date = None
     while current_date < lawnplanner.seasons_dates['fall'][1]:
         """
@@ -227,6 +229,7 @@ def get_fertilizer_info(planner, closest_station, lawn):
     This function iterates through the temperature data of the closest station
     and returns the applicable fertilizer info
     """
+    logger.debug("get_fertilizer_info - Lawn: %s, Station: %s" % (lawn, closest_station))
 
     fertilizer_info = {
         'apps':None,

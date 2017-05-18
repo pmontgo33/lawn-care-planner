@@ -6,6 +6,8 @@ This script is used to extract the mowing information from the lawn object.
 """
 
 # import statements
+import logging
+logger = logging.getLogger(__name__)
 
 
 def get_mowing_info(planner, closest_station, lawn):
@@ -15,7 +17,7 @@ def get_mowing_info(planner, closest_station, lawn):
     :param lawn: This is the users lawn.
     :return: a dictionary containing all of the mowing information
     """
-
+    logger.debug("get_mowing_info - Lawn: %s, Station: %s" % (lawn, closest_station))
     mowing_heights = lawn.grass_type.mowing
 
     for key in mowing_heights.keys():
