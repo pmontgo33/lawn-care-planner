@@ -22,41 +22,56 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def user_can_view_lawn(lawn, user):
-    """
-    Tests and allows view of the specific lawn if user is superuser, user owns the lawn,
-    lawn is guest, or lawn is an example.
-    :return: True if access is allowed, False otherwise
-    """
+class UserCanViewLawnMixin(UserPassesTestMixin):
+    def test_func(self):
+        """
+        Tests and allows view of the specific lawn if user is superuser, user owns the lawn,
+        lawn is guest, or lawn is an example.
+        :return: True if access is allowed, False otherwise
+        """
+        lawn = get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
+        if self.request.user.is_superuser:
+            return True
+        elif lawn.user == User.objects.get(username="guest"):
+            return True
+        elif lawn.user == User.objects.get(username="examples"):
+            return True
+        elif lawn.user == self.request.user:
+            return True
+        else:
+            return False
 
-    if user.is_superuser:
-        return True
-    elif lawn.user == User.objects.get(username="guest"):
-        return True
-    elif lawn.user == User.objects.get(username="examples"):
-        return True
-    elif lawn.user == user:
-        return True
-    else:
-        return False
+    def get_permission_denied_message(self):
+        logger.info("Access Denied - Cannot View")
+        return "You do not have access to view this Lawn! Please go back, and create your own."
 
 
-def user_can_edit_lawn(lawn, user):
-    """
-    Tests and allows edit & delete access to the specific lawn if user is superuser, if user owns the lawn, or if
-    guest owns the lawn.
-    :return: True if access is allowed, False otherwise
-    """
-    if user.is_superuser:
-        return True
-    elif user.is_anonymous:
-        return False
-    elif lawn.user == user:
-        return True
-    elif lawn.user == User.objects.get(username="guest"):
-        return True
-    else:
-        return False
+class UserCanEditLawnMixin(UserPassesTestMixin):
+    def test_func(self):
+        """
+        Tests and allows edit & delete access to the specific lawn if user is superuser, if user owns the lawn, or if
+        guest owns the lawn.
+        :return: True if access is allowed, False otherwise
+        """
+        logger.debug("test_func, Lawn pk=%s" % (self.kwargs.get('pk')))
+        if self.request.user.is_authenticated:
+            self.raise_exception = True
+
+        lawn = get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
+        if self.request.user.is_superuser:
+            return True
+        elif self.request.user.is_anonymous:
+            return False
+        elif lawn.user == self.request.user:
+            return True
+        elif lawn.user == User.objects.get(username="guest"):
+            return True
+        else:
+            return False
+
+    def get_permission_denied_message(self):
+        logger.info("Access Denied - Cannot Edit")
+        return "You do not have access to edit this Lawn! Please go back, and create your own."
 
 
 def index(request):
@@ -64,18 +79,10 @@ def index(request):
     return render(request, "planner/index.html", {})
 
 
-class LawnDetailView(UserPassesTestMixin, View):
+class LawnDetailView(UserCanViewLawnMixin, View):
 
     def __init__(self):
         self.raise_exception = True
-
-    def get_permission_denied_message(self):
-        logger.info("LawnDetailView - Access Denied")
-        return "You do not have access to this Lawn! Please go back, and create your own."
-
-    def test_func(self):
-        lawn = get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
-        return user_can_view_lawn(lawn, self.request.user)
 
     def get(self, request, pk, *args, **kwargs):
         logger.debug("LawnDetailView GET")
@@ -184,22 +191,13 @@ class UserLawnListView(LoginRequiredMixin, ListView):
         return Lawn.objects.filter(user=self.request.user)
 
 
-class LawnDeleteView(UserPassesTestMixin, DeleteView):
+class LawnDeleteView(UserCanEditLawnMixin, DeleteView):
     model = Lawn
     success_url = reverse_lazy('user_lawn_list')
     template_name = 'planner/lawn_confirm_delete.html'
 
     def __init__(self):
         logger.debug("LawnDeleteView")
-
-    def get_permission_denied_message(self):
-        logger.info("LawnDeleteView - Access Denied")
-        return "You do not have access to this Lawn! Please go back, and create your own."
-
-    def test_func(self):
-        lawn = get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
-        return user_can_edit_lawn(lawn, self.request.user)
-
 
 class LawnNewView(FormView):
     form_class = LawnForm
@@ -229,7 +227,7 @@ class LawnNewView(FormView):
         return reverse('lawn_detail', kwargs={'pk':self.kwargs.get('lawn_pk')})
 
 
-class LawnEditView(UserPassesTestMixin, UpdateView):
+class LawnEditView(UserCanEditLawnMixin, UpdateView):
     model = Lawn
     form_class = LawnForm
     template_name = 'planner/lawn_edit.html'
@@ -244,10 +242,6 @@ class LawnEditView(UserPassesTestMixin, UpdateView):
             return HttpResponseRedirect(reverse('lawn_detail', kwargs={'pk':self.get_object().pk}))
         else:
             return super(LawnEditView, self).post(request, *args, **kwargs)
-
-    def get_permission_denied_message(self):
-        logger.info("LawnEditView - Access Denied")
-        return "You do not have access to this Lawn! Please go back, and create your own."
 
     def form_valid(self, form):
         if self.request.user.is_authenticated:
@@ -269,10 +263,3 @@ class LawnEditView(UserPassesTestMixin, UpdateView):
         lawn = self.get_object()
         logger.info("Lawn Edited - Name: %s, User: %s" % (lawn.name, lawn.user.email))
         return reverse('lawn_detail', kwargs={'pk':self.kwargs.get('pk')})
-
-    def test_func(self):
-        logger.debug("test_func")
-        if self.request.user.is_authenticated:
-            self.raise_exception = True
-        lawn = get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
-        return user_can_edit_lawn(lawn, self.request.user)

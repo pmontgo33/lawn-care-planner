@@ -228,7 +228,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
             'filters': ['require_debug_true'],
-            'filename': 'main_debug.log',
+            'filename': 'logs/main_debug.log',
             'maxBytes': 1024*1024*5,  # 5 MB
             'backupCount': 7,
             'formatter': 'main_formatter',
