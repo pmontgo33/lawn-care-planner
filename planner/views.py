@@ -47,9 +47,10 @@ def user_can_edit_lawn(lawn, user):
     guest owns the lawn.
     :return: True if access is allowed, False otherwise
     """
-
     if user.is_superuser:
         return True
+    elif user.is_anonymous:
+        return False
     elif lawn.user == user:
         return True
     elif lawn.user == User.objects.get(username="guest"):
@@ -190,7 +191,6 @@ class LawnDeleteView(UserPassesTestMixin, DeleteView):
 
     def __init__(self):
         logger.debug("LawnDeleteView")
-        self.raise_exception = True
 
     def get_permission_denied_message(self):
         logger.info("LawnDeleteView - Access Denied")
@@ -229,16 +229,13 @@ class LawnNewView(FormView):
         return reverse('lawn_detail', kwargs={'pk':self.kwargs.get('lawn_pk')})
 
 
-class LawnEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class LawnEditView(UserPassesTestMixin, UpdateView):
     model = Lawn
     form_class = LawnForm
     template_name = 'planner/lawn_edit.html'
 
-    # TODO add function to redirect to previous page if cancel button is clicked.
-
     def __init__(self):
         logger.debug("LawnEditView")
-        self.raise_exception = True
 
     def post(self, request, *args, **kwargs):
         if 'cancel' in request.POST:
@@ -274,5 +271,8 @@ class LawnEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return reverse('lawn_detail', kwargs={'pk':self.kwargs.get('pk')})
 
     def test_func(self):
+        logger.debug("test_func")
+        if self.request.user.is_authenticated:
+            self.raise_exception = True
         lawn = get_object_or_404(Lawn, pk=self.kwargs.get('pk'))
         return user_can_edit_lawn(lawn, self.request.user)
