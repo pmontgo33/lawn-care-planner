@@ -5,6 +5,10 @@ This file contains all forms for the planner app
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div, Field
+from crispy_forms.bootstrap import Tab, TabHolder
+
 from .models import Lawn
 from planner.lawn import lawnutils
 
@@ -22,6 +26,28 @@ class LawnForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(LawnForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        # self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-3 col-sm-*'
+        self.helper.field_class = 'col-lg-4 col-sm-*'
+        self.helper.form_tag = False
+
+        self.helper.layout = Layout(
+            TabHolder(
+                Tab('Lawn Details',
+                    Field('name'),
+                    Field('zip_code'),
+                    Field('grass_type'),
+                    Field('size'),
+                    Field('weekly_notify'),
+                ),
+                Tab('Options',
+
+                ),
+            ),
+        )
+
         if user.is_anonymous():
             del self.fields['name']
             del self.fields['weekly_notify']

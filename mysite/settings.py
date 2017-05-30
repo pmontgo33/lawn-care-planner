@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
 
+    'crispy_forms',
+
 ]
 
 MIDDLEWARE = [
@@ -255,6 +257,8 @@ LOGGING = {
         },
     }
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # The following was added from the below site in order to set up Heroku:
 # https://djangogirls.gitbooks.io/django-girls-tutorial-extensions/content/heroku/
