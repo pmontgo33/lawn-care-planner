@@ -6,7 +6,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Field
+from crispy_forms.layout import Layout, HTML, Div, Field
 from crispy_forms.bootstrap import Tab, TabHolder
 
 from .models import Lawn
@@ -14,10 +14,18 @@ from planner.lawn import lawnutils
 
 
 class LawnForm(forms.ModelForm):
+
+    ORGANIC_CHOICES = (
+        ('NP', 'No Preference'),
+        ('M', 'Mostly Organic'),
+        ('A', 'All Organic'),
+    )
+
+    organic = forms.ChoiceField(choices=ORGANIC_CHOICES, widget=forms.RadioSelect(), initial='NP', label=' ')
     
     class Meta:
         model = Lawn
-        fields = ['name', 'zip_code', 'grass_type', 'size', 'weekly_notify']
+        fields = ['name', 'zip_code', 'grass_type', 'size', 'weekly_notify', 'spring_seeding', 'organic']
 
         labels = {
             'size': _('Lawn Size (square feet)'),
@@ -29,21 +37,30 @@ class LawnForm(forms.ModelForm):
 
         self.helper = FormHelper()
         # self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-lg-3 col-sm-*'
-        self.helper.field_class = 'col-lg-4 col-sm-*'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-4'
         self.helper.form_tag = False
 
         self.helper.layout = Layout(
             TabHolder(
                 Tab('Lawn Details',
-                    Field('name'),
-                    Field('zip_code'),
-                    Field('grass_type'),
-                    Field('size'),
-                    Field('weekly_notify'),
+                    HTML('<h3>Basic</h3>'),
+                    'name',
+                    'zip_code',
+                    'grass_type',
+                    'size',
+                    'weekly_notify',
                 ),
                 Tab('Options',
-
+                    Div(HTML('<p class="col-lg-8"><strong>Spring Seeding: </strong>Seeding in the spring is typically '
+                             'not recommended due to increased competition with weeds. LCP recommends seeding only in '
+                             'the fall, but there may be circumstances where you want to seed in the spring. '
+                             'If so, check below to include it in your planner. </p>'), css_class='row'),
+                    'spring_seeding',
+                    Div(HTML('<p class="col-lg-8"><strong>Organic: </strong> Mostly organic will recommend good organic '
+                             'fertilizers and some chemical weed control. All organic will not provide any '
+                             'recommendations with chemicals.</p>'), css_class='row'),
+                    'organic',
                 ),
             ),
         )

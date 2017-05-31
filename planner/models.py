@@ -20,12 +20,18 @@ class Lawn(models.Model):
     """
     The Lawn model contains all of the properties for a specific lawn.
     """
+
+    # Basic fields
     user = models.ForeignKey('auth.user')
     name = models.CharField(max_length=140)
     zip_code = models.CharField(max_length=5)
     grass_type = models.ForeignKey('GrassType')
     size = models.IntegerField()
     weekly_notify = models.BooleanField(default=True)
+
+    # Optional fields
+    spring_seeding = models.BooleanField(default=False)
+    organic = models.CharField(default='NP', max_length=2)
 
     @property
     def seed_new_lb_range(self):
