@@ -6,12 +6,14 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, HTML, Div, Field
+from crispy_forms.layout import Layout, HTML, Div, Fieldset, Field
 from crispy_forms.bootstrap import Tab, TabHolder
 
 from .models import Lawn
 from planner.lawn import lawnutils
 
+import logging
+logger = logging.getLogger(__name__)
 
 class LawnForm(forms.ModelForm):
 
@@ -21,11 +23,16 @@ class LawnForm(forms.ModelForm):
         ('A', 'All Organic'),
     )
 
+    ADVANCED_CHOICES = (
+        (False, 'Basic'),
+        (True, 'Advanced'),
+    )
+
     organic = forms.ChoiceField(choices=ORGANIC_CHOICES, widget=forms.RadioSelect(), initial='NP', label=' ')
-    
+    advanced = forms.ChoiceField(choices=ADVANCED_CHOICES, widget=forms.RadioSelect(), initial=False, label='Planner Type')
     class Meta:
         model = Lawn
-        fields = ['name', 'zip_code', 'grass_type', 'size', 'weekly_notify', 'spring_seeding', 'organic']
+        fields = ['advanced', 'name', 'zip_code', 'grass_type', 'size', 'weekly_notify', 'phosphorus', 'spring_seeding', 'organic']
 
         labels = {
             'size': _('Lawn Size (square feet)'),
@@ -44,12 +51,19 @@ class LawnForm(forms.ModelForm):
         self.helper.layout = Layout(
             TabHolder(
                 Tab('Lawn Details',
-                    HTML('<h3>Basic</h3>'),
-                    'name',
-                    'zip_code',
-                    'grass_type',
-                    'size',
-                    'weekly_notify',
+                    Div('advanced', type='input', css_id='advanced_input'),
+                    Fieldset('General',
+                             'name',
+                             'zip_code',
+                             'grass_type',
+                             'size',
+                             'weekly_notify',
+                    ),
+                    Fieldset('Advanceddd',
+                             'phosphorus',
+                             css_id='advanced_fieldset',
+                             style='display:none;'
+                    ),
                 ),
                 Tab('Options',
                     Div(HTML('<p class="col-lg-8"><strong>Spring Seeding: </strong>Seeding in the spring is typically '
@@ -57,14 +71,17 @@ class LawnForm(forms.ModelForm):
                              'the fall, but there may be circumstances where you want to seed in the spring. '
                              'If so, check below to include it in your planner. </p>'), css_class='row'),
                     'spring_seeding',
-                    Div(HTML('<p class="col-lg-8"><strong>Organic: </strong> Mostly organic will recommend good organic '
-                             'fertilizers and some chemical weed control. All organic will not provide any '
+                    Div(HTML('<p class="col-lg-8"><strong>Organic: </strong> Mostly organic will recommend good '
+                             'organic fertilizers and some chemical weed control. All organic will not provide any '
                              'recommendations with chemicals.</p>'), css_class='row'),
                     'organic',
+                ),
+                Tab('Advanced',
                 ),
             ),
         )
 
+        # self.helper['Lawn Details'].layout.append((HTML('<h1>HERE</h1>')))
         if user.is_anonymous():
             del self.fields['name']
             del self.fields['weekly_notify']

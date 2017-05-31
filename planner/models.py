@@ -33,6 +33,10 @@ class Lawn(models.Model):
     spring_seeding = models.BooleanField(default=False)
     organic = models.CharField(default='NP', max_length=2)
 
+    # Advanced fields
+    advanced = models.BooleanField(default=False)
+    phosphorus = models.PositiveSmallIntegerField(default=0)
+
     @property
     def seed_new_lb_range(self):
         if not self.grass_type.seed:

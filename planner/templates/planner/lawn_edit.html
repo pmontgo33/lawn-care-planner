@@ -23,4 +23,32 @@
         <button type="submit" class="save btn btn-success">Create</button>
     {% endif %}
 </form>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>‌​
+<script>
+
+    var radios = document.querySelectorAll('input[type=radio][name="advanced"]');
+
+    function changeHandler(event) {
+        if ( this.value === 'True' ) {
+            $("#advanced_fieldset").show()
+        }
+        else{
+            $("#advanced_fieldset").hide()
+        }
+    }
+
+    Array.prototype.forEach.call(radios, function(radio) {
+    radio.addEventListener('change', changeHandler);
+    });
+</script>
+<!--$('#advanced_input').on('change',function(){-->
+        <!--if( $(this).val()==="True"){-->
+        <!--$("#advanced_fieldset").show()-->
+        <!--}-->
+        <!--else{-->
+        <!--$("#advanced_fieldset").hide()-->
+        <!--}-->
+    <!--});-->
 {% endblock %}
