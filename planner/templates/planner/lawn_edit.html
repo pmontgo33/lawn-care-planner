@@ -30,6 +30,15 @@
 
     var radios = document.querySelectorAll('input[type=radio][name="advanced"]');
 
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        var radioValue = $("input[name='advanced']:checked").val();
+        console.log(radioValue);
+        if (radioValue === 'True') {
+            $("#advanced_fieldset").show()
+        }
+    });
+
     function changeHandler(event) {
         if ( this.value === 'True' ) {
             $("#advanced_fieldset").show()
@@ -40,15 +49,7 @@
     }
 
     Array.prototype.forEach.call(radios, function(radio) {
-    radio.addEventListener('change', changeHandler);
+        radio.addEventListener('change', changeHandler);
     });
 </script>
-<!--$('#advanced_input').on('change',function(){-->
-        <!--if( $(this).val()==="True"){-->
-        <!--$("#advanced_fieldset").show()-->
-        <!--}-->
-        <!--else{-->
-        <!--$("#advanced_fieldset").hide()-->
-        <!--}-->
-    <!--});-->
 {% endblock %}
