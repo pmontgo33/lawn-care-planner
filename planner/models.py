@@ -34,7 +34,9 @@ class Lawn(models.Model):
 
     # Advanced fields
     advanced = models.BooleanField(default=False)
+    lime = models.PositiveSmallIntegerField(default=0)
     phosphorus = models.PositiveSmallIntegerField(default=0)
+    potassium = models.PositiveSmallIntegerField(default=0)
 
     @property
     def seed_new_lb_range(self):

@@ -7,13 +7,14 @@ from django.utils.translation import ugettext_lazy as _
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, HTML, Div, Fieldset, Field
-from crispy_forms.bootstrap import Tab, TabHolder
+from crispy_forms.bootstrap import Tab, TabHolder, AppendedText
 
 from .models import Lawn
 from planner.lawn import lawnutils
 
 import logging
 logger = logging.getLogger(__name__)
+
 
 class LawnForm(forms.ModelForm):
 
@@ -25,17 +26,24 @@ class LawnForm(forms.ModelForm):
 
     ADVANCED_CHOICES = (
         (False, 'Basic'),
-        (True, 'Advanced'),
+        (True, 'Advanced (soil test)'),
     )
 
     organic = forms.ChoiceField(choices=ORGANIC_CHOICES, widget=forms.RadioSelect(), initial='NP', label=' ')
     advanced = forms.ChoiceField(choices=ADVANCED_CHOICES, widget=forms.RadioSelect(), initial=False, label='Planner Type')
+
+    lime = forms.CharField(required=False)
+    phosphorus = forms.CharField(required=False)
+    potassium = forms.CharField(required=False)
+
     class Meta:
         model = Lawn
-        fields = ['advanced', 'name', 'zip_code', 'grass_type', 'size', 'weekly_notify', 'phosphorus', 'spring_seeding', 'organic']
+        fields = ['name', 'zip_code', 'grass_type', 'size', 'weekly_notify',
+                  'advanced', 'lime', 'phosphorus', 'potassium',
+                  'spring_seeding', 'organic']
 
         labels = {
-            'size': _('Lawn Size (square feet)'),
+            'size': _('Lawn Size'),
             'weekly_notify': _('Send me email notifications for upcoming lawn care activites'),
         }
 
@@ -44,23 +52,29 @@ class LawnForm(forms.ModelForm):
 
         self.helper = FormHelper()
         # self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-lg-3'
+        self.helper.label_class = 'col-lg-2'
         self.helper.field_class = 'col-lg-4'
         self.helper.form_tag = False
 
         self.helper.layout = Layout(
             TabHolder(
                 Tab('Lawn Details',
-                    Div('advanced', type='input', css_id='advanced_input'),
                     Fieldset('General',
                              'name',
                              'zip_code',
                              'grass_type',
-                             'size',
+                             AppendedText('size', 'square feet'),
                              'weekly_notify',
                     ),
-                    Fieldset('Advanceddd',
-                             'phosphorus',
+                    Div('advanced', type='input', css_id='advanced_input'),
+                    Fieldset('Advanced',
+                             Div(HTML('<p class="col-lg-8"><strong>Advanced planners are for lawns that have soil test '
+                                      'results.</strong></p>'), css_class='row'),
+                             Div(HTML('<p class="col-lg-8">Enter the pounds of each nutrient recommended '
+                                      'on your soil test results:</p>'), css_class='row'),
+                             AppendedText('lime', 'lbs'),
+                             AppendedText('phosphorus', 'lbs'),
+                             AppendedText('potassium', 'lbs'),
                              css_id='advanced_fieldset',
                              style='display:none;'
                     ),
@@ -75,8 +89,6 @@ class LawnForm(forms.ModelForm):
                              'organic fertilizers and some chemical weed control. All organic will not provide any '
                              'recommendations with chemicals.</p>'), css_class='row'),
                     'organic',
-                ),
-                Tab('Advanced',
                 ),
             ),
         )
