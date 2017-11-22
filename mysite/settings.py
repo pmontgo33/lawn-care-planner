@@ -115,12 +115,6 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -184,7 +178,7 @@ EMAIL_PORT = config('EMAIL_PORT', cast=int)
 DEFAULT_FROM_EMAIL = 'Lawn Care Planner <noreply@lawncareplanner.com>'
 
 # Logging settings below were taken from https://gist.github.com/st4lk/6725777#file-django_log_settings-py-L1
-# and modified to fit Heroku and his project.
+# and modified to fit Heroku and this project.
 # Logging settings for django projects, works with django 1.5+
 # If DEBUG=True, all logs (including django logs) will be
 # written to console and to debug_file.
