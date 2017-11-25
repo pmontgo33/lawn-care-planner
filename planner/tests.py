@@ -4,12 +4,23 @@ This file contains all of the unit tests for the planner django app
 
 # Import Statements
 from django.test import TestCase
+from django.urls import resolve
+from planner.views import index
+from django.http import HttpRequest
 
 
-class SmokeTest(TestCase):
+class IndexTest(TestCase):
 
-    def test_bad_maths(self):
-        self.assertEqual(1 + 1, 3)
+    def test_root_url_resolves_to_index_view(self):
+        found = resolve('/')
+        self.assertEqual(found.func, index)
+
+    def test_index_returns_correct_html(self):
+        request = HttpRequest()
+        response = index(request)
+        html = response.content.decode('utf8')
+        self.assertTrue(html.startswith('<html>'))
+        self.assertIn('<title></title>')
 
 
 # class PlannerViewsTestCase(TestCase):
