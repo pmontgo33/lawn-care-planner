@@ -19,8 +19,9 @@ class IndexTest(TestCase):
         request = HttpRequest()
         response = index(request)
         html = response.content.decode('utf8')
-        self.assertTrue(html.startswith('<html>'))
-        self.assertIn('<title></title>')
+        self.assertTrue(html.startswith('<!DOCTYPE html>'))
+        self.assertIn('<title>Lawn Care Planner - Your Personal Lawn Care Schedule</title>', html)
+        self.assertTrue(html.endswith('</html>\n'))
 
 
 # class PlannerViewsTestCase(TestCase):
