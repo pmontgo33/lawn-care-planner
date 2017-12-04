@@ -6,7 +6,6 @@ This file contains all of the unit tests for the planner django app
 from django.test import TestCase
 from django.urls import resolve
 from planner.views import index
-from django.http import HttpRequest
 
 
 class IndexTest(TestCase):
@@ -16,12 +15,8 @@ class IndexTest(TestCase):
         self.assertEqual(found.func, index)
 
     def test_index_returns_correct_html(self):
-        request = HttpRequest()
-        response = index(request)
-        html = response.content.decode('utf8')
-        self.assertTrue(html.startswith('<!DOCTYPE html>'))
-        self.assertIn('<title>Lawn Care Planner - Your Personal Lawn Care Schedule</title>', html)
-        self.assertTrue(html.endswith('</html>\n'))
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, 'planner/index.html')
 
 
 # class PlannerViewsTestCase(TestCase):
