@@ -8,11 +8,7 @@ from django.urls import resolve
 from planner.views import index
 
 
-class IndexTest(TestCase):
-
-    def test_root_url_resolves_to_index_view(self):
-        found = resolve('/')
-        self.assertEqual(found.func, index)
+class PlannerViewsTestCase(TestCase):
 
     def test_index_returns_correct_html(self):
         response = self.client.get('/')

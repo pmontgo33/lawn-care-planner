@@ -34,11 +34,12 @@ class NewVisitorTest(unittest.TestCase):
         header_text = self.browser.find_element_by_tag_name('h3').text
         self.assertIn('Create Lawn', header_text)
 
-        # User sees inputs for zip code, grass type, and lawn size
-        # input_boxes = self.browser.find_elements_by_tag_name('input')
-        # self.assertTrue(
-        #     any(input_box.id == 'id_zip_code' for input_box in input_boxes)
-        # )
+        # User sees labels for inputting zip code, grass type, and lawn size
+        labels = self.browser.find_elements_by_tag_name('label')
+
+        self.assertIn('id_zip_code', [label.get_attribute('for') for label in labels])
+        self.assertIn('id_grass_type', [label.get_attribute('for') for label in labels])
+        self.assertIn('id_size', [label.get_attribute('for') for label in labels])
 
         # User enters his zip code, selects grass type from dropdown, types in lawn size, and clicks ENTER
         zip_input = self.browser.find_element_by_id('id_zip_code')
