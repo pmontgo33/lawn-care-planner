@@ -15,7 +15,7 @@
       </div>
       <div class="lawn-info">
           <div class="row">
-              <p class="col-sm-4"><strong>Lawn Name: </strong>{{ lawn.name }}</p>
+              <p class="col-sm-4" id="id_lawn_name"><strong>Lawn Name: </strong>{{ lawn.name }}</p>
               <p class="col-sm-6"><strong>ZIP Code: </strong>{{ lawn.zip_code }}</p>
               {% if lawn.user == user %}
               <a href="{% url 'lawn_edit' pk=lawn.pk %}"><button type="button" class="btn btn-secondary" style="color: #006400;">Edit Lawn</button></a>
@@ -25,7 +25,7 @@
           </div>
           <div class="row">
             <p class="col-sm-4"><strong>Grass Type: </strong>{{ lawn.grass_type.name }}</p>
-            <p class="col-sm-6"><strong>Closest Weather Station: </strong>{{ closest_station.name }}</p>
+            <p class="col-sm-6" id="id_weather_station"><strong>Closest Weather Station: </strong>{{ closest_station.name }}</p>
           </div>
           <div class="row">
             <p class="col-sm-5"><strong>Lawn Size: </strong>{{ lawn.size|intcomma }} sf</p>
