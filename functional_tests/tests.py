@@ -1,21 +1,39 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
-import unittest
+from selenium.common.exceptions import WebDriverException
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+
+import os
 import time
 
+MAX_WAIT = 10
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Chrome()
+        staging_server = os.environ.get('STAGING_SERVER')
+        if staging_server:
+            self.live_server_url = 'http://' + staging_server
 
     def tearDown(self):
         self.browser.quit()
 
-    def test_can_navagate_to_new_lawn_and_create_planner(self):
+    def wait_for_element(self, element_id):
+        start_time = time.time()
+        while True:
+            try:
+                element = self.browser.find_element_by_id(element_id)
+                return
+            except (AssertionError, WebDriverException) as e:
+                if time.time() - start_time > MAX_WAIT:
+                    raise e
+                time.sleep(0.5)
+
+    def test_can_navigate_to_new_lawn_and_create_planner(self):
         # User finds LCP site. User goes to homepage
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         # User can see the page title and notices header mention LCP
         self.assertIn('Lawn Care Planner', self.browser.title)
@@ -29,7 +47,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # User clicks link, and loads a page titled Create Lawn
         self.browser.find_element_by_id('id_create_planner').click()
-        time.sleep(1)
+        self.wait_for_element('id_zip_code')
 
         header_text = self.browser.find_element_by_tag_name('h3').text
         self.assertIn('Create Lawn', header_text)
@@ -53,15 +71,10 @@ class NewVisitorTest(unittest.TestCase):
 
         # When user presses enter, he is taken to a page that displays his lawn planner for the year
         size_input.send_keys(Keys.ENTER)
-        time.sleep(1)
+        self.wait_for_element('id_lawn_name')
 
-        lawn_name = self.browser.find_element_by_id("id_lawn_name").text
-        self.assertIn("Lawn Name: ", lawn_name)
+        lawn_name = self.browser.find_element_by_id('id_lawn_name').text
+        self.assertIn('Lawn Name: ', lawn_name)
 
-        weather_station = self.browser.find_element_by_id("id_weather_station").text
-        self.assertIn("Closest Weather Station: ", weather_station)
-
-        self.fail('Finish the test!')
-
-if __name__ == '__main__':
-    unittest.main()
+        weather_station = self.browser.find_element_by_id('id_weather_station').text
+        self.assertIn('Closest Weather Station: ', weather_station)

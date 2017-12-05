@@ -47,23 +47,22 @@ class ModelTestCase(TestCase):
         self.assertEqual(second_saved_lawn.name, "Second Lawn")
 
 
-class PlannerViewsTestCase(TestCase):
+class IndexTest(TestCase):
 
-    def test_index_returns_correct_html(self):
+    def test_index_loads(self):
         response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'planner/index.html')
 
 
+class NewLawnTest(TestCase):
+
+    def test_new_lawn_loads(self):
+        response = self.client.get('/planner/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'planner/lawn_edit.html')
 # class PlannerViewsTestCase(TestCase):
 #     fixtures = ['planner_views_testdata.json', 'auth_views_testdata.json']
-#
-#     def test_index(self):
-#         """
-#         test if homepage (index) loads.
-#         :return:
-#         """
-#         resp = self.client.get('/')
-#         self.assertEqual(resp.status_code, 200)
 #
 #     def test_detail(self):
 #         """
