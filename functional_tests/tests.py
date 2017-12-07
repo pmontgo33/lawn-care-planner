@@ -9,7 +9,10 @@ import time
 
 MAX_WAIT = 10
 
+
 class NewVisitorTest(StaticLiveServerTestCase):
+
+    # fixtures = ['planner_grasstype_testdata.json']
 
     def setUp(self):
         self.browser = webdriver.Chrome()
@@ -78,3 +81,18 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         weather_station = self.browser.find_element_by_id('id_weather_station').text
         self.assertIn('Closest Weather Station: ', weather_station)
+
+    def test_cannot_submit_lawn_with_invalid_zip_code(self):
+        # User visits LCP homepage
+
+        # User clicks on planner link in banner
+
+        # Users enters an invalid zip code, but a selects a valid grass type, and enters a valid size
+
+        # When user presses clicks submit, he sees an error message
+
+        # User changes zip code to a valid zip code, and clicks submit again
+
+        # User is taken to a page that displays his lawn planner for the year
+
+        self.fail('write me!')
