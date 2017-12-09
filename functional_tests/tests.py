@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from unittest import skip
 
 import os
 import time
@@ -85,6 +86,35 @@ class NewVisitorTest(FunctionalTest):
 
         weather_station = self.browser.find_element_by_id('id_weather_station').text
         self.assertIn('Closest Weather Station: ', weather_station)
+
+    def test_examples_can_load(self):
+        # User visits LCP homepage
+        self.browser.get(self.live_server_url)
+
+        # User decides to check out the available examples, and clicks on the Examples button in the banner
+        self.browser.find_element_by_link_text("Examples").click()
+        self.wait_for_element('id_create_lawn')
+
+        # User sees a list of example lawns
+        lawns = self.browser.find_elements_by_tag_name('h5')
+        self.assertGreater(len(lawns), 2)
+
+        # User clicks an example lawn, and is taken to the detail page
+        self.browser.find_element_by_link_text(lawns[0].text).click()
+        self.wait_for_element('id_lawn_name')
+        lawn_name = self.browser.find_element_by_id('id_lawn_name').text
+        self.assertIn('Lawn Name: ', lawn_name)
+
+        # User clicks the back button, and again sees the list of example lawns
+        self.browser.back()
+        self.wait_for_element('id_create_lawn')
+
+        # User selects a different example lawn, and is taken to the detail page
+        lawns = self.browser.find_elements_by_tag_name('h5')
+        self.browser.find_element_by_link_text(lawns[1].text).click()
+        self.wait_for_element('id_lawn_name')
+        lawn_name = self.browser.find_element_by_id('id_lawn_name').text
+        self.assertIn('Lawn Name: ', lawn_name)
 
 
 class LawnValidationTest(FunctionalTest):

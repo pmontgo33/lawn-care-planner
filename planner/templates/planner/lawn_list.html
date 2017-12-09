@@ -2,7 +2,7 @@
 
 {% block content %}
     <br>
-    <a href="{% url 'lawn_new' %}" class="top-menu">Create a Lawn</a>
+    <a href="{% url 'lawn_new' %}" id="id_create_lawn"class="top-menu">Create a Lawn</a>
 
     {% for lawn in object_list %}
 		<h5><a href="{% url 'lawn_detail' pk=lawn.pk %}">{{ lawn.name }}</a></h5>
