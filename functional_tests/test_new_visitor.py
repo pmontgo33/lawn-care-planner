@@ -46,10 +46,10 @@ class NewVisitorTest(FunctionalTest):
 
         # When user presses enter, he is taken to a page that displays his lawn planner for the year
         size_input.send_keys(Keys.ENTER)
-        self.wait_for_element('id_lawn_name')
-
-        lawn_name = self.browser.find_element_by_id('id_lawn_name').text
-        self.assertIn('Lawn Name: ', lawn_name)
+        self.wait_for(lambda: self.assertIn(
+            'Lawn Name: ',
+            self.browser.find_element_by_id('id_lawn_name').text
+        ))
 
         weather_station = self.browser.find_element_by_id('id_weather_station').text
         self.assertIn('Closest Weather Station: ', weather_station)
@@ -60,7 +60,10 @@ class NewVisitorTest(FunctionalTest):
 
         # User decides to check out the available examples, and clicks on the Examples button in the banner
         self.browser.find_element_by_link_text("Examples").click()
-        self.wait_for_element('id_create_lawn')
+        self.wait_for(lambda: self.assertIn(
+            'Create a Lawn',
+            self.browser.find_element_by_id('id_create_lawn').text
+        ))
 
         # User sees a list of example lawns
         lawns = self.browser.find_elements_by_tag_name('h5')
@@ -68,17 +71,22 @@ class NewVisitorTest(FunctionalTest):
 
         # User clicks an example lawn, and is taken to the detail page
         self.browser.find_element_by_link_text(lawns[0].text).click()
-        self.wait_for_element('id_lawn_name')
-        lawn_name = self.browser.find_element_by_id('id_lawn_name').text
-        self.assertIn('Lawn Name: ', lawn_name)
+        self.wait_for(lambda: self.assertIn(
+            'Lawn Name: ',
+            self.browser.find_element_by_id('id_lawn_name').text
+        ))
 
         # User clicks the back button, and again sees the list of example lawns
         self.browser.back()
-        self.wait_for_element('id_create_lawn')
+        self.wait_for(lambda: self.assertIn(
+            'Create a Lawn',
+            self.browser.find_element_by_id('id_create_lawn').text
+        ))
 
         # User selects a different example lawn, and is taken to the detail page
         lawns = self.browser.find_elements_by_tag_name('h5')
         self.browser.find_element_by_link_text(lawns[1].text).click()
-        self.wait_for_element('id_lawn_name')
-        lawn_name = self.browser.find_element_by_id('id_lawn_name').text
-        self.assertIn('Lawn Name: ', lawn_name)
+        self.wait_for(lambda: self.assertIn(
+            'Lawn Name: ',
+            self.browser.find_element_by_id('id_lawn_name').text
+        ))

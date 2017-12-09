@@ -13,7 +13,10 @@ class LawnValidationTest(FunctionalTest):
 
         # User clicks on planner link in banner
         self.browser.find_element_by_link_text("Planner").click()
-        self.wait_for_element('id_zip_code')
+        self.wait_for(lambda: self.assertIn(
+            'id_zip_code',
+            self.browser.find_element_by_id('id_zip_code').get_attribute('id')
+        ))
 
         # Users enters an invalid zip code, but a selects a valid grass type, and enters a valid size
         uls = self.browser.find_elements_by_tag_name('ul')
@@ -27,6 +30,7 @@ class LawnValidationTest(FunctionalTest):
         size_input = self.browser.find_element_by_id('id_size')
         size_input.send_keys('5000')
 
+        # TODO get rid of this sleep!
         # When user presses clicks submit, he sees an error message
         self.browser.find_element_by_class_name("save").click()
         time.sleep(1)
