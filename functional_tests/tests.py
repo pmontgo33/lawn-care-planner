@@ -10,7 +10,7 @@ import time
 MAX_WAIT = 10
 
 
-class NewVisitorTest(StaticLiveServerTestCase):
+class FunctionalTest(StaticLiveServerTestCase):
 
     fixtures = ['auth_views_testdata.json', 'planner_grasstype_testdata.json', 'planner_lawn_testdata.json',
                 'planner_lawnproduct_testdata.json', 'planner_weatherstation_testdata.json']
@@ -34,6 +34,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
                 if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(0.5)
+
+
+class NewVisitorTest(FunctionalTest):
 
     def test_can_navigate_to_new_lawn_and_create_planner(self):
         # User finds LCP site. User goes to homepage
@@ -82,6 +85,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         weather_station = self.browser.find_element_by_id('id_weather_station').text
         self.assertIn('Closest Weather Station: ', weather_station)
+
+
+class LawnValidationTest(FunctionalTest):
 
     def test_cannot_submit_lawn_with_invalid_zip_code(self):
         # User visits LCP homepage
