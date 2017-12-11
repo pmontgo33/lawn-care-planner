@@ -1,5 +1,5 @@
 from selenium import webdriver
-from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import WebDriverException, NoSuchElementException
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 import os
@@ -28,7 +28,7 @@ class FunctionalTest(StaticLiveServerTestCase):
             try:
                 element = self.browser.find_element_by_id(element_id)
                 return
-            except (AssertionError, WebDriverException) as e:
+            except (NoSuchElementException, AssertionError, WebDriverException) as e:
                 if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(0.5)
@@ -38,6 +38,17 @@ class FunctionalTest(StaticLiveServerTestCase):
         while True:
             try:
                 return fn()
+            except (AssertionError, WebDriverException) as e:
+                if time.time() - start_time > MAX_WAIT:
+                    raise e
+                time.sleep(0.5)
+
+    def wait_for_class_in_element_list(self, class_att, element_list):
+        start_time = time.time()
+        while True:
+            try:
+                self.assertIn(class_att, [element.get_attribute('class') for element in element_list])
+                return
             except (AssertionError, WebDriverException) as e:
                 if time.time() - start_time > MAX_WAIT:
                     raise e
