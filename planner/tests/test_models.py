@@ -4,10 +4,8 @@ This file contains all of the unit tests for the planner django app
 
 # Import Statements
 from django.test import TestCase
-from planner.models import Lawn, GrassType
+from planner.models import Lawn, GrassType, LawnProduct
 from django.contrib.auth.models import User
-from django.urls import resolve
-from planner.views import index
 
 
 class ModelTestCase(TestCase):
@@ -19,7 +17,7 @@ class ModelTestCase(TestCase):
 
         test_grass = GrassType()
         test_grass.name = 'Kentucky Bluegrass'
-        test_grass.season = ("Cool Season", "Cool Season")
+        test_grass.season = "Cool Season"
         test_grass.save()
 
         first_lawn = Lawn()
@@ -46,34 +44,35 @@ class ModelTestCase(TestCase):
         self.assertEqual(first_saved_lawn.name, "First Lawn")
         self.assertEqual(second_saved_lawn.name, "Second Lawn")
 
+    def test_saving_and_retrieving_lawnproducts(self):
 
-class IndexTest(TestCase):
+        seed_product = LawnProduct()
+        seed_product.type = "Grass Seed"
+        seed_product.name = "Monty's KBG"
+        seed_product.links = {
+            'LCP', 'www.lawncareplanner.com'
+        }
+        seed_product.specs = {
+          "type":"Kentucky Bluegrass",
+          "coated":False
+        }
+        seed_product.save()
 
-    def test_index_loads(self):
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'planner/index.html')
+        fert_product = LawnProduct()
+        fert_product.type = "Fertilizer"
+        fert_product.name = "Monty's Great Fert"
+        fert_product.links = {
+            'LCP', 'www.lawncareplanner.com'
+        }
+        fert_product.specs = {
+          "organic":True,
+          "npk":[5,2,0]
+        }
+        fert_product.save()
 
+        self.assertEqual(LawnProduct.objects.count(), 2)
 
-class NewLawnTest(TestCase):
-
-    def test_new_lawn_loads(self):
-        response = self.client.get('/planner/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'planner/lawn_edit.html')
-# class PlannerViewsTestCase(TestCase):
-#     fixtures = ['planner_views_testdata.json', 'auth_views_testdata.json']
-#
-#     def test_detail(self):
-#         """
-#         test if lawn detail page loads.
-#         :return:
-#         """
-#         resp = self.client.get('/planner/lawn/1/')
-#         self.assertEqual(resp.status_code, 200)
-#         self.assertEqual(resp.context['lawn'].pk, 1)
-#         self.assertEqual(resp.context['lawn'].name, "ORELAND PA Lawn")
-#
-#         # Ensure that non-existent lawns throw a 404
-#         resp = self.client.get('planner/lawn/3333/')
-#         self.assertEqual(resp.status_code, 404)
+        saved_seed = LawnProduct.objects.filter(type='Grass Seed')[0]
+        saved_fert = LawnProduct.objects.filter(type='Fertilizer')[0]
+        self.assertEqual(saved_seed.name, "Monty's KBG")
+        self.assertEqual(saved_fert.name, "Monty's Great Fert")

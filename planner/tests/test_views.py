@@ -4,47 +4,6 @@ This file contains all of the unit tests for the planner django app
 
 # Import Statements
 from django.test import TestCase
-from planner.models import Lawn, GrassType
-from django.contrib.auth.models import User
-from django.urls import resolve
-from planner.views import index
-
-
-class ModelTestCase(TestCase):
-
-    def test_saving_and_retrieving_lawns(self):
-
-        test_user = User()
-        test_user.save()
-
-        test_grass = GrassType()
-        test_grass.name = 'Kentucky Bluegrass'
-        test_grass.season = ("Cool Season", "Cool Season")
-        test_grass.save()
-
-        first_lawn = Lawn()
-        first_lawn.user_id = 1
-        first_lawn.name = "First Lawn"
-        first_lawn.zip_code = "19075"
-        first_lawn.size = 3000
-        first_lawn.grass_type = test_grass
-        first_lawn.save()
-
-        second_lawn = Lawn()
-        second_lawn.user_id = 1
-        second_lawn.name = "Second Lawn"
-        second_lawn.zip_code = "10314"
-        second_lawn.size = 4500
-        second_lawn.grass_type = test_grass
-        second_lawn.save()
-
-        saved_items = Lawn.objects.all()
-        self.assertEqual(saved_items.count(), 2)
-
-        first_saved_lawn = saved_items[0]
-        second_saved_lawn = saved_items[1]
-        self.assertEqual(first_saved_lawn.name, "First Lawn")
-        self.assertEqual(second_saved_lawn.name, "Second Lawn")
 
 
 class IndexTest(TestCase):
