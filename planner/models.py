@@ -65,7 +65,7 @@ class WeatherStation(models.Model):
     elevationUnit = models.CharField(max_length=200)
     maxdate = models.DateField()
     mindate = models.DateField()
-    temp_data = JSONField()
+    temp_data = JSONField(default="{}")
     
     def __str__(self):
         return self.name
