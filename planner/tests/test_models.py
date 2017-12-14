@@ -6,7 +6,8 @@ This file contains all of the unit tests for the planner django app
 from django.test import TestCase
 from planner.models import Lawn, GrassType, LawnProduct, WeatherStation
 from django.contrib.auth.models import User
-
+from django.core.exceptions import ValidationError
+from unittest import skip
 from datetime import date
 
 
@@ -45,6 +46,27 @@ class ModelTestCase(TestCase):
         second_saved_lawn = saved_items[1]
         self.assertEqual(first_saved_lawn.name, "First Lawn")
         self.assertEqual(second_saved_lawn.name, "Second Lawn")
+    @skip
+    def test_cannot_save_lawn_without_all_attributes(self):
+        test_user = User()
+        test_user.save()
+        print(test_user.id)
+
+        test_grass = GrassType()
+        test_grass.name = 'Kentucky Bluegrass'
+        test_grass.season = "Cool Season"
+        test_grass.save()
+
+        lawn_ = Lawn.objects.create()
+        lawn_.user_id = 1
+        lawn_.name = "Name"
+        lawn_.zip_code = ""
+        lawn_.size = 3000
+        lawn_.grass_type = test_grass
+
+        with self.assertRaises(ValidationError):
+            lawn_.save()
+
 
     def test_saving_and_retrieving_lawnproducts(self):
 
