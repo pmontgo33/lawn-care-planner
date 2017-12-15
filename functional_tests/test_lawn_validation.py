@@ -19,8 +19,7 @@ class LawnValidationTest(FunctionalTest):
         ))
 
         # Users enters an invalid zip code, but a selects a valid grass type, and enters a valid size
-        uls = self.browser.find_elements_by_tag_name('ul')
-        self.assertNotIn('errorlist', [ul.get_attribute('class') for ul in uls])
+        self.assertNotIn('Invalid ZIP code', self.browser.find_element_by_tag_name('body').text)
         zip_input = self.browser.find_element_by_id('id_zip_code')
         zip_input.send_keys('55555')
 
@@ -32,7 +31,10 @@ class LawnValidationTest(FunctionalTest):
 
         # When user presses clicks submit, he sees an error message
         self.browser.find_element_by_class_name("save").click()
-        self.wait_for_class_in_element_list('errorlist', self.browser.find_elements_by_tag_name('ul'))
+        self.wait_for(lambda: self.assertIn(
+            'Invalid ZIP code',
+            self.browser.find_element_by_tag_name('body').text
+        ))
 
         # User changes zip code to a valid zip code, and clicks submit again
         zip_input = self.browser.find_element_by_id('id_zip_code')
@@ -40,6 +42,7 @@ class LawnValidationTest(FunctionalTest):
         zip_input.send_keys('60652')
         self.browser.find_element_by_class_name("save").click()
         self.wait_for_element('id_lawn_name')
+        self.assertNotIn('Invalid ZIP code', self.browser.find_element_by_tag_name('body').text)
 
         # User is taken to a page that displays his lawn planner for the year
         lawn_name = self.browser.find_element_by_id('id_lawn_name').text
