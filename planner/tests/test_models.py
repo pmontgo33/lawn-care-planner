@@ -10,6 +10,9 @@ from django.core.exceptions import ValidationError
 from unittest import skip
 from datetime import date
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class ModelTestCase(TestCase):
 
@@ -46,26 +49,27 @@ class ModelTestCase(TestCase):
         second_saved_lawn = saved_items[1]
         self.assertEqual(first_saved_lawn.name, "First Lawn")
         self.assertEqual(second_saved_lawn.name, "Second Lawn")
-    @skip
+
     def test_cannot_save_lawn_without_all_attributes(self):
-        test_user = User()
+        test_user = User(username='newtestuser', password='test', pk=1)
         test_user.save()
-        print(test_user.id)
+        test_user.full_clean()
 
         test_grass = GrassType()
         test_grass.name = 'Kentucky Bluegrass'
         test_grass.season = "Cool Season"
         test_grass.save()
 
-        lawn_ = Lawn.objects.create()
-        lawn_.user_id = 1
+        lawn_ = Lawn()
+        lawn_.user = User.objects.get(pk=1)
         lawn_.name = "Name"
-        lawn_.zip_code = ""
+        lawn_.zip_code = "" # Zip code is blank
         lawn_.size = 3000
         lawn_.grass_type = test_grass
 
         with self.assertRaises(ValidationError):
             lawn_.save()
+            lawn_.full_clean()
 
 
     def test_saving_and_retrieving_lawnproducts(self):
