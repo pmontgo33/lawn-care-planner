@@ -14,9 +14,9 @@ logger = logging.getLogger(__name__)
 class LawnModelTestCase(TestCase):
 
     def test_saving_and_retrieving_lawns(self):
-
-        test_user = User()
+        test_user = User(username='newtestuser', password='test', pk=1)
         test_user.save()
+        test_user.full_clean()
 
         test_grass = GrassType()
         test_grass.name = 'Kentucky Bluegrass'
