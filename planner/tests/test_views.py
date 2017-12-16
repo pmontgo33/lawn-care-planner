@@ -7,13 +7,11 @@ from django.test import TestCase
 from django.contrib import auth
 from unittest import skip
 
+from .base import UnitTestWithFixtures
+from planner.forms import LawnForm
+
 import logging
 logger = logging.getLogger(__name__)
-
-
-class UnitTestWithFixtures(TestCase):
-    fixtures = ['auth_views_testdata.json', 'planner_grasstype_testdata.json', 'planner_lawn_testdata.json',
-                'planner_lawnproduct_testdata.json', 'planner_weatherstation_testdata.json']
 
 
 class IndexViewTest(TestCase):
@@ -43,6 +41,7 @@ class NewLawnViewTest(TestCase):
         response = self.client.get('/planner/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'planner/lawn_edit.html')
+        self.assertIsInstance(response.context['form'], LawnForm)
 
 
 class UserLawnListViewTest(UnitTestWithFixtures):
@@ -84,6 +83,7 @@ class TestLawnEditView(UnitTestWithFixtures):
         response = self.client.get('/planner/lawn/6/edit/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'planner/lawn_edit.html')
+        self.assertIsInstance(response.context['form'], LawnForm)
 
     def test_user_cannot_edit_his_own_lawn(self):
         self.client.login(username="test", password='testpassword')

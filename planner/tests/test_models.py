@@ -1,8 +1,3 @@
-"""
-This file contains all of the unit tests for the planner django app
-"""
-
-# Import Statements
 from django.test import TestCase
 from planner.models import Lawn, GrassType, LawnProduct, WeatherStation
 from django.contrib.auth.models import User
@@ -10,11 +5,13 @@ from django.core.exceptions import ValidationError
 from unittest import skip
 from datetime import date
 
+from .base import UnitTestWithFixtures
+
 import logging
 logger = logging.getLogger(__name__)
 
 
-class ModelTestCase(TestCase):
+class LawnModelTestCase(TestCase):
 
     def test_saving_and_retrieving_lawns(self):
 
@@ -72,6 +69,14 @@ class ModelTestCase(TestCase):
             lawn_.full_clean()
 
 
+class LawnModelTestCaseWithFixtures(UnitTestWithFixtures):
+
+    def test_get_absolute_url_lawn(self):
+        test_lawn = Lawn.objects.get(pk=5)
+        self.assertEqual(test_lawn.get_absolute_url(), "/planner/lawn/%s/" % test_lawn.id)
+
+
+class LawnProductsModelTestCase(TestCase):
     def test_saving_and_retrieving_lawnproducts(self):
 
         seed_product = LawnProduct()
@@ -104,6 +109,9 @@ class ModelTestCase(TestCase):
         saved_fert = LawnProduct.objects.filter(type='Fertilizer')[0]
         self.assertEqual(saved_seed.name, "Monty's KBG")
         self.assertEqual(saved_fert.name, "Monty's Great Fert")
+
+
+class WeatherStationModelTestCase(TestCase):
 
     def test_saving_and_retrieving_weatherstation(self):
 
