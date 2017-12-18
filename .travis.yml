@@ -11,17 +11,14 @@ env:
     - PYTHONPATH="/home/travis/build/pmontgo33/lawn_care_planner"
     - PIP_USE_MIRRORS=true
     - BUILD_ON_TRAVIS=true
-  matrix:
-    - DJANGO=1.7 DB=mysql
 
 #commands to install dependencies
 install:
-  - pip install -q Django==$DJANGO
   - pip install -q -r requirements.txt
 
 before_script:
   - psql -c 'create database test_db;' -U postgres
-  - python manage.py syncdb --noinput
+  - python manage.py migrate
 
 #command to run the test suite
 script:
