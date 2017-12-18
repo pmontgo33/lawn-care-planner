@@ -11,6 +11,18 @@ env:
     - PYTHONPATH="/home/travis/build/pmontgo33/lawn_care_planner"
     - PIP_USE_MIRRORS=true
     - BUILD_ON_TRAVIS=true
+    - SECRET_KEY=SecretKeyForTravisCI
+    - ALLOWED_HOSTS=
+    - EMAIL_HOST=
+    - EMAIL_HOST_USER=
+    - EMAIL_HOST_PASSWORD=
+    - EMAIL_PORT=
+    - GOOGLE_ANALYTICS_KEY=
+    - DB_NAME=test_db
+    - DB_USER=postgres
+    - DB_PASSWORD=
+    - DB_HOST=
+    - DB_PORT=
 
 #commands to install dependencies
 install:
