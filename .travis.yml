@@ -16,7 +16,7 @@ env:
     - EMAIL_HOST=
     - EMAIL_HOST_USER=
     - EMAIL_HOST_PASSWORD=
-    - EMAIL_PORT=
+    - EMAIL_PORT=111
     - GOOGLE_ANALYTICS_KEY=
     - DB_NAME=test_db
     - DB_USER=postgres
