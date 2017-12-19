@@ -1,0 +1,162 @@
+[
+{
+  "model": "planner.lawnproduct",
+  "pk": 1,
+  "fields": {
+    "name": "Milorganite",
+    "type": "Fertilizer",
+    "links": "{\"DMOPC\":\"http://shrsl.com/?fizo\",\"Amazon\":\"http://amzn.to/2h6z5Ur\",\"Home Depot\":[\"http://www.tkqlhce.com/click-8224011-10368321?url=http%3A%2F%2Fwww.homedepot.com%2Fp%2FMilorganite-36-lb-Organic-Nitrogen-Fertilizer-100048741%2F100618523&cjsku=100618523\",\"http://www.tqlkg.com/image-8224011-10368321\"]}",
+    "specs": "{\"npk\":[5,2,0],\"organic\":true}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 2,
+  "fields": {
+    "name": "Scotts Turf Builder",
+    "type": "Fertilizer",
+    "links": "{\"DMOPC\":\"http://shrsl.com/?fizt\",\"Amazon\":\"http://amzn.to/2fUDr0v\",\"Home Depot\":[\"http://www.jdoqocy.com/click-8224011-10368321?url=http%3A%2F%2Fwww.homedepot.com%2Fp%2FScotts-Turf-Builder-14-06-lb-5-000-sq-ft-Southern-Lawn-Fertilizer-23405B%2F100619059&cjsku=100619059\",\"http://www.ftjcfx.com/image-8224011-10368321\"],\"Walmart\":\"http://linksynergy.walmart.com/link?id=JAvpjs8wJX0&offerid=223073.34999612&type=2&murl=http%3A%2F%2Fwww.walmart.com%2Fip%2FScotts-Turf-Builder-Southern-Lawn-Food-5-000-sq-ft%2F34999612\"}",
+    "specs": "{\"npk\":[32,0,4],\"organic\":false}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 3,
+  "fields": {
+    "name": "Scotts Natural Lawn Food",
+    "type": "Fertilizer",
+    "links": "{\"Amazon\":\"http://amzn.to/2gCD89E\"}",
+    "specs": "{\"npk\":[11,2,2],\"organic\":true}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 6,
+  "fields": {
+    "name": "Scotts Kentucky Bluegrass Mix",
+    "type": "Grass Seed",
+    "links": "{\"DMOPC\":\"http://shrsl.com/?fizz\",\"Amazon\":\"http://amzn.to/2g7XF6Y\",\"Home Depot\":[\"http://www.kqzyfj.com/click-8224011-10368321?url=http%3A%2F%2Fwww.homedepot.com%2Fp%2FScotts-Turf-Builder-7-lb-Kentucky-Bluegrass-Mix-Seed-18269%2F203760929&cjsku=203760929\",\"http://www.ftjcfx.com/image-8224011-10368321\"]}",
+    "specs": "{\"type\":\"Kentucky Bluegrass\",\"coated\":true}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 7,
+  "fields": {
+    "name": "Scotts Perennial Ryegrass Mix",
+    "type": "Grass Seed",
+    "links": "{\"DMOPC\":\"http://shrsl.com/?fizx\",\"Amazon\":\"http://amzn.to/2gH5Ovn\"}",
+    "specs": "{\"type\":\"Perennial Ryegrass\",\"coated\":true}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 8,
+  "fields": {
+    "name": "Scotts Tall Fescue Mix",
+    "type": "Grass Seed",
+    "links": "{\"DMOPC\":\"http://shrsl.com/?fj02\",\"Amazon\":\"http://amzn.to/2gglPro\",\"Home Depot\":[\"http://www.anrdoezrs.net/click-8224011-10368321?url=http%3A%2F%2Fwww.homedepot.com%2Fp%2FScotts-Turf-Builder-7-lb-Tall-Fescue-Mix-Grass-Seed-18346%2F203760986&cjsku=203760986\",\"http://www.lduhtrp.net/image-8224011-10368321\"]}",
+    "specs": "{\"type\":\"Turf Type Tall Fescue\",\"coated\":true}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 9,
+  "fields": {
+    "name": "Pennington Kentucky Blue Blend",
+    "type": "Grass Seed",
+    "links": "{\"DMOPC\":\"http://shrsl.com/?fj01\",\"Amazon\":\"http://amzn.to/2hliL1U\",\"Home Depot\":[\"http://www.dpbolvw.net/click-8224011-10368321?url=http%3A%2F%2Fwww.homedepot.com%2Fp%2FPennington-Smart-Seed-3-lb-Kentucky-Bluegrass-Grass-Seed-Blend-100086847%2F100618516&cjsku=100618516\",\"http://www.lduhtrp.net/image-8224011-10368321\"],\"Walmart\":\"http://linksynergy.walmart.com/link?id=JAvpjs8wJX0&offerid=223073.21803514&type=2&murl=http%3A%2F%2Fwww.walmart.com%2Fip%2FPennington-Seed-100086847-Kentucky-Bluegrass-Blend-3-Kentucky-Bluegrass-Bagged%2F21803514\"}",
+    "specs": "{\"type\":\"Kentucky Bluegrass\",\"coated\":false}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 10,
+  "fields": {
+    "name": "Pennington Perennial Ryegrass Blend",
+    "type": "Grass Seed",
+    "links": "{\"Amazon\":\"http://amzn.to/2ghHKmM\"}",
+    "specs": "{\"type\":\"Perennial Ryegrass\",\"coated\":false}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 11,
+  "fields": {
+    "name": "Pennington Tall Fescue Blend",
+    "type": "Grass Seed",
+    "links": "{\"DMOPC\":\"http://shrsl.com/?fizw\",\"Home Depot\":[\"http://www.kqzyfj.com/click-8224011-10368321?url=http%3A%2F%2Fwww.homedepot.com%2Fp%2FPennington-Smart-Seed-3-lb-Tall-Fescue-Grass-Seed-100086830%2F100618527&cjsku=100618527\",\"http://www.awltovhc.com/image-8224011-10368321\"]}",
+    "specs": "{\"type\":\"Turf Type Tall Fescue\",\"coated\":false}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 12,
+  "fields": {
+    "name": "Scotts GrubEx",
+    "type": "Insect Control",
+    "links": "{\"DMOPC\":\"http://shrsl.com/?fj05\",\"Amazon\":\"http://amzn.to/2gKJG3q\"}",
+    "specs": "{\"type\":\"Grub\",\"Active Ingredient\":\"Chlorantraniliprole\"}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 13,
+  "fields": {
+    "name": "Bayer Complete Insect Killer (liquid)",
+    "type": "Insect Control",
+    "links": "{\"Amazon\":\"http://amzn.to/2h7YImH\"}",
+    "specs": "{\"type\":\"Grub\",\"Active Ingredient\":\"0.05% \\u03b2-cyfluthrin; 0.15% Imidacloprid\"}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 14,
+  "fields": {
+    "name": "Scotts Halts Crabgrass and Grassy Weed Preventer",
+    "type": "Weed Control",
+    "links": "{\"Amazon\":\"http://amzn.to/2hgkSDZ\"}",
+    "specs": "{\"type\":\"pre-emergent\",\"Active Ingredient\":\"Pendimethalin\"}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 15,
+  "fields": {
+    "name": "Safer Ringer Lawn Restore",
+    "type": "Fertilizer",
+    "links": "{\"DMOPC\":\"http://shrsl.com/?fizr\",\"Home Depot\":[\"http://www.tkqlhce.com/click-8224011-10368321?url=http%3A%2F%2Fwww.homedepot.com%2Fp%2FSafer-Brand-25-lb-Ringer-Lawn-Restore-II-Fertilizer-9333%2F205458871&cjsku=205458871\",\"http://www.lduhtrp.net/image-8224011-10368321\"]}",
+    "specs": "{\"npk\":[10,0,6],\"organic\":true}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 16,
+  "fields": {
+    "name": "Pennington Signature Series Crabgrass Preventer",
+    "type": "Weed Control",
+    "links": "{\"DMOPC\":\"http://shrsl.com/?fj09\"}",
+    "specs": "{\"type\":\"pre-emergent\",\"Active Ingredient\":\"Dithiopyr\"}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 17,
+  "fields": {
+    "name": "Prodiamine - Generic Barricade",
+    "type": "Weed Control",
+    "links": "{\"Amazon\":\"http://amzn.to/2mF4QHa\"}",
+    "specs": "{\"type\":\"pre-emergent\",\"Active Ingredient\":\"Prodiamine\"}"
+  }
+},
+{
+  "model": "planner.lawnproduct",
+  "pk": 18,
+  "fields": {
+    "name": "Bayer Complete Insect Killer (granular)",
+    "type": "Insect Control",
+    "links": "{\"Amazon\":\"http://amzn.to/2pBT5mv\"}",
+    "specs": "{\"type\":\"Grub\",\"Active Ingredient\":\"0.05% \\u03b2-cyfluthrin; 0.15% Imidacloprid \"}"
+  }
+}
+]

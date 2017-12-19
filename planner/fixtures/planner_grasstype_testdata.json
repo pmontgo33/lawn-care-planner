@@ -1,0 +1,98 @@
+[
+{
+  "model": "planner.grasstype",
+  "pk": 1,
+  "fields": {
+    "name": "Kentucky Bluegrass",
+    "season": "Cool Season",
+    "seed": true,
+    "plugs": false,
+    "mowing": "{\"spring-first\":{\"title\":\"First mow of spring as soon as the grass begins to grow\",\"height\":2.5,\"description\":\"Clean out dead grass and leaves, and stimulate growth\"},\"spring\":{\"title\":\"Spring\",\"height\":3,\"description\":\"Better to have more leaf surface to grab more sunlight during these shorter days\"},\"summer\":{\"title\":\"Summer\",\"height\":3.5,\"description\":\"Longer grass blades shade the root system during summer heat\"},\"fall\":{\"title\":\"Fall\",\"height\":3,\"description\":\"This will stimulate more root growth\"},\"fall-last\":{\"title\":\"Last mow of fall, just before or just after the first frost\",\"height\":2.5,\"description\":\"Shorter lawn over winter will cut down on winter kill\"}}",
+    "specs": "{\"seed_new_lb_range\":[2.0,3.0],\"seed_min_temp\":40.0,\"germination_time\":30,\"seed_max_temp\":78.0,\"seed_over_lb_range\":[1.0,1.5]}"
+  }
+},
+{
+  "model": "planner.grasstype",
+  "pk": 2,
+  "fields": {
+    "name": "Perennial Ryegrass",
+    "season": "Cool Season",
+    "seed": true,
+    "plugs": false,
+    "mowing": "{\"spring-first\":{\"title\":\"First mow of spring as soon as the grass begins to grow\",\"height\":2.5,\"description\":\"Clean out dead grass and leaves, and stimulate growth\"},\"spring\":{\"title\":\"Spring\",\"height\":3,\"description\":\"Better to have more leaf surface to grab more sunlight during these shorter days\"},\"summer\":{\"title\":\"Summer\",\"height\":3.5,\"description\":\"Longer grass blades shade the root system during summer heat\"},\"fall\":{\"title\":\"Fall\",\"height\":3,\"description\":\"This will stimulate more root growth\"},\"fall-last\":{\"title\":\"Last mow of fall, just before or just after the first frost\",\"height\":2.5,\"description\":\"Shorter lawn over winter will cut down on winter kill\"}}",
+    "specs": "{\"seed_new_lb_range\":[4.0,5.0],\"seed_min_temp\":40.0,\"germination_time\":10,\"seed_max_temp\":78.0,\"seed_over_lb_range\":[2.0,2.5]}"
+  }
+},
+{
+  "model": "planner.grasstype",
+  "pk": 3,
+  "fields": {
+    "name": "Turf Type Tall Fescue",
+    "season": "Cool Season",
+    "seed": true,
+    "plugs": false,
+    "mowing": "{\"spring-first\":{\"title\":\"First mow of spring as soon as the grass begins to grow\",\"height\":3,\"description\":\"Clean out dead grass and leaves, and stimulate growth\"},\"spring\":{\"title\":\"Spring\",\"height\":3.75,\"description\":\"Better to have more leaf surface to grab more sunlight during these shorter days\"},\"summer\":{\"title\":\"Summer\",\"height\":4,\"description\":\"Longer grass blades shade the root system during summer heat\"},\"fall\":{\"title\":\"Fall\",\"height\":3.5,\"description\":\"This will stimulate more root growth\"},\"fall-last\":{\"title\":\"Last mow of fall, just before or just after the first frost\",\"height\":2.5,\"description\":\"Shorter lawn over winter will cut down on winter kill\"}}",
+    "specs": "{\"seed_new_lb_range\":[6.0,8.0],\"seed_min_temp\":40.0,\"germination_time\":12,\"seed_max_temp\":78.0,\"seed_over_lb_range\":[3.0,4.0]}"
+  }
+},
+{
+  "model": "planner.grasstype",
+  "pk": 4,
+  "fields": {
+    "name": "Bermudagrass, common",
+    "season": "Warm Season",
+    "seed": true,
+    "plugs": true,
+    "mowing": "{\"spring\":{\"title\":\"Spring\",\"height\":\"1-2\",\"description\":\"The lower the mowing height, the more frequently you will need to mow. The grass will be much better quality if you mow frequently at a lower height\"},\"summer\":{\"title\":\"Summer\",\"height\":\"1-2\",\"description\":\"\"},\"fall\":{\"title\":\"Fall\",\"height\":\"1.75-3\",\"description\":\"Mow higher as dormancy approaches\"}}",
+    "specs": "{\"plugs_max_temp\":95,\"germination_time\":21,\"seed_min_temp\":60,\"plugs_time\":60,\"seed_new_lb_range\":[2.0,3.0],\"plugs_min_temp\":65,\"plug_distance\":15,\"seed_over_lb_range\":[0.75,1.25],\"seed_max_temp\":95}"
+  }
+},
+{
+  "model": "planner.grasstype",
+  "pk": 5,
+  "fields": {
+    "name": "Bermudagrass, hybrid",
+    "season": "Warm Season",
+    "seed": false,
+    "plugs": true,
+    "mowing": "{\"spring\":{\"title\":\"Spring\",\"height\":\".75-1.5\",\"description\":\"The lower the mowing height, the more frequently you will need to mow. The grass will be much better quality if you mow frequently at a lower height\"},\"summer\":{\"title\":\"Summer\",\"height\":\".75-1.5\",\"description\":\"\"},\"fall\":{\"title\":\"Fall\",\"height\":\"1.25-2\",\"description\":\"Mow higher as dormancy approaches\"}}",
+    "specs": "{\"plugs_time\":60,\"plugs_max_temp\":95,\"plug_distance\":15,\"plugs_min_temp\":65}"
+  }
+},
+{
+  "model": "planner.grasstype",
+  "pk": 6,
+  "fields": {
+    "name": "Centipedegrass",
+    "season": "Warm Season",
+    "seed": true,
+    "plugs": true,
+    "mowing": "{\"spring\":{\"title\":\"Spring\",\"height\":\"1-2\",\"description\":\"The lower the mowing height, the more frequently you will need to mow. The grass will be much better quality if you mow frequently at a lower height\"},\"summer\":{\"title\":\"Summer\",\"height\":\"1-2\",\"description\":\"\"},\"fall\":{\"title\":\"Fall\",\"height\":\"1.5-3\",\"description\":\"Mow higher as dormancy approaches\"}}",
+    "specs": "{\"plugs_max_temp\":95,\"germination_time\":28,\"seed_min_temp\":60,\"plugs_time\":60,\"seed_new_lb_range\":[0.5,1],\"plugs_min_temp\":65,\"plug_distance\":15,\"seed_over_lb_range\":[0.25,0.5],\"seed_max_temp\":95}"
+  }
+},
+{
+  "model": "planner.grasstype",
+  "pk": 7,
+  "fields": {
+    "name": "St. Augustine",
+    "season": "Warm Season",
+    "seed": false,
+    "plugs": true,
+    "mowing": "{\"spring\":{\"title\":\"Spring\",\"height\":\"2-3\",\"description\":\"The lower the mowing height, the more frequently you will need to mow. The grass will be much better quality if you mow frequently at a lower height\"},\"summer\":{\"title\":\"Summer\",\"height\":\"2-3\",\"description\":\"\"},\"fall\":{\"title\":\"Fall\",\"height\":\"3-4\",\"description\":\"Mow higher as dormancy approaches\"}}",
+    "specs": "{\"plugs_time\":60,\"plugs_max_temp\":95,\"plug_distance\":15,\"plugs_min_temp\":65}"
+  }
+},
+{
+  "model": "planner.grasstype",
+  "pk": 9,
+  "fields": {
+    "name": "Zoysia",
+    "season": "Warm Season",
+    "seed": false,
+    "plugs": true,
+    "mowing": "{\"spring\":{\"title\":\"Spring\",\"height\":\"0.75-1.5\",\"description\":\"The lower the mowing height, the more frequently you will need to mow. The grass will be much better quality if you mow frequently at a lower height\"},\"summer\":{\"title\":\"Summer\",\"height\":\"0.75-1.5\",\"description\":\"\"},\"fall\":{\"title\":\"Fall\",\"height\":\"1.25-2\",\"description\":\"Mow higher as dormancy approaches\"}}",
+    "specs": "{\"plugs_time\":60,\"plugs_max_temp\":95,\"plug_distance\":15,\"plugs_min_temp\":65}"
+  }
+}
+]

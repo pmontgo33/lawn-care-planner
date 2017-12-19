@@ -1,0 +1,110 @@
+[
+{
+  "model": "planner.lawn",
+  "pk": 4,
+  "fields": {
+    "user": 3,
+    "name": "Lawn 19075",
+    "zip_code": "19075",
+    "grass_type": 1,
+    "size": 3000,
+    "weekly_notify": true
+  }
+},
+{
+  "model": "planner.lawn",
+  "pk": 5,
+  "fields": {
+    "user": 3,
+    "name": "Lawn 10311",
+    "zip_code": "10311",
+    "grass_type": 1,
+    "size": 1500,
+    "weekly_notify": true
+  }
+},
+{
+  "model": "planner.lawn",
+  "pk": 6,
+  "fields": {
+    "user": 5,
+    "name": "Lawn 24016",
+    "zip_code": "24016",
+    "grass_type": 1,
+    "size": 7000,
+    "weekly_notify": true
+  }
+},
+{
+  "model": "planner.lawn",
+  "pk": 7,
+  "fields": {
+    "user": 3,
+    "name": "Lawn 27604",
+    "zip_code": "27604",
+    "grass_type": 1,
+    "size": 2500,
+    "weekly_notify": true
+  }
+},
+{
+  "model": "planner.lawn",
+  "pk": 8,
+  "fields": {
+    "user": 3,
+    "name": "Lawn 90210",
+    "zip_code": "90210",
+    "grass_type": 1,
+    "size": 10000,
+    "weekly_notify": true
+  }
+},
+{
+  "model": "planner.lawn",
+  "pk": 9,
+  "fields": {
+    "user": 1,
+    "name": "Lawn 60652",
+    "zip_code": "60652",
+    "grass_type": 1,
+    "size": 5000,
+    "weekly_notify": true
+  }
+},
+{
+  "model": "planner.lawn",
+  "pk": 10,
+  "fields": {
+    "user": 1,
+    "name": "Lawn 46001",
+    "zip_code": "46001",
+    "grass_type": 1,
+    "size": 4500,
+    "weekly_notify": true
+  }
+},
+{
+  "model": "planner.lawn",
+  "pk": 11,
+  "fields": {
+    "user": 1,
+    "name": "Lawn 19038",
+    "zip_code": "19038",
+    "grass_type": 1,
+    "size": 1000,
+    "weekly_notify": true
+  }
+},
+{
+  "model": "planner.lawn",
+  "pk": 13,
+  "fields": {
+    "user": 1,
+    "name": "Lawn 30309",
+    "zip_code": "30309",
+    "grass_type": 1,
+    "size": 6000,
+    "weekly_notify": true
+  }
+}
+]
