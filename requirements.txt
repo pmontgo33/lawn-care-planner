@@ -8,3 +8,4 @@ requests==2.11.1
 uszipcode==0.1.3
 django-allauth==0.31.0
 psycopg2==2.7
+selenium==3.7
