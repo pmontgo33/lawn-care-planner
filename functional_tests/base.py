@@ -14,7 +14,7 @@ class FunctionalTest(StaticLiveServerTestCase):
                 'planner_lawnproduct_testdata.json', 'planner_weatherstation_testdata.json']
 
     def setUp(self):
-        self.browser = webdriver.Chrome()
+        self.browser = webdriver.Firefox()
         staging_server = os.environ.get('STAGING_SERVER')
         if staging_server:
             self.live_server_url = 'http://' + staging_server

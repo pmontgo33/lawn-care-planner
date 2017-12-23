@@ -35,4 +35,4 @@ before_script:
 
 #command to run the test suite
 script:
-  - python manage.py test planner
+  - python manage.py test
