@@ -7,7 +7,7 @@ services: postgresql
 
 env:
   global:
-    - DJANGO_SETTINGS_MODULE="mysite.travis_settings"
+    - DJANGO_SETTINGS_MODULE="mysite.settings"
     - PYTHONPATH="/home/travis/build/pmontgo33/lawn_care_planner"
     - PIP_USE_MIRRORS=true
     - BUILD_ON_TRAVIS=true
