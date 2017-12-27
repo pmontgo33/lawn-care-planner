@@ -1,0 +1,92 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$30000$Fks6mS0QQ7c8$5Y99AGqaKhwuQe7pPc8kdOItj1aLp0m+mL3laaiR+5o=",
+        "last_login": "2017-05-05T22:03:09.727Z",
+        "is_superuser": true,
+        "username": "monty",
+        "first_name": "Monty",
+        "last_name": "",
+        "email": "monty@lawncareplanner.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2016-10-08T20:10:46Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$30000$UmbaFQBQNHV1$VzizVtCbpk/Q1Mgn97lQ/q5O3rPB8w0vuvbWdxN+iuI=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "guest",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-10-13T03:09:40Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$30000$C7GIUwoT5zoX$Xbu9Rjtfnm5E+yFhfw51w8AuzZ0YKQf4d3F5/N4Pt9U=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "examples",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2016-12-01T00:49:29.894Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$30000$lrTcGJPZah8T$Ib6JqjhOvHJYppGiOnHy9vuDrKFEx9KrdZZqXIRNT4c=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "test",
+        "first_name": "Test",
+        "last_name": "Testerski",
+        "email": "test@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2017-04-25T21:40:12.264Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 7,
+    "fields": {
+        "password": "pbkdf2_sha256$30000$lrTcGJPZah8T$Ib6JqjhOvHJYppGiOnHy9vuDrKFEx9KrdZZqXIRNT4c=",
+        "last_login": "2017-05-01T03:20:38.609Z",
+        "is_superuser": false,
+        "username": "pat",
+        "first_name": "Pat",
+        "last_name": "Montgomery",
+        "email": "pmontgo33@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2017-04-27T00:55:13.559Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]

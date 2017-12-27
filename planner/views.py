@@ -199,6 +199,7 @@ class LawnDeleteView(UserCanEditLawnMixin, DeleteView):
     def __init__(self):
         logger.debug("LawnDeleteView")
 
+
 class LawnNewView(FormView):
     form_class = LawnForm
     template_name = 'planner/lawn_edit.html'

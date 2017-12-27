@@ -3,6 +3,7 @@
 # created: 10/9/2016
 
 from django.db import models
+from django.core.urlresolvers import reverse
 from jsonfield import JSONField
 
 import os
@@ -63,6 +64,9 @@ class Lawn(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('lawn_detail', kwargs={'pk':self.pk})
+
 
 class WeatherStation(models.Model):
     """
@@ -77,7 +81,7 @@ class WeatherStation(models.Model):
     elevationUnit = models.CharField(max_length=200)
     maxdate = models.DateField()
     mindate = models.DateField()
-    temp_data = JSONField()
+    temp_data = JSONField(default="{}")
     
     def __str__(self):
         return self.name

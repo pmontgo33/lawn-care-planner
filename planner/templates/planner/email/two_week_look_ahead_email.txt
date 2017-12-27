@@ -15,7 +15,7 @@ Grass Type: {{ lawn.grass_type }}{% endautoescape %}
 Click the link below for more details on these tasks, and to view your entire planner.
 {{ planner_url }}
 To turn off notifications, click this link
-{{ planner_url }} edit/
+{{ planner_url }}edit/
 
 Stay green!
 

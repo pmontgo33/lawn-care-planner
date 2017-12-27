@@ -5,8 +5,6 @@ db.sqlite3
 /static
 .DS_Store
 local_settings.py
-/planner/lawn/FullNormalTempData.dat
-/planner/fixtures
 *.log
 .env
 settings.ini
