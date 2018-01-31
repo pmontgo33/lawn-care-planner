@@ -32,9 +32,9 @@ class LawnForm(forms.ModelForm):
     organic = forms.ChoiceField(choices=ORGANIC_CHOICES, widget=forms.RadioSelect(), initial='NP', label=' ')
     advanced = forms.ChoiceField(choices=ADVANCED_CHOICES, widget=forms.RadioSelect(), initial=False, label='Planner Type')
 
-    lime = forms.CharField(required=False)
-    phosphorus = forms.CharField(required=False)
-    potassium = forms.CharField(required=False)
+    lime = forms.CharField(required=False, initial=0)
+    phosphorus = forms.CharField(required=False, initial=0)
+    potassium = forms.CharField(required=False, initial=0)
 
     class Meta:
         model = Lawn
@@ -44,7 +44,7 @@ class LawnForm(forms.ModelForm):
 
         labels = {
             'size': _('Lawn Size'),
-            'weekly_notify': _('Send me email notifications for upcoming lawn care activites'),
+            'weekly_notify': _('Send me email notifications for upcoming lawn care activities'),
         }
 
     def __init__(self, user, *args, **kwargs):
@@ -93,7 +93,6 @@ class LawnForm(forms.ModelForm):
             ),
         )
 
-        # self.helper['Lawn Details'].layout.append((HTML('<h1>HERE</h1>')))
         if user.is_anonymous():
             del self.fields['name']
             del self.fields['weekly_notify']

@@ -6,6 +6,20 @@ from .base import FunctionalTest
 
 class NewVisitorTest(FunctionalTest):
 
+    def create_planner_page_loads_successfully(self):
+
+        self.wait_for_element('id_zip_code')
+
+        header_text = self.browser.find_element_by_tag_name('h3').text
+        self.assertIn('Create Lawn', header_text)
+
+        # User sees labels for inputting zip code, grass type, and lawn size
+        labels = self.browser.find_elements_by_tag_name('label')
+
+        self.assertIn('id_zip_code', [label.get_attribute('for') for label in labels])
+        self.assertIn('id_grass_type', [label.get_attribute('for') for label in labels])
+        self.assertIn('id_size', [label.get_attribute('for') for label in labels])
+
     def test_can_navigate_to_new_lawn_and_create_planner(self):
         # User finds LCP site. User goes to homepage
         self.browser.get(self.live_server_url)
@@ -22,17 +36,7 @@ class NewVisitorTest(FunctionalTest):
 
         # User clicks link, and loads a page titled Create Lawn
         self.browser.find_element_by_id('id_create_planner').click()
-        self.wait_for_element('id_zip_code')
-
-        header_text = self.browser.find_element_by_tag_name('h3').text
-        self.assertIn('Create Lawn', header_text)
-
-        # User sees labels for inputting zip code, grass type, and lawn size
-        labels = self.browser.find_elements_by_tag_name('label')
-
-        self.assertIn('id_zip_code', [label.get_attribute('for') for label in labels])
-        self.assertIn('id_grass_type', [label.get_attribute('for') for label in labels])
-        self.assertIn('id_size', [label.get_attribute('for') for label in labels])
+        self.create_planner_page_loads_successfully()
 
         # User enters his zip code, selects grass type from dropdown, types in lawn size, and clicks ENTER
         zip_input = self.browser.find_element_by_id('id_zip_code')
@@ -90,3 +94,28 @@ class NewVisitorTest(FunctionalTest):
             'Lawn Name: ',
             self.browser.find_element_by_id('id_lawn_name').text
         ))
+
+    def test_user_can_create_advanced_lawn_planner(self):
+        # User visits LCP homepage
+        self.browser.get(self.live_server_url)
+
+        # User clicks on the planner link text at the bottom of the screen
+        self.browser.find_element_by_id('id_planner_footer').click()
+        self.create_planner_page_loads_successfully()
+
+        # User also sees a radio button where he can select a basic or advanced lawn planner
+        basic_btn = self.browser.find_element_by_id('id_advanced_1').text
+        print(basic_btn)
+        self.assertIn('Basic', basic_btn)
+        adv_btn = self.browser.find_element_by_id('id_advanced_2').text
+        self.assertIn('Advanced', adv_btn)
+
+        # User clicks the advanced radio button and sees additional inputs for is lawn planner
+
+        # User fills out the remaining options and clicks submit
+
+        # User is taken to the detail page for his lawn and sees his planner for the year
+
+        # DIFFERENCES IN AN ADVANCED LAWN
+
+        self.fail('FINISH THE TEST!')
