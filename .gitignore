@@ -9,3 +9,4 @@ local_settings.py
 .env
 settings.ini
 .idea
+.vagrant/
