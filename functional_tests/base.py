@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException, NoSuchElementException
+from selenium.webdriver.firefox.options import Options
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 import os
@@ -14,6 +15,10 @@ class FunctionalTest(StaticLiveServerTestCase):
                 'planner_lawnproduct_testdata.json', 'planner_weatherstation_testdata.json']
 
     def setUp(self):
+        # os.environ['MOZ_HEADLESS'] = '1'
+        # options = Options()
+        # options.add_argument('--headless')
+        # self.browser = webdriver.Firefox(firefox_options=options)
         self.browser = webdriver.Firefox()
         staging_server = os.environ.get('STAGING_SERVER')
         if staging_server:

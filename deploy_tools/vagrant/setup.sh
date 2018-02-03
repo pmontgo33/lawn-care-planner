@@ -16,6 +16,10 @@ tar -xvzf geckodriver*
 chmod +x geckodriver
 sudo mv geckodriver /usr/local/bin/
 
+echo "Installing xvfb for headless testing..."
+sudo apt-get -y install xvfb
+Xvfb :1 -screen 0 1600x1200x16 &
+
 echo "Creating database..."
 sudo -u postgres psql -c "CREATE USER u_vagrant WITH PASSWORD 'password';"
 sudo su - postgres -c "createdb vagrant_db --owner u_vagrant"
@@ -36,3 +40,6 @@ python manage.py collectstatic --noinput
 
 echo "Loading initial database data from fixtures"
 python manage.py loaddata planner/fixtures/*.json
+
+echo "Exporting Xvfb display..."
+export DISPLAY=:1
