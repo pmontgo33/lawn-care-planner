@@ -56,7 +56,7 @@ Configure Application User:
 
     adduser lcp
     gpasswd -a lcp sudo
-    su - urban
+    su - lcp
 
 Configure the Python Virtualenv:
 
