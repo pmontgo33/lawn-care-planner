@@ -15,33 +15,33 @@ Provisioning a new site
 
 On Ubuntu
 
-Install Packages:
+<b>Install Packages:</b>
 
     sudo apt-get update
     sudo apt-get -y upgrade
 
-    PostgreSQL:
+   PostgreSQL:
 
         sudo apt-get -y install build-essential libpq-dev python-dev
         sudo apt-get -y install postgresql postgresql-contrib
 
-    NGINX:
+   NGINX:
 
         sudo apt-get -y install nginx
 
-    Supervisor:
+   Supervisor:
 
         sudo apt-get -y install supervisor
 
         sudo systemctl enable supervisor
         sudo systemctl start supervisor
 
-    Python Virtualenv
+   Python Virtualenv
 
         sudo apt-get -y install python-virtualenv
 
 
-Configure PostgreSQL:
+<b>Configure PostgreSQL:</b>
 
     su - postgres
 
@@ -52,13 +52,13 @@ Configure PostgreSQL:
     exit
 
 
-Configure Application User:
+<b>Configure Application User:</b>
 
     adduser lcp
     gpasswd -a lcp sudo
     su - lcp
 
-Configure the Python Virtualenv:
+<b>Configure the Python Virtualenv:</b>
 
     virtualenv -p python3 .
     source bin/activate
@@ -66,7 +66,7 @@ Configure the Python Virtualenv:
     git clone https://github.com/pmontgo33/lawn-care-planner.git
 
 
-Current file structure:
+<b>Current file structure:</b>
 
     lcp/
      |-- bin/
@@ -77,7 +77,7 @@ Current file structure:
      |-- pip-selfcheck.json
      +-- share/
 
- Install Project Requirements:
+ <b>Install Project Requirements:</b>
 
     cd lawn-care-planner
     pip install -r requirements.txt
@@ -86,7 +86,7 @@ Current file structure:
     python manage.py collectstatic
 
 
-Configure Gunicorn:
+<b>Configure Gunicorn:<b>
 
     sudo nano bin/gunicorn_start
 
