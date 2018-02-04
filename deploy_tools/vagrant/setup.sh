@@ -27,12 +27,11 @@ sudo su - postgres -c "createdb vagrant_db --owner u_vagrant"
 sudo -u postgres psql -c "ALTER USER u_vagrant CREATEDB;"
 
 echo "Creating virtual environment"
-cd /lcp
 virtualenv -p python3 myvenv --always-copy
 
 echo "Activating virtual environment and installing project dependencies..."
 source myvenv/bin/activate
-cd /lcp/app
+cd app
 pip install -r requirements.txt
 
 echo "Migrating database and collecting static files..."
