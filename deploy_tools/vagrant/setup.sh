@@ -39,4 +39,4 @@ python manage.py migrate
 python manage.py collectstatic --noinput
 
 echo "Loading initial database data from fixtures"
-python manage.py loaddata planner/fixtures/*.json
+python manage.py loaddata */fixtures/*.json
