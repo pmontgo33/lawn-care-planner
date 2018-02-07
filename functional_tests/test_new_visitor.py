@@ -104,17 +104,50 @@ class NewVisitorTest(FunctionalTest):
         self.create_planner_page_loads_successfully()
 
         # User also sees a radio button where he can select a basic or advanced lawn planner
-        basic_btn = self.browser.find_element_by_id('id_advanced_1').text
-        print(basic_btn)
-        self.assertIn('Basic', basic_btn)
-        adv_btn = self.browser.find_element_by_id('id_advanced_2').text
-        self.assertIn('Advanced', adv_btn)
+        basic_btn = self.browser.find_element_by_css_selector('label[for="id_advanced_1"]')
+        self.assertIn('Basic', basic_btn.text)
+        adv_btn = self.browser.find_element_by_css_selector('label[for="id_advanced_2"]')
+        self.assertIn('Advanced', adv_btn.text)
 
-        # User clicks the advanced radio button and sees additional inputs for is lawn planner
+        # User cannot see the Advanced section of planner inputs
+        self.assertFalse(self.browser.find_element_by_id('advanced_fieldset').is_displayed())
 
-        # User fills out the remaining options and clicks submit
+        # User clicks the advanced radio button and sees additional inputs for his lawn planner
+        adv_btn.click()
+        self.wait_for(lambda: self.assertTrue(
+            self.browser.find_element_by_id('advanced_fieldset').is_displayed())
+        )
+
+        # User fills out all fields and clicks submit
+        zip_input = self.browser.find_element_by_id('id_zip_code')
+        zip_input.send_keys('19075')
+
+        type_input = Select(self.browser.find_element_by_id('id_grass_type'))
+        type_input.select_by_visible_text('Kentucky Bluegrass')
+
+        size_input = self.browser.find_element_by_id('id_size')
+        size_input.send_keys('3000')
+
+        lime_input = self.browser.find_element_by_id('id_lime')
+        lime_input.send_keys('25')
+
+        phosphorus_input = self.browser.find_element_by_id('id_phosphorus')
+        phosphorus_input.send_keys('25')
+
+        potassium_input = self.browser.find_element_by_id('id_potassium')
+        potassium_input.send_keys('25')
+
+        create_btn = self.browser.find_element_by_css_selector('button[type="submit"]')
+        create_btn.click()
 
         # User is taken to the detail page for his lawn and sees his planner for the year
+        self.wait_for(lambda: self.assertIn(
+            'Lawn Name: ',
+            self.browser.find_element_by_id('id_lawn_name').text
+        ))
+
+        weather_station = self.browser.find_element_by_id('id_weather_station').text
+        self.assertIn('Closest Weather Station: ', weather_station)
 
         # DIFFERENCES IN AN ADVANCED LAWN
 
