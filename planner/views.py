@@ -91,7 +91,7 @@ class LawnDetailView(UserCanViewLawnMixin, View):
 
         # Get the closest station and min/max temperature data for that station based on the ZIP code
         closest_station = plannerutils.get_closest_station_data(lawn.zip_code)
-        logger.info("Closest Staion: %s" % (closest_station))
+        logger.info("Closest Station: %s" % (closest_station))
 
         my_planner = lawnplanner.Planner(lawn, closest_station)
 
@@ -225,7 +225,7 @@ class LawnNewView(FormView):
         return kwargs
 
     def get_success_url(self):
-        return reverse('lawn_detail', kwargs={'pk':self.kwargs.get('lawn_pk')})
+        return reverse('lawn_detail', kwargs={'pk': self.kwargs.get('lawn_pk')})
 
 
 class LawnEditView(UserCanEditLawnMixin, UpdateView):

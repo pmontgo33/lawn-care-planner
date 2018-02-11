@@ -43,14 +43,14 @@ class Planner:
         logger.info("New Planner Started - Lawn: %s, Station: %s" % (lawn, closest_station))
 
         self.tasks_by_season = OrderedDict()
-        self.tasks_by_season['spring'] = OrderedDict([("All Season",[]), ("March",[]), ("April",[]), ("May",[])])
-        self.tasks_by_season['summer'] = OrderedDict([("All Season",[]), ("June",[]), ("July",[]), ("August",[])])
-        self.tasks_by_season['fall'] = OrderedDict([("All Season",[]), ("September",[]), ("October",[]), ("November",[])])
-        self.tasks_by_season['winter'] = OrderedDict([("All Season",[]), ("December",[]), ("January",[]), ("February",[])])
+        self.tasks_by_season['spring'] = OrderedDict([("All Season", []), ("March", []), ("April", []), ("May", [])])
+        self.tasks_by_season['summer'] = OrderedDict([("All Season", []), ("June", []), ("July", []), ("August", [])])
+        self.tasks_by_season['fall'] = OrderedDict([("All Season", []), ("September", []), ("October", []), ("November", [])])
+        self.tasks_by_season['winter'] = OrderedDict([("All Season", []), ("December", []), ("January", []), ("February", [])])
 
         self.lawn = lawn
         self.closest_station = closest_station
-        # TODO Move closest_staition finding function to the lawn module, and just pass the zip code?
+        # TODO Move closest_station finding function to the lawn module, and just pass the zip code?
 
         self.establishment_info = establishment.get_establishment_info(self, closest_station, lawn)
         self.mowing_info = mowing.get_mowing_info(self, closest_station, lawn)

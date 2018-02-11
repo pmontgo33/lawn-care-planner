@@ -149,6 +149,10 @@ class NewVisitorTest(FunctionalTest):
         weather_station = self.browser.find_element_by_id('id_weather_station').text
         self.assertIn('Closest Weather Station: ', weather_station)
 
-        # DIFFERENCES IN AN ADVANCED LAWN
+        # On this planner, the User sees recommendations for lime, phosphorus, and potassium
+        planner_tasks = self.browser.find_element_by_id('planner-tasks').text
+        self.assertIn('of Lime', planner_tasks)
+        self.assertIn('of Phosphorus', planner_tasks)
+        self.assertIn('of Potassium', planner_tasks)
 
         self.fail('FINISH THE TEST!')

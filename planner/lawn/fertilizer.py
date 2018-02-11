@@ -14,11 +14,11 @@ from . import lawnplanner, lawnutils
 import logging
 logger = logging.getLogger(__name__)
 
-COOL_SPRING_APPLY_ABOVE = 60 # degrees F
-WARM_SPRING_APPLY_ABOVE = 80 # degrees F
+COOL_SPRING_APPLY_ABOVE = 60  # degrees F
+WARM_SPRING_APPLY_ABOVE = 80  # degrees F
 
 
-def spring_apps(closest_station, lawn):
+def spring_n_apps(closest_station, lawn):
     """
     Spring Application plan is to put down one application of .75lb Nitrogen per
     1000 sf when the average temperatures get above COOL_SPRING_APPLY_ABOVE or WARM_SPRING_APPLY_ABOVE.
@@ -43,7 +43,7 @@ def spring_apps(closest_station, lawn):
                         closest_station.temp_data[current_date.strftime('%Y-%m-%d')]['TMAX']) / 2
         
         if average_temp >= APPLY_ABOVE:
-            my_apps.append({'date':current_date, 'rate':APP_RATE, 'end_date':None})
+            my_apps.append({'date': current_date, 'rate': APP_RATE, 'nutrient': 'Nitrogen', 'end_date': None})
             break
         
         current_date += timedelta(days=1)
@@ -51,7 +51,7 @@ def spring_apps(closest_station, lawn):
     return my_apps
 
 
-def cool_fall_apps(closest_station):
+def cool_fall_n_apps(closest_station):
     """
     Fall Application plan is to put down two applications of .75 lb Nitrogen per
     1000 sf
@@ -80,7 +80,7 @@ def cool_fall_apps(closest_station):
         average_temp = (closest_station.temp_data[current_date.strftime('%Y-%m-%d')]['TMIN'] +
                         closest_station.temp_data[current_date.strftime('%Y-%m-%d')]['TMAX']) / 2
     
-    my_apps[-1] = {'date':current_date, 'rate':APP_RATE, 'end_date':None}
+    my_apps[-1] = {'date':current_date, 'rate':APP_RATE, 'nutrient': 'Nitrogen', 'end_date':None}
     
     while (average_temp > APPLY_RANGE[1]):
         """
@@ -119,12 +119,12 @@ def cool_fall_apps(closest_station):
         """
         app_date = lawnplanner.seasons_dates['fall'][1] - timedelta(days=APPLY_DAYS_BEFORE_TEMP)
 
-    my_apps[-1] = {'date':app_date, 'rate':APP_RATE, 'end_date':None}
+    my_apps[-1] = {'date': app_date, 'rate': APP_RATE, 'nutrient': 'Nitrogen', 'end_date': None}
     
     return my_apps
 
 
-def cool_summer_apps(between_dates):
+def cool_summer_n_apps(between_dates):
     """
     Summer Application plan is to put down one application of .75lb Nitrogen per
     1000 sf right between the Fall and Spring applications. 
@@ -140,12 +140,12 @@ def cool_summer_apps(between_dates):
     start_app_date = mid_app_date - timedelta(days=7)
     end_app_date = mid_app_date + timedelta(days=7)
     
-    my_apps.append({'date':start_app_date, 'rate':APP_RATE, 'end_date':end_app_date})
+    my_apps.append({'date': start_app_date, 'rate': APP_RATE, 'nutrient': 'Nitrogen', 'end_date': end_app_date})
     
     return my_apps
 
 
-def warm_summer_apps(first_app_date, last_app_date):
+def warm_summer_n_apps(first_app_date, last_app_date):
     """
     Warm Season Summer Application plan is to put down an application of .75lb Nitrogen per
     1000 sf every RANGE_BETWEEN_APPS two times.
@@ -161,19 +161,19 @@ def warm_summer_apps(first_app_date, last_app_date):
         # One application if there is not time for two
         days_btwn_apps = int((last_app_date - first_app_date).days / 2)
         start_app_date = first_app_date + timedelta(days=days_btwn_apps)
-        my_apps.append({'date': start_app_date, 'rate': APP_RATE, 'end_date': None})
+        my_apps.append({'date': start_app_date, 'rate': APP_RATE, 'nutrient': 'Nitrogen', 'end_date': None})
     else:
         # Two applications
         start_app_date = first_app_date + timedelta(days=days_btwn_apps)
-        my_apps.append({'date': start_app_date, 'rate': APP_RATE, 'end_date': None})
+        my_apps.append({'date': start_app_date, 'rate': APP_RATE, 'nutrient': 'Nitrogen', 'end_date': None})
 
         start_app_date += timedelta(days=days_btwn_apps)
-        my_apps.append({'date': start_app_date, 'rate': APP_RATE, 'end_date': None})
+        my_apps.append({'date': start_app_date, 'rate': APP_RATE, 'nutrient': 'Nitrogen', 'end_date': None})
 
     return my_apps
 
 
-def warm_fall_apps(closest_station):
+def warm_fall_n_apps(closest_station):
     """
     Warm Season Fall Application plan is to put down an application of .75lb Nitrogen per
     1000 sf 56 days before low temp reaches 32 degrees F.
@@ -183,7 +183,6 @@ def warm_fall_apps(closest_station):
     APPLY_ABOVE = 32  # degrees F
     APPLY_DAYS_BEFORE_TEMP = 42  # days before average temp is 32 degrees F
     my_apps = []
-    print(closest_station.name)
 
     current_date = lawnplanner.seasons_dates['fall'][0]
     app_date = None
@@ -206,7 +205,25 @@ def warm_fall_apps(closest_station):
         """
         app_date = lawnplanner.seasons_dates['fall'][1] - timedelta(days=APPLY_DAYS_BEFORE_TEMP)
 
-    my_apps.append({'date': app_date, 'rate': APP_RATE, 'end_date': None})
+    my_apps.append({'date': app_date, 'rate': APP_RATE, 'nutrient': 'Nitrogen', 'end_date': None})
+
+    return my_apps
+
+
+def lime_apps(closest_station, lawn):
+    """
+    :param closest_station: the station to pull the weather data from
+    :param lawn: will use the needed lime lbs
+    :return: a list of lime applications
+    """
+    logger.debug("lime_apps - Lawn: %s, Station: %s" % (lawn, closest_station))
+
+    my_apps = []
+
+    LIME_APP_DATE = lawnplanner.seasons_dates['fall'][0]  # This needs to be changed to a recommended date based on temperature
+    lime_rate = lawn.lime  # Currently just one application, will need to split this up if rate exceeds a certain threshold
+
+    my_apps.append({'date': LIME_APP_DATE, 'rate': lime_rate, 'nutrient': 'Lime', 'end_date': None})
 
     return my_apps
 
@@ -232,34 +249,34 @@ def get_fertilizer_info(planner, closest_station, lawn):
     logger.debug("get_fertilizer_info - Lawn: %s, Station: %s" % (lawn, closest_station))
 
     fertilizer_info = {
-        'apps':None,
-        'description':None
+        'apps': None,
+        'description': None
     }
 
     # Fertilizer Applications
     fertilizer_info['apps'] = OrderedDict([
 
-        ('spring',[]),
-        ('summer',[]),
-        ('fall',[]),
+        ('spring', []),
+        ('summer', []),
+        ('fall', []),
     ])
 
     # Add spring applications
-    spring_applications = spring_apps(closest_station, lawn)
+    spring_applications = spring_n_apps(closest_station, lawn)
     fertilizer_info['apps']['spring'].extend(spring_applications)
 
     if lawn.grass_type.season == "Cool Season":
         # Add fall applications
-        fall_applications = cool_fall_apps(closest_station)
+        fall_applications = cool_fall_n_apps(closest_station)
         fertilizer_info['apps']['fall'].extend(fall_applications)
 
         # Add summer applications
         between_dates = [spring_applications[0]['date'], fall_applications[0]['date']]
-        summer_applications = cool_summer_apps(between_dates)
+        summer_applications = cool_summer_n_apps(between_dates)
         fertilizer_info['apps']['summer'].extend(summer_applications)
     else:
         # Add fall applications
-        fall_applications = warm_fall_apps(closest_station)
+        fall_applications = warm_fall_n_apps(closest_station)
         fertilizer_info['apps']['fall'].extend(fall_applications)
 
         # Add summer applications
@@ -269,9 +286,15 @@ def get_fertilizer_info(planner, closest_station, lawn):
             first_app_date = lawnplanner.seasons_dates['spring'][1]
         else:
             first_app_date = spring_applications[0]['date']
-        summer_applications = warm_summer_apps(first_app_date, last_app_date)
+        summer_applications = warm_summer_n_apps(first_app_date, last_app_date)
 
         fertilizer_info['apps']['summer'].extend(summer_applications)
+
+    # Add lime applications
+    lime_applications = lime_apps(closest_station, lawn)
+    for app in lime_applications:
+        season = lawnplanner.season_of_date(app['date'])
+        fertilizer_info['apps'][season].append(app)
 
     # Finalize applications and add to planner
     for season in fertilizer_info['apps']:
@@ -279,11 +302,12 @@ def get_fertilizer_info(planner, closest_station, lawn):
             app['total_lbs'] = lawnutils.round_to_quarter((lawn.size / 1000) * app['rate'])
 
             if app['end_date'] is None:
-                task_name = "Fertilize with %s lbs of Nitrogen" % (str(app['total_lbs']))
+                task_name = "Fertilize with %s lbs of %s" % (str(app['total_lbs']), app['nutrient'])
                 app['title'] = task_name
             else:
-                task_name = "%s - Fertilize with %s lbs of Nitrogen" % \
-                            (app['end_date'].strftime("%B %d").replace(" 0", " "), str(app['total_lbs']))
+                task_name = "%s - Fertilize with %s lbs of %s" % \
+                            (app['end_date'].strftime("%B %d").replace(" 0", " "), str(app['total_lbs']),
+                             app['nutrient'])
                 app['title'] = task_name
                 app['end_date'] = app['end_date'].strftime("%B %d").replace(" 0", " ")
 
