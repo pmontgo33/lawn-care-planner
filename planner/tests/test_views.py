@@ -43,6 +43,15 @@ class NewLawnViewTest(TestCase):
         self.assertTemplateUsed(response, 'planner/lawn_edit.html')
         self.assertIsInstance(response.context['form'], LawnForm)
 
+    def test_new_basic_lawn_submits(self):
+        planner_data = {'name': 'Basic Lawn', 'zip_code': '18914', 'grass_type': 'PRG', 'size': '4000',
+                        'weekly_notify': True}
+        response = self.client.post('/planner/', planner_data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_new_advanced_lawn_submits(self):
+        self.fail("FINISH THE ADVANCED VIEW UNIT TEST")
+
 
 class UserLawnListViewTest(UnitTestWithFixtures):
 
