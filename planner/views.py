@@ -240,7 +240,7 @@ class LawnEditView(UserCanEditLawnMixin, UpdateView):
         if 'cancel' in request.POST:
             # ref = request.GET['ref']
             # logger.debug("Cancel URL is ?%s?" % (ref))
-            return HttpResponseRedirect(reverse('lawn_detail', kwargs={'pk':self.get_object().pk}))
+            return HttpResponseRedirect(reverse('lawn_detail', kwargs={'pk': self.get_object().pk}))
         else:
             return super(LawnEditView, self).post(request, *args, **kwargs)
 
@@ -263,4 +263,4 @@ class LawnEditView(UserCanEditLawnMixin, UpdateView):
     def get_success_url(self):
         lawn = self.get_object()
         logger.info("Lawn Edited - Name: %s, User: %s" % (lawn.name, lawn.user.email))
-        return reverse('lawn_detail', kwargs={'pk':self.kwargs.get('pk')})
+        return reverse('lawn_detail', kwargs={'pk': self.kwargs.get('pk')})

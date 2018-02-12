@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, AnonymousUser
 from unittest import skip
 
 from planner.forms import LawnForm
+from planner.models import GrassType
 from .base import UnitTestWithFixtures
 
 import logging
@@ -36,14 +37,14 @@ class LawnFormTest(TestCase):
     def test_form_validation_for_blank_items(self):
         test_user = AnonymousUser()
 
-        form = LawnForm(test_user, data={'zip_code':''})
+        form = LawnForm(test_user, data={'zip_code': ''})
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['zip_code'], ['This field is required.'])
 
     def test_form_validation_for_invalid_items(self):
         test_user = AnonymousUser()
 
-        form = LawnForm(test_user, data={'zip_code':'55555'})
+        form = LawnForm(test_user, data={'zip_code': '55555'})
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['zip_code'], ['Invalid ZIP code'])
 
@@ -53,6 +54,26 @@ class LawnFormTest(TestCase):
 
 
 class LawnFormTestWithFixtures(UnitTestWithFixtures):
+
+    def test_form_valid_with_basic_planner(self):
+        test_user = AnonymousUser()
+
+        form_data = {'name': 'Basic Lawn', 'zip_code': '18914', 'grass_type': 2, 'size': 4000,
+                     'advanced': False, 'organic': 'NP'}
+
+        form = LawnForm(test_user, data=form_data)
+        self.assertTrue(form.is_valid(), msg='Form errors: %s' % form.errors)
+
+    def test_form_valid_with_advanced_planner(self):
+        test_user = AnonymousUser()
+
+        form_data = {'name': 'Basic Lawn', 'zip_code': '18914', 'grass_type': 2, 'size': 4000,
+                     'advanced': False, 'organic': 'NP', 'weekly_notify': False, 'lime': '0', 'phosphorus': '0',
+                     'potassium': '0'}
+
+        form = LawnForm(test_user, data=form_data)
+
+        self.assertTrue(form.is_valid(), msg='Form errors: %s' % form.errors)
 
     def test_edit_lawn_page_uses_form_instance(self):
         self.client.login(username='test', password='testpassword')

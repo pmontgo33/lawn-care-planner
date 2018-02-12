@@ -171,7 +171,7 @@ class GrassType(models.Model):
     specs = JSONField()
 
     class Meta:
-        ordering = ['season','name']
+        ordering = ['season', 'name']
 
     def __str__(self):
         return self.name

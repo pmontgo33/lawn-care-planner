@@ -105,6 +105,20 @@
     "grass_type": 1,
     "size": 6000,
     "weekly_notify": true
+  },
+  "model": "planner.lawn",
+  "pk": 14,
+  "fields": {
+    "user": 3,
+    "name": "Lawn 30309",
+    "zip_code": "30309",
+    "grass_type": 2,
+    "size": 4000,
+    "weekly_notify": true,
+    "advanced":true,
+    "lime":3,
+    "phosphorus":4,
+    "potassium":5
   }
 }
 ]

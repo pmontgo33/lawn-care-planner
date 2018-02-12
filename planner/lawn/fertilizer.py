@@ -220,6 +220,9 @@ def lime_apps(closest_station, lawn):
 
     my_apps = []
 
+    # First application in spring halfway between spring N app and next N app.
+    # Second application in fall, between both fall N apps.
+
     LIME_APP_DATE = lawnplanner.seasons_dates['fall'][0]  # This needs to be changed to a recommended date based on temperature
     lime_rate = lawn.lime  # Currently just one application, will need to split this up if rate exceeds a certain threshold
 

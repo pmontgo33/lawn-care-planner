@@ -34,6 +34,49 @@ class LawnDetailTest(UnitTestWithFixtures):
         response = self.client.get('planner/lawn/3333/')
         self.assertEqual(response.status_code, 404)
 
+    def test_advanced_lawn_detail_view(self):
+        response = self.client.get('/planner/lawn/14/')
+        self.assertEqual(response.status_code, 200)
+
+        fert_apps = response.context['planner'].fertilizer_info['apps']
+        has_lime = False
+        has_phosphorus = False
+        has_potassium = False
+
+        for season, apps in fert_apps.items():
+            for app in apps:
+                if app['nutrient'] == 'Lime':
+                    has_lime = True
+                elif app['nutrient'] == 'Phosphorus':
+                    has_phosphorus = True
+                elif app['nutrient'] == 'Potassium':
+                    has_potassium = True
+        self.assertTrue(has_lime, msg="Lime application not present.")
+        self.assertTrue(has_phosphorus, msg="Phosphorus application not present.")
+        self.assertTrue(has_potassium, msg="Potassium application not present.")
+
+    def test_advanced_lawn_app_constraints(self):
+        response = self.client.get('/planner/lawn/14/')
+        self.assertEqual(response.status_code, 200)
+
+        fert_apps = response.context['planner'].fertilizer_info['apps']
+
+        lime_apps = []
+        for season, apps in fert_apps.items():
+            for app in apps:
+                if app['nutrient'] == 'Lime':
+                    lime_apps.append(app)
+
+        # Lime Constraints
+        self.assertTrue(len(lime_apps) <= 2, msg="Lime applications: %s. Lime applications cannot exceed 2." % len(lime_apps))
+        for app in lime_apps:
+            self.assertTrue(app['rate'] <= 50, msg="Lime app rate: %s. Lime app rates cannot exceed 50." % app['rate'])
+
+        # Phosphorus Constraints
+        self.fail("Finish the phosphorus constraints")
+
+        # Potassium Constraints
+        self.fail("Finish the potassium constraints")
 
 class NewLawnViewTest(TestCase):
 
@@ -42,15 +85,6 @@ class NewLawnViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'planner/lawn_edit.html')
         self.assertIsInstance(response.context['form'], LawnForm)
-
-    def test_new_basic_lawn_submits(self):
-        planner_data = {'name': 'Basic Lawn', 'zip_code': '18914', 'grass_type': 'PRG', 'size': '4000',
-                        'weekly_notify': True}
-        response = self.client.post('/planner/', planner_data)
-        self.assertEqual(response.status_code, 200)
-
-    def test_new_advanced_lawn_submits(self):
-        self.fail("FINISH THE ADVANCED VIEW UNIT TEST")
 
 
 class UserLawnListViewTest(UnitTestWithFixtures):

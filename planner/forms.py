@@ -65,7 +65,7 @@ class LawnForm(forms.ModelForm):
                              'grass_type',
                              AppendedText('size', 'square feet'),
                              'weekly_notify',
-                    ),
+                             ),
                     Div('advanced', type='input', css_id='advanced_input'),
                     Fieldset('Advanced',
                              Div(HTML('<p class="col-lg-8"><strong>Advanced planners are for lawns that have soil test '
@@ -77,8 +77,8 @@ class LawnForm(forms.ModelForm):
                              AppendedText('potassium', 'lbs'),
                              css_id='advanced_fieldset',
                              style='display:none;'
+                             ),
                     ),
-                ),
                 Tab('Options',
                     Div(HTML('<p class="col-lg-8"><strong>Spring Seeding: </strong>Seeding in the spring is typically '
                              'not recommended due to increased competition with weeds. LCP recommends seeding only in '
@@ -89,7 +89,7 @@ class LawnForm(forms.ModelForm):
                              'organic fertilizers and some chemical weed control. All organic will not provide any '
                              'recommendations with chemicals.</p>'), css_class='row'),
                     'organic',
-                ),
+                    ),
             ),
         )
 
