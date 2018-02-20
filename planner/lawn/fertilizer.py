@@ -205,52 +205,6 @@ def warm_fall_n_apps(closest_station):
 
     return my_apps
 
-
-def lime_apps(closest_station, lawn, fert_apps):
-    """
-    :param closest_station: the station to pull the weather data from
-    :param lawn: will use the needed lime lbs
-    :return: a list of lime applications
-    """
-    logger.debug("lime_apps - Lawn: %s, Station: %s" % (lawn, closest_station))
-    print(lawn.lime)
-    my_apps = []
-    if lawn.lime == 0:
-        return my_apps
-
-    # First application in spring halfway between spring N app and next N app.
-    # Second application in fall, between both fall N apps.
-
-    first_n_date = fert_apps['spring'][0]['date']
-    if len(fert_apps['spring']) > 1:
-        second_n_date = fert_apps['spring'][1]['date']
-    else:
-        second_n_date = fert_apps['summer'][0]['date']
-
-    days_btwn_n_apps = second_n_date - first_n_date
-    first_lime_date = first_n_date + (days_btwn_n_apps / 2)
-
-    first_n_date = fert_apps['fall'][0]['date']
-    second_n_date = fert_apps['fall'][1]['date']
-    days_btwn_n_apps = second_n_date - first_n_date
-    second_lime_date = first_n_date + (days_btwn_n_apps / 2)
-
-    lime_rate = lawn.lime
-    if lime_rate > 100:
-        lime_rate = 100
-    if lime_rate > 50:
-        first_lime_rate = 50
-    else:
-        first_lime_rate = lime_rate
-    second_lime_rate = lime_rate - first_lime_rate
-
-    my_apps.append({'date': first_lime_date, 'rate': first_lime_rate, 'nutrient': 'Lime', 'end_date': None})
-    if second_lime_rate > 0:
-        my_apps.append({'date': second_lime_date, 'rate': second_lime_rate, 'nutrient': 'Lime', 'end_date': None})
-
-    return my_apps
-
-
 def get_fert_weight(npk, required_nitrogen):
     """
     :param required_nitrogen: this is the required lbs of nitrogen required for the application
@@ -313,13 +267,6 @@ def get_fertilizer_info(planner, closest_station, lawn):
 
         fertilizer_info['apps']['summer'].extend(summer_applications)
 
-    # Add lime applications
-    lime_applications = lime_apps(closest_station, lawn, fertilizer_info['apps'])
-    print(lime_applications)
-    for app in lime_applications:
-        season = lawnplanner.season_of_date(app['date'])
-        fertilizer_info['apps'][season].append(app)
-
     # Finalize applications and add to planner
     for season in fertilizer_info['apps']:
         for app in fertilizer_info['apps'][season]:
@@ -345,13 +292,6 @@ def get_fertilizer_info(planner, closest_station, lawn):
             "These should only be used as a guideline, and actual weather forecasts should be used to determine actual dates. "
 
         )
-        if len(lime_applications) > 0:
-            fertilizer_info['description'] += (
-                "Lime application rates assume a CCE of 100. Read the label of your specific product for your CCE. "
-                "If your lime source is close to 100 CCE, you do not need to adjust the recommended amount. "
-                "In the event that you use a lime source with a CCE well below or above 100, use the following formula "
-                "to adjust the required amount: Actual Lime to Apply = Planner recommendation * 100 / CCE of your product. "
-            )
     else:
         fertilizer_info['description'] = (
             "This fertilizer plan is based four applications per year: late Spring, two Summer, and late Fall. "
