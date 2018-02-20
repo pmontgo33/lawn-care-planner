@@ -96,16 +96,18 @@
   }
 },
 {
-  "model": "planner.lawn",
-  "pk": 13,
-  "fields": {
-    "user": 1,
-    "name": "Lawn 30309",
-    "zip_code": "30309",
-    "grass_type": 1,
-    "size": 6000,
-    "weekly_notify": true
-  },
+    "model": "planner.lawn",
+    "pk": 13,
+    "fields": {
+      "user": 1,
+      "name": "Lawn 30309",
+      "zip_code": "30309",
+      "grass_type": 1,
+      "size": 6000,
+      "weekly_notify": true
+    }
+},
+{
   "model": "planner.lawn",
   "pk": 14,
   "fields": {
@@ -116,7 +118,55 @@
     "size": 4000,
     "weekly_notify": true,
     "advanced":true,
-    "lime":3,
+    "lime":49,
+    "phosphorus":4,
+    "potassium":5
+  }
+},
+{
+  "model": "planner.lawn",
+  "pk": 15,
+  "fields": {
+    "user": 3,
+    "name": "Lawn 37064",
+    "zip_code": "37064",
+    "grass_type": 2,
+    "size": 3000,
+    "weekly_notify": true,
+    "advanced":true,
+    "lime":49,
+    "phosphorus":4,
+    "potassium":5
+  }
+},
+{
+  "model": "planner.lawn",
+  "pk": 16,
+  "fields": {
+    "user": 3,
+    "name": "Lawn 19002",
+    "zip_code": "19002",
+    "grass_type": 2,
+    "size": 8000,
+    "weekly_notify": true,
+    "advanced":true,
+    "lime":55,
+    "phosphorus":4,
+    "potassium":5
+  }
+},
+{
+  "model": "planner.lawn",
+  "pk": 17,
+  "fields": {
+    "user": 3,
+    "name": "Lawn 90210",
+    "zip_code": "90210",
+    "grass_type": 3,
+    "size": 5000,
+    "weekly_notify": true,
+    "advanced":true,
+    "lime":120,
     "phosphorus":4,
     "potassium":5
   }

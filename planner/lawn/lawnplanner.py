@@ -81,7 +81,7 @@ class Planner:
                 self.tasks_by_season[task_season][task_month] = None
 
             self.tasks_by_season[task_season][task_month].append({
-                'name':task_name, 'date':task_date
+                'name': task_name, 'date': task_date
             })
 
 

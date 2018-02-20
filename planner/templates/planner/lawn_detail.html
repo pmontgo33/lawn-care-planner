@@ -91,12 +91,12 @@
                           {% for value in list %}
                               <ul>
                                 {% if value.end_date is None %}
-                                  <li>{{ value.date }}</li>
+                                  <li>{{ value.date|date:"F j"  }}</li>
                                 {% else %}
-                                  <li>{{ value.date }} - {{ value.end_date }}</li>
+                                  <li>{{ value.date|date:"F j"  }} - {{ value.end_date|date:"F j"  }}</li>
                                 {% endif %}
                                 <ul>
-                                  <li>Application Total: {{ value.total_lbs }} lbs of Nitrogen</li>
+                                  <li>Application Total: {{ value.total_lbs }} lbs of {{ value.nutrient }}</li>
                                   <li>Rate: {{ value.rate }} lbs per 1000 sf</li>
                                 </ul>
                               </ul>

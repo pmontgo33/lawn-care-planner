@@ -3,6 +3,7 @@ This file contains all of the unit tests for the planner django app
 """
 
 # Import Statements
+from datetime import timedelta
 from django.test import TestCase
 from django.contrib import auth
 from unittest import skip
@@ -55,26 +56,75 @@ class LawnDetailTest(UnitTestWithFixtures):
         self.assertTrue(has_phosphorus, msg="Phosphorus application not present.")
         self.assertTrue(has_potassium, msg="Potassium application not present.")
 
-    def test_advanced_lawn_app_constraints(self):
-        response = self.client.get('/planner/lawn/14/')
-        self.assertEqual(response.status_code, 200)
+    def check_lime_constraints(self, fert_apps, expected_apps):
+        """
+        Lime Constraints
 
-        fert_apps = response.context['planner'].fertilizer_info['apps']
-
+        - Number of applications - According to PSU soil test results, lime applications should be spaced out by 4-6
+            months (at least 120 days between) , and therefore should not have more than 2 applications per year.
+        - Application rate - According to PSU soil test results, lime applications should not exceed 100 lbs per 1000sf.
+            Other sources, such as U of Arkansas (https://www.uaex.edu/publications/PDF/FSA-6134.pdf) recommend not
+            exceeding 50lbs per 1000sf per application. LCP has gone with the more conservative rate of 50lb/1000sf
+        """
         lime_apps = []
+        nitrogen_apps = []
         for season, apps in fert_apps.items():
             for app in apps:
                 if app['nutrient'] == 'Lime':
                     lime_apps.append(app)
+                elif app['nutrient'] == 'Nitrogen':
+                    nitrogen_apps.append(app)
 
-        # Lime Constraints
-        self.assertTrue(len(lime_apps) <= 2, msg="Lime applications: %s. Lime applications cannot exceed 2." % len(lime_apps))
+        self.assertTrue(len(lime_apps) <= 2,
+                        msg="Lime applications: %s. Lime applications cannot exceed 2." % len(lime_apps))
         for app in lime_apps:
+            for another in lime_apps:
+                if app == another:
+                    continue
+                days_between = abs(app['date'] - another['date']).days
+                self.assertTrue(days_between > 120,
+                                msg="Days between lime applications %s. Must be more than 120 days." % days_between)
+            for n_app in nitrogen_apps:
+                days_between = abs(app['date'] - n_app['date']).days
+                self.assertTrue(days_between > 14,
+                                msg="Days between nitrogen and lime applications %s. Must be more than 14 days." % days_between)
             self.assertTrue(app['rate'] <= 50, msg="Lime app rate: %s. Lime app rates cannot exceed 50." % app['rate'])
 
+        self.assertTrue(len(lime_apps) == expected_apps, msg="Expected %s lime application, found %s" %
+                        (expected_apps, len(lime_apps)))
+
+    def test_advanced_lawn_lime_one_app(self):
+
+        response = self.client.get('/planner/lawn/15/')
+        self.assertEqual(response.status_code, 200)
+
+        fert_apps = response.context['planner'].fertilizer_info['apps']
+        expected_apps = 1
+        self.check_lime_constraints(fert_apps, expected_apps)
+
+    def test_advanced_lawn_lime_two_apps(self):
+
+        response = self.client.get('/planner/lawn/16/')
+        self.assertEqual(response.status_code, 200)
+
+        fert_apps = response.context['planner'].fertilizer_info['apps']
+        expected_apps = 2
+        self.check_lime_constraints(fert_apps, expected_apps)
+
+    def test_advanced_lawn_lime_more_than_two_apps(self):
+
+        response = self.client.get('/planner/lawn/17/')
+        self.assertEqual(response.status_code, 200)
+
+        fert_apps = response.context['planner'].fertilizer_info['apps']
+        expected_apps = 2
+        self.check_lime_constraints(fert_apps, expected_apps)
+
+    def test_advanced_lawn_phosphorus_constraints_pass(self):
         # Phosphorus Constraints
         self.fail("Finish the phosphorus constraints")
 
+    def test_advanced_lawn_phosphorus_constraints_pass(self):
         # Potassium Constraints
         self.fail("Finish the potassium constraints")
 
