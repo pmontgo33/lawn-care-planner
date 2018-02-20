@@ -1,9 +1,9 @@
-# lawnplanner.py
-# Patrick W. Montgomery
-# created: 10/14/2016
+"""
+This is the lawnplanner object that takes the provided lawn, and generates all of the planner tasks and data
+"""
 
 # import statements
-from . import establishment, fertilizer, mowing, insectcontrol, weedcontrol
+from . import establishment, fertilizer, phlime, mowing, insectcontrol, weedcontrol
 
 from datetime import date
 from collections import OrderedDict
@@ -55,6 +55,7 @@ class Planner:
         self.establishment_info = establishment.get_establishment_info(self, closest_station, lawn)
         self.mowing_info = mowing.get_mowing_info(self, closest_station, lawn)
         self.fertilizer_info = fertilizer.get_fertilizer_info(self, closest_station, lawn)
+        self.phlime_info = phlime.get_phlime_info(self, closest_station, lawn)
         self.weed_info = weedcontrol.get_weed_control_info(self, closest_station, lawn)
         self.insect_info = insectcontrol.get_insect_control_info(self, closest_station, lawn)
 

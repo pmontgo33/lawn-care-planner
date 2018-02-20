@@ -117,10 +117,10 @@
     "grass_type": 2,
     "size": 4000,
     "weekly_notify": true,
-    "advanced":true,
-    "lime":49,
-    "phosphorus":4,
-    "potassium":5
+    "advanced": true,
+    "lime": 49,
+    "phosphorus": 4,
+    "potassium": 5
   }
 },
 {
@@ -133,10 +133,10 @@
     "grass_type": 2,
     "size": 3000,
     "weekly_notify": true,
-    "advanced":true,
-    "lime":49,
-    "phosphorus":4,
-    "potassium":5
+    "advanced": true,
+    "lime": 49,
+    "phosphorus": 4,
+    "potassium": 5
   }
 },
 {
@@ -149,10 +149,10 @@
     "grass_type": 2,
     "size": 8000,
     "weekly_notify": true,
-    "advanced":true,
-    "lime":55,
-    "phosphorus":4,
-    "potassium":5
+    "advanced": true,
+    "lime": 55,
+    "phosphorus": 4,
+    "potassium": 5
   }
 },
 {
@@ -165,10 +165,10 @@
     "grass_type": 3,
     "size": 5000,
     "weekly_notify": true,
-    "advanced":true,
-    "lime":120,
-    "phosphorus":4,
-    "potassium":5
+    "advanced": true,
+    "lime": 120,
+    "phosphorus": 4,
+    "potassium": 5
   }
 }
 ]

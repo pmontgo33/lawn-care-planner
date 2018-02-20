@@ -1,9 +1,5 @@
-# fertilizer.py
-# Patrick W. Montgomery
-# created: 10/25/2016
-
 """
-See each seasons apps function for the fertilization plan.
+Calculates and organizes the fertilization information for the given lawn
 """
 
 # import statements
@@ -217,7 +213,7 @@ def lime_apps(closest_station, lawn, fert_apps):
     :return: a list of lime applications
     """
     logger.debug("lime_apps - Lawn: %s, Station: %s" % (lawn, closest_station))
-
+    print(lawn.lime)
     my_apps = []
     if lawn.lime == 0:
         return my_apps
