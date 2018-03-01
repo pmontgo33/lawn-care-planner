@@ -205,6 +205,30 @@ def warm_fall_n_apps(closest_station):
 
     return my_apps
 
+
+def phos_apps(lawn, fertilizer_apps):
+
+    logger.debug("lime_apps - Lawn: %s" % lawn)
+    my_apps = []
+    if lawn.phosphorus == 0:
+        return my_apps
+
+    num_n_apps = 0
+    for season in fertilizer_apps:
+        for app in season:
+            if app['nutrient'] == 'Nitrogen':
+                num_n_apps += 1
+
+    phos_app_rate = lawn.phosphorus / num_n_apps
+
+    for season in fertilizer_apps:
+        for app in season:
+            if app['nutrient'] == 'Nitrogen':
+                my_apps.append({'date': app['date'], 'rate': phos_app_rate, 'nutrient': 'Phosphorus',
+                                'end_date': app['end_date']})
+    # YOU ARE HERE....should this function just add the phos apps, or should it return my_apps and then those are added to fertilizer_info
+
+
 def get_fert_weight(npk, required_nitrogen):
     """
     :param required_nitrogen: this is the required lbs of nitrogen required for the application
@@ -266,6 +290,12 @@ def get_fertilizer_info(planner, closest_station, lawn):
         summer_applications = warm_summer_n_apps(first_app_date, last_app_date)
 
         fertilizer_info['apps']['summer'].extend(summer_applications)
+
+    # Add phosphorus applications
+    phosphorus_applications = phos_apps(lawn, fertilizer_info['apps'])
+    for app in phosphorus_applications:
+        season = lawnplanner.season_of_date(app['date'])
+        fertilizer_info['apps'][season].append(app)
 
     # Finalize applications and add to planner
     for season in fertilizer_info['apps']:

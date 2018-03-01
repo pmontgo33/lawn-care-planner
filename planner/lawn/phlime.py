@@ -18,7 +18,6 @@ def lime_apps(closest_station, lawn, fert_apps):
     :return: a list of lime applications
     """
     logger.debug("lime_apps - Lawn: %s, Station: %s" % (lawn, closest_station))
-    print(lawn.lime)
     my_apps = []
     if lawn.lime == 0:
         return my_apps
@@ -78,7 +77,6 @@ def get_phlime_info(planner, closest_station, lawn):
 
     # Add lime applications
     lime_applications = lime_apps(closest_station, lawn, planner.fertilizer_info['apps'])
-    print(lime_applications)
     for app in lime_applications:
         season = lawnplanner.season_of_date(app['date'])
         phlime_info['apps'][season].append(app)
