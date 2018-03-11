@@ -208,25 +208,25 @@ def warm_fall_n_apps(closest_station):
 
 def phos_apps(lawn, fertilizer_apps):
 
-    logger.debug("lime_apps - Lawn: %s" % lawn)
+    logger.debug("phos_apps - Lawn: %s" % lawn)
     my_apps = []
     if lawn.phosphorus == 0:
         return my_apps
 
     num_n_apps = 0
     for season in fertilizer_apps:
-        for app in season:
+        for app in fertilizer_apps[season]:
             if app['nutrient'] == 'Nitrogen':
                 num_n_apps += 1
 
     phos_app_rate = lawn.phosphorus / num_n_apps
 
     for season in fertilizer_apps:
-        for app in season:
+        for app in fertilizer_apps[season]:
             if app['nutrient'] == 'Nitrogen':
                 my_apps.append({'date': app['date'], 'rate': phos_app_rate, 'nutrient': 'Phosphorus',
                                 'end_date': app['end_date']})
-    # YOU ARE HERE....should this function just add the phos apps, or should it return my_apps and then those are added to fertilizer_info
+    return my_apps
 
 
 def get_fert_weight(npk, required_nitrogen):

@@ -76,8 +76,8 @@ class LawnDetailTest(UnitTestWithFixtures):
         nitrogen_apps = []
         for season, apps in fert_apps.items():
             for app in apps:
-                if app['nutrient'] == 'Lime':
-                    lime_apps.append(app)
+                if app['nutrient'] == 'Nitrogen':
+                    nitrogen_apps.append(app)
 
         self.assertTrue(len(lime_apps) <= 2,
                         msg="Lime applications: %s. Lime applications cannot exceed 2." % len(lime_apps))

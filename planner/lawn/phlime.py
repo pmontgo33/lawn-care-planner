@@ -25,15 +25,18 @@ def lime_apps(closest_station, lawn, fert_apps):
     # First application in spring halfway between spring N app and next N app.
     # Second application in fall, between both fall N apps.
 
-    first_n_date = fert_apps['spring'][0]['date']
-    if len(fert_apps['spring']) > 1:
-        second_n_date = fert_apps['spring'][1]['date']
-    else:
-        second_n_date = fert_apps['summer'][0]['date']
+    nitrogen_apps = []
+    for season in fert_apps:
+        for app in fert_apps[season]:
+            if app['nutrient'] == 'Nitrogen':
+                nitrogen_apps.append(app)
+
+    first_n_date = nitrogen_apps[0]['date']
+    second_n_date = nitrogen_apps[1]['date']
 
     days_btwn_n_apps = second_n_date - first_n_date
     first_lime_date = first_n_date + (days_btwn_n_apps / 2)
-
+    print(first_n_date, second_n_date, first_lime_date)
     first_n_date = fert_apps['fall'][0]['date']
     second_n_date = fert_apps['fall'][1]['date']
     days_btwn_n_apps = second_n_date - first_n_date
@@ -47,7 +50,7 @@ def lime_apps(closest_station, lawn, fert_apps):
     else:
         first_lime_rate = lime_rate
     second_lime_rate = lime_rate - first_lime_rate
-
+    print(first_lime_date)
     my_apps.append({'date': first_lime_date, 'rate': first_lime_rate, 'nutrient': 'Lime', 'end_date': None})
     if second_lime_rate > 0:
         my_apps.append({'date': second_lime_date, 'rate': second_lime_rate, 'nutrient': 'Lime', 'end_date': None})
