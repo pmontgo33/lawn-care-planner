@@ -127,13 +127,73 @@ class LawnDetailTest(UnitTestWithFixtures):
         expected_apps = 2
         self.check_lime_constraints(phlime_apps, fert_apps, expected_apps)
 
-    def test_advanced_lawn_phosphorus_constraints_pass(self):
-        # Phosphorus Constraints
-        self.fail("Finish the phosphorus constraints")
+    def test_advanced_lawn_phosphorus_apps_same_dates_as_nitrogen(self):
+        response = self.client.get('/planner/lawn/17/')
+        self.assertEqual(response.status_code, 200)
 
-    def test_advanced_lawn_phosphorus_constraints_pass(self):
-        # Potassium Constraints
-        self.fail("Finish the potassium constraints")
+        fert_apps = response.context['planner'].fertilizer_info['apps']
+
+        nitrogen_apps = []
+        phosphorus_apps = []
+        for season in fert_apps:
+            for app in fert_apps[season]:
+                if app['nutrient'] == 'Nitrogen':
+                    nitrogen_apps.append(app)
+                elif app['nutrient'] == 'Phosphorus':
+                    phosphorus_apps.append(app)
+
+        for n_app, p_app in zip(nitrogen_apps, phosphorus_apps):
+            self.assertEqual(n_app['date'], p_app['date'], msg="Phosphorus apps do not occur same day as Nitrogen apps.")
+
+    def test_advanced_lawn_phosphorus_apps_add_up_to_phosphorus_required(self):
+        response = self.client.get('/planner/lawn/16/')
+        self.assertEqual(response.status_code, 200)
+
+        fert_apps = response.context['planner'].fertilizer_info['apps']
+        lawn_phos_required = response.context['lawn'].phosphorus
+
+        total_phosphorus_recommended = 0
+        for season in fert_apps:
+            for app in fert_apps[season]:
+                if app['nutrient'] == 'Phosphorus':
+                    total_phosphorus_recommended += app['rate']
+
+        self.assertEqual(lawn_phos_required, total_phosphorus_recommended,
+                         msg="Phosphorus apps not adding up to total required Phosphorus")
+
+    def test_advanced_lawn_potassium_apps_same_dates_as_nitrogen(self):
+        response = self.client.get('/planner/lawn/17/')
+        self.assertEqual(response.status_code, 200)
+
+        fert_apps = response.context['planner'].fertilizer_info['apps']
+
+        nitrogen_apps = []
+        potassium_apps = []
+        for season in fert_apps:
+            for app in fert_apps[season]:
+                if app['nutrient'] == 'Nitrogen':
+                    nitrogen_apps.append(app)
+                elif app['nutrient'] == 'Potassium':
+                    potassium_apps.append(app)
+
+        for n_app, k_app in zip(nitrogen_apps, potassium_apps):
+            self.assertEqual(n_app['date'], k_app['date'], msg="Potassium apps do not occur same day as Nitrogen apps.")
+
+    def test_advanced_lawn_potassium_apps_add_up_to_phosphorus_required(self):
+        response = self.client.get('/planner/lawn/16/')
+        self.assertEqual(response.status_code, 200)
+
+        fert_apps = response.context['planner'].fertilizer_info['apps']
+        lawn_potash_required = response.context['lawn'].potassium
+
+        total_potassium_recommended = 0
+        for season in fert_apps:
+            for app in fert_apps[season]:
+                if app['nutrient'] == 'Potassium':
+                    total_potassium_recommended += app['rate']
+
+        self.assertEqual(lawn_potash_required, total_potassium_recommended,
+                         msg="Potassium apps not adding up to total required Potassium")
 
 
 class NewLawnViewTest(TestCase):

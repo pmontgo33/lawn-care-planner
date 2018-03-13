@@ -229,6 +229,28 @@ def phos_apps(lawn, fertilizer_apps):
     return my_apps
 
 
+def potash_apps(lawn, fertilizer_apps):
+
+    logger.debug("potash_apps - Lawn: %s" % lawn)
+    my_apps = []
+    if lawn.potassium == 0:
+        return my_apps
+
+    num_n_apps = 0
+    for season in fertilizer_apps:
+        for app in fertilizer_apps[season]:
+            if app['nutrient'] == 'Nitrogen':
+                num_n_apps += 1
+
+    potash_app_rate = lawn.potassium / num_n_apps
+
+    for season in fertilizer_apps:
+        for app in fertilizer_apps[season]:
+            if app['nutrient'] == 'Nitrogen':
+                my_apps.append({'date': app['date'], 'rate': potash_app_rate, 'nutrient': 'Potassium',
+                                'end_date': app['end_date']})
+    return my_apps
+
 def get_fert_weight(npk, required_nitrogen):
     """
     :param required_nitrogen: this is the required lbs of nitrogen required for the application
@@ -291,9 +313,15 @@ def get_fertilizer_info(planner, closest_station, lawn):
 
         fertilizer_info['apps']['summer'].extend(summer_applications)
 
-    # Add phosphorus applications
+    # Add Phosphorus applications
     phosphorus_applications = phos_apps(lawn, fertilizer_info['apps'])
     for app in phosphorus_applications:
+        season = lawnplanner.season_of_date(app['date'])
+        fertilizer_info['apps'][season].append(app)
+
+    # Add Potassium applications
+    potassium_applications = potash_apps(lawn, fertilizer_info['apps'])
+    for app in potassium_applications:
         season = lawnplanner.season_of_date(app['date'])
         fertilizer_info['apps'][season].append(app)
 

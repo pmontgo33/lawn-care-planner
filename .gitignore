@@ -6,6 +6,7 @@ db.sqlite3
 .DS_Store
 local_settings.py
 *.log
+*.tmp
 .env
 settings.ini
 .idea
